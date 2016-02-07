@@ -92,7 +92,7 @@ class TelegramApi {
 			$options ['reply_markup'] = json_encode ( $reply_markup );
 		}
 		
-		return $this->sendApiRequest ( 'sendMessage', $options );
+		return TA_Message::createFromArray($this->sendApiRequest ( 'sendMessage', $options ));
 	}
 	
 	/**
@@ -417,7 +417,7 @@ class TA_Message {
 	private $migrate_from_chat_id;
 
 
-	private function TA_Chat($message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
+	private function TA_Message($message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
 			$text = null, $audio = null, $document = null, $photo = null, $sticker = null, $video = null, $voice = null, $caption = null, $contact = null, $location = null,
 			TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
 			$group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
@@ -458,11 +458,11 @@ class TA_Message {
 		return new Self(
 				$arr['message_id'],
 				$arr['date'],
-				$arr['chat'],
-				isset($arr['from'])						? $arr['from']							: null,
-				isset($arr['fordward_from'])			? $arr['fordward_from']					: null,
-				isset($arr['forward_date'])				? $arr['forward_date']					: null,
-				isset($arr['reply_to_message'])			? $arr['reply_to_message']				: null,
+				TA_Chat::createFromArray($arr['chat']),
+				isset($arr['from'])						? TA_User::createFromArray($arr['from'])					: null,
+				isset($arr['fordward_from'])			? TA_User::createFromArray($arr['fordward_from'])			: null,
+				isset($arr['forward_date'])				? $arr['forward_date']										: null,
+				isset($arr['reply_to_message'])			? TA_Message::createFromArray($arr['reply_to_message'])		: null,
 				isset($arr['text'])						? $arr['text']							: null,
 				isset($arr['audio'])					? $arr['audio']							: null,
 				isset($arr['document'])					? $arr['document']						: null,
@@ -473,8 +473,8 @@ class TA_Message {
 				isset($arr['caption'])					? $arr['caption']						: null,
 				isset($arr['contact'])					? $arr['contact']						: null,
 				isset($arr['location'])					? $arr['location']						: null,
-				isset($arr['new_chat_participant'])		? $arr['new_chat_participant']			: null,
-				isset($arr['left_chat_participant'])	? $arr['left_chat_participant']			: null,
+				isset($arr['new_chat_participant'])		? TA_User::createFromArray($arr['new_chat_participant'])	: null,
+				isset($arr['left_chat_participant'])	? TA_User::createFromArray($arr['left_chat_participant'])	: null,
 				isset($arr['new_chat_title'])			? $arr['new_chat_title']				: null,
 				isset($arr['new_chat_photo'])			? $arr['new_chat_photo']				: null,
 				isset($arr['delete_chat_photo'])		? $arr['delete_chat_photo']				: null,
@@ -588,7 +588,7 @@ class TA_InlineQuery {
 	public static function createFromArray($arr) {
 		return new Self(
 				$arr['file_id'],
-				$arr['from'],
+				TA_User::createFromArray($arr['from']),
 				$arr['query'],
 				$arr['offset']
 			);
