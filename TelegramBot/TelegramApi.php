@@ -484,7 +484,7 @@ class TA_Message {
 		return $this->message_id;
 	}
 	
-	public function getTest() {
+	public function getText() {
 		return $this->text;
 	}
 	
@@ -507,5 +507,7 @@ class TA_Message {
 	public function isForwarded() {
 		return ($this->fordward_from !== null);
 	}
+	
+	// TODO Add all getters
 
 }
