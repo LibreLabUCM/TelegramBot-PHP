@@ -10,14 +10,28 @@ $token = '123456';
 
 $config = BotConfig::create()
    -> setToken($token)
-   -> setWebhookUrl('WebhookUrl')
+   -> setWebhookUrl('https://example.com')
    -> setDb('DB')
    -> setAdmins('Admins')
-   -> setHookKey('HookKey')
+   -> setHookKey('KEY')
    -> validate();
 
 
 $bot = new TelegramBot($config);
 
+if (isset($_GET['setwebhook'])) {
+	if ($bot->setWebhook() == 1) {
+		echo 'Webhook set!';
+	} else {
+		echo 'Webhook NOT set!';
+	}
+	exit();
+}
+
 $update = file_get_contents("php://input");
-echo $bot->processUpdate($update);
+if (!empty($update)) {
+	echo $bot->processUpdate($update);
+} else {
+	echo 'Nothing to see here...';
+}
+
