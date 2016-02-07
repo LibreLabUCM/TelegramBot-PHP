@@ -22,8 +22,22 @@ $bot = new TelegramBot($config);
 
 $api = new TelegramApi($config->getToken());
 
-echo '<pre>', print_r($api->getMe(), true), '</pre>';
-//echo '<pre>', print_r($api->sendMessage($testId, "Test"), true), '</pre>';
 //echo '<pre>', print_r($api->sendChatAction($testId, "typing"), true), '</pre>';
 //echo '<pre>', print_r($api->getUserProfilePhotos($testId), true), '</pre>';
 
+
+/*
+$u = $api->getMe();
+echo $u->getUsername();
+*/
+
+/*
+$m = $api->sendMessage($testId, "Test");
+echo $m->getText();
+*/
+
+/*
+$m = $api->sendMessage($testId, "Test");
+$r = $api->forwardMessage($testId, $testId, $m->getMessageId());
+echo $m->getText();
+*/
