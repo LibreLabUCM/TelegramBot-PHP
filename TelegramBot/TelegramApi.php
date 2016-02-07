@@ -272,6 +272,13 @@ class TelegramApi {
 		return $this->sendApiRequest ( 'getFile', $options );
 	}
 	
+	// Certificate not used (for now)
+	public function setWebhook($url, $certificate = null) {
+		$options = array ();
+		$options ['url'] = $url;
+		return $this->sendApiRequest ( 'setWebhook', $options );
+	}
+	
 	
 	// Untested
 	/**
