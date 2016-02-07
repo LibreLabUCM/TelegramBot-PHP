@@ -44,16 +44,21 @@ class TelegramApi {
 				CURLOPT_URL => $url,
 				CURLOPT_SSL_VERIFYPEER => false 
 		) );
-		return json_decode ( curl_exec ( $curl ), true );
+		$r = json_decode ( curl_exec ( $curl ), true );
+		if (!$r['ok']) {
+			// Exception! 
+			return false;
+		}
+		return $r['result'];
 	}
 	
 	/**
 	 * Sends a getMe request to get info about the bot
 	 * 
-	 * @return array the result of the api request
+	 * @return TA_User the result of the api request
 	 */
 	public function getMe() {
-		return $this->sendApiRequest ( 'getMe' );
+		return TA_User::createFromArray($this->sendApiRequest ( 'getMe' ));
 	}
 	
 	/**
@@ -281,7 +286,7 @@ class TA_User {
 	private $last_name;
 	private $username;
 	
-	public function TA_User($id, $first_name, $last_name = null, $username = null) {
+	private function TA_User($id, $first_name, $last_name = null, $username = null) {
 		$this->id = $id;
 		$this->first_name = $first_name;
 		$this->last_name = $last_name;
@@ -327,7 +332,7 @@ class TA_Chat {
 	private $first_name;
 	private $last_name;
 	
-	public function TA_Chat($id, $type, $title = null, $username = null, $first_name = null, $last_name = null) {
+	private function TA_Chat($id, $type, $title = null, $username = null, $first_name = null, $last_name = null) {
 		$this->id = $id;
 		$this->type = $type;
 		$this->title = $title;
@@ -412,7 +417,7 @@ class TA_Message {
 	private $migrate_from_chat_id;
 
 
-	public function TA_Chat($message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
+	private function TA_Chat($message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
 			$text = null, $audio = null, $document = null, $photo = null, $sticker = null, $video = null, $voice = null, $caption = null, $contact = null, $location = null,
 			TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
 			$group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
@@ -517,7 +522,7 @@ class TA_File {
 	private $file_size;
 	private $file_path;
 	
-	public function TA_File($file_id, $file_size = null, $file_path = null) {
+	private function TA_File($file_id, $file_size = null, $file_path = null) {
 		$this->file_id = $file_id;
 		$this->file_size = $file_size;
 		$this->file_path = $file_path;
@@ -569,7 +574,7 @@ class TA_InlineQuery {
 	private $offset;
 	
 	
-	public function TA_File($id, $from, $query, $offset) {
+	private function TA_File($id, $from, $query, $offset) {
 		$this->id = $id;
 		$this->from = $from;
 		$this->query = $query;
