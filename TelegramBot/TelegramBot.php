@@ -8,6 +8,10 @@ class TelegramBot {
 	private $api;
 	
 	public function TelegramBot(BotConfig $config) {
+		if (empty($_GET['key']) || $_GET['key'] !== $config->getHookKey()) {
+			//Exception! Wrong key!
+			echo 'Invalid key!';
+		}
 		if ($config->isValid ()) {
 			$this->config = $config;
 			$this->api = new TelegramApi ( $config->getToken () );
@@ -15,6 +19,11 @@ class TelegramBot {
 			echo 'Bot is NOT configured properly!';
 			// Exception!
 		}
+	}
+	
+	public function setWebhook() {
+		$url = $this->config->getWebhookUrl() . '?key=' . $this->config->getHookKey();
+		return $this->api->setWebhook($url);
 	}
 	
 	public function processUpdate($update) {
