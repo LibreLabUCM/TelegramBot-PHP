@@ -73,6 +73,8 @@ class TelegramApi {
 	 * @return mixed the result of the api request
 	 */
 	public function sendMessage($chat_id, $text, $link_previews = true, $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$options = array ();
 		$options ['chat_id'] = $chat_id;
 		$options ['text'] = $text;
@@ -105,6 +107,8 @@ class TelegramApi {
 	 * @return mixed the result of the api request
 	 */
 	public function forwardMessage($chat_id, $from_chat_id, $message_id) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$options = array ();
 		$options ['chat_id'] = $chat_id;
 		$options ['from_chat_id'] = $from_chat_id;
@@ -114,6 +118,8 @@ class TelegramApi {
 	
 	// Untested
 	public function sendPhoto($chat_id, $photo, $caption = "", $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$options = array ();
 		$options ['chat_id'] = $chat_id;
 		$options ['photo'] = $photo;
@@ -135,6 +141,8 @@ class TelegramApi {
 	
 	// Untested
 	public function sendAudio($chat_id, $audio, $duration = "", $performer = "", $title = "", $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$options = array ();
 		$options ['chat_id'] = $chat_id;
 		$options ['audio'] = $audio;
@@ -164,6 +172,8 @@ class TelegramApi {
 	
 	// Untested
 	public function sendDocument($chat_id, $document, $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$options = array ();
 		$options ['chat_id'] = $chat_id;
 		$options ['document'] = $document;
@@ -181,6 +191,8 @@ class TelegramApi {
 	
 	// Untested
 	public function sendSticker($chat_id, $sticker, $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$options = array ();
 		$options ['chat_id'] = $chat_id;
 		$options ['sticker'] = $sticker;
@@ -198,11 +210,15 @@ class TelegramApi {
 	
 	// Untested
 	public function sendVideo($chat_id, $video, $duration, $caption = "", $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		// TODO
 	}
 	
 	// Untested
 	public function sendVoice($chat_id, $vioce, $duration, $reply_id = null, $reply_markup = null) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		// TODO
 	}
 	
@@ -214,6 +230,8 @@ class TelegramApi {
 	 * @return mixed the result of the api request 
 	 */
 	public function sendChatAction($chat_id, $action) {
+		if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
+		
 		$availableActions = array (
 				'typing',
 				'upload_photo',
@@ -237,6 +255,8 @@ class TelegramApi {
 	}
 	
 	public function getUserProfilePhotos($user_id, $offset = 0, $limit = 100) {
+		if ($user_id instanceof TA_User) $user_id = $user_id->getId();
+		
 		$options = array ();
 		$options ['user_id'] = $user_id;
 		$options ['offset'] = $offset;
@@ -491,6 +511,10 @@ class TA_Message {
 	
 	public function getText() {
 		return $this->text;
+	}
+	
+	public function getFrom() {
+		return $this->from;
 	}
 	
 	public function hasText() {
