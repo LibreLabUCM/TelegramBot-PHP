@@ -319,7 +319,64 @@ class TA_User {
 }
 
 
-
+class TA_Chat {
+	private $id;
+	private $type;
+	private $title;
+	private $username;
+	private $first_name;
+	private $last_name;
+	
+	public function TA_Chat($id, $type, $title = null, $username = null, $first_name = null, $last_name = null) {
+		$this->id = $id;
+		$this->type = $type;
+		$this->title = $title;
+		$this->username = $username;
+		$this->first_name = $first_name;
+		$this->last_name = $last_name;
+	}
+	
+	public static function createFromJson($json) {
+		return TA_Chat::createFromArray(json_decode($json));
+	}
+	
+	public static function createFromArray($arr) {
+		return new Self(
+				$arr['id'],
+				$arr['type'],
+				isset($arr['title']) ? $arr['title'] : null,
+				isset($arr['username']) ? $arr['username'] : null,
+				isset($arr['first_name']) ? $arr['first_name'] : null,
+				isset($arr['last_name']) ? $arr['last_name'] : null
+			);
+	}
+	
+	public function getId() {
+		return $this->id;
+	}
+	
+	public function getType() {
+		return $this->type;
+	}
+	
+	public function getTitle() {
+		return $this->title;
+	}
+	
+	public function getUsername() {
+		return $this->username;
+	}
+	
+	public function getFirstName() {
+		return $this->first_name;
+	}
+	
+	public function getLastName() {
+		return $this->last_name;
+	}
+	
+	
+}
 
 
 
