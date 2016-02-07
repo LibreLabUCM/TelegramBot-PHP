@@ -109,7 +109,7 @@ class TelegramApi {
 		$options ['chat_id'] = $chat_id;
 		$options ['from_chat_id'] = $from_chat_id;
 		$options ['message_id'] = $message_id;
-		return $this->sendApiRequest ( 'forwardMessage', $options );
+		return TA_Message::createFromArray($this->sendApiRequest ( 'forwardMessage', $options ));
 	}
 	
 	// Untested
