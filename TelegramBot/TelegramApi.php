@@ -383,3 +383,74 @@ class TA_Chat {
 
 
 
+class TA_Message {
+	private $message_id;
+	private $from; // TA_User
+	private $date;
+	private $chat; // TA_Chat
+	private $fordward_from; // TA_User
+	private $forward_date;
+	private $reply_to_message; // TA_Message
+	private $text;
+	private $audio;
+	private $document;
+	private $photo;
+	private $sticker;
+	private $video;
+	private $voice;
+	private $caption;
+	private $contact;
+	private $location;
+	private $new_chat_participant; // TA_User
+	private $left_chat_participant; // TA_User
+	private $new_chat_title;
+	private $new_chat_photo;
+	private $delete_chat_photo;
+	private $group_chat_created;
+	private $channel_chat_created;
+	private $migrate_to_chat_id;
+	private $migrate_from_chat_id;
+
+
+	public function TA_Chat($message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
+			$text = null, $audio = null, $document = null, $photo = null, $sticker = null, $video = null, $voice = null, $caption = null, $contact = null, $location = null,
+			TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
+			$group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
+
+				$this->message_id = $message_id;
+				$this->date = $date;
+				$this->chat = $chat;
+				$this->from = $from;
+				$this->fordward_from = $fordward_from; // TA_User
+				$this->forward_date = $forward_date;
+				$this->reply_to_message = $reply_to_message; // TA_Message
+				$this->text = $text;
+				$this->audio = $audio;
+				$this->document = $document;
+				$this->photo = $photo;
+				$this->sticker = $sticker;
+				$this->video = $video;
+				$this->voice = $voice;
+				$this->caption = $caption;
+				$this->contact = $contact;
+				$this->location = $location;
+				$this->new_chat_participant = $new_chat_participant; // TA_User
+				$this->left_chat_participant = $left_chat_participant; // TA_User
+				$this->new_chat_title = $new_chat_title;
+				$this->new_chat_photo = $new_chat_photo;
+				$this->delete_chat_photo = $delete_chat_photo;
+				$this->group_chat_created = $group_chat_created;
+				$this->channel_chat_created = $channel_chat_created;
+				$this->migrate_to_chat_id = $migrate_to_chat_id;
+				$this->migrate_from_chat_id = $migrate_from_chat_id;
+	}
+	
+	public function getMessageId() {
+		return $this->message_id;
+	}
+	
+	public function getTest() {
+		return $this->text;
+	}
+
+}
