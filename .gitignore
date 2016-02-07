@@ -1,0 +1,7 @@
+bin/*
+warriors/*
+config.php
+.buildpath
+.project
+.settings/*
+OLD/*
