@@ -34,6 +34,7 @@ class TelegramApi {
 				$url = 'https://api.telegram.org/bot' . $this->token . '/' . $method . '?' . http_build_query ( $params );
 			} else {
 				// Exception! $params should be an array!
+				return false;
 			}
 		}
 		
@@ -200,6 +201,13 @@ class TelegramApi {
 		// TODO
 	}
 	
+	/**
+	 * Sends an api request to show a chat action for the client
+	 * @param int $chat_id target chat
+	 * @param string $action string representing the action. 
+	 * 
+	 * @return mixed the result of the api request 
+	 */
 	public function sendChatAction($chat_id, $action) {
 		$availableActions = array (
 				'typing',
@@ -214,6 +222,7 @@ class TelegramApi {
 		
 		if (! in_array ( $action, $availableActions )) {
 			// Exception! Unknown action!
+			return false;
 		}
 		
 		$options = array ();
@@ -239,10 +248,40 @@ class TelegramApi {
 	}
 	
 	
-	
-	
-	
-	
-	
+	// Untested
+	/**
+	 * Answer an inline query request
+	 * 
+	 * @param string $inline_query_id id of the query to answer
+	 * @param mixed $results results to show to the user
+	 * @param int $cache_time (Optional) time the server can save the answer in cache (Default: 0)
+	 * @param bool $is_personal (Optional) if the answer should not be the same for other users (Default: true)
+	 * @param string $next_offset  (Optional) (Default: "")
+	 * 
+	 * @return mixed the result of the api request
+	 */
+	public function answerInlineQuery($inline_query_id, $results, $cache_time = 0, $is_personal = true, $next_offset = "") {
+		$options = array ();
+		$options ['inline_query_id'] = $inline_query_id;
+		$options ['results'] = $results;
+		$options ['cache_time'] = $cache_time;
+		$options ['is_personal'] = $is_personal;
+		$options ['next_offset'] = $next_offset;
+		return $this->sendApiRequest ( 'answerInlineQuery', $options );
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
