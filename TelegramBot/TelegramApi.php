@@ -7,12 +7,21 @@
  * 
  */
 class TelegramApi {
-	private $token;
+   private static $instance;
+   private $token;
 	
-	
-	public function TelegramApi($token) {
-		$this->token = $token;
-	}
+   private function TelegramApi() {}
+        
+   public static function getInstance() {
+      if (!isset(TelegramApi::$instance)) {
+         TelegramApi::$instance = new TelegramApi();
+      }
+      return TelegramApi::$instance;
+   }
+        
+   public function setToken($token) {
+      $this->token = $token;
+   }
 	
 	/**
 	 * Sends an api request to telegram
