@@ -531,7 +531,7 @@ class TA_File {
 		return new Self(
 				$arr['file_id'],
 				isset($arr['file_size'])	? $arr['file_size']	: null,
-				isset($arr['$file_path'])	? $arr['$file_path']: null
+				isset($arr['file_path'])	? $arr['file_path']: null
 			);
 	}
 	
@@ -562,5 +562,48 @@ class TA_ForceReply extends TA_ReplyMarkup{
 	// TODO
 }
 
+class TA_InlineQuery {
+	private $id;
+	private $from; // TA_User
+	private $query;
+	private $offset;
+	
+	
+	public function TA_File($id, $from, $query, $offset) {
+		$this->id = $id;
+		$this->from = $from;
+		$this->query = $query;
+		$this->offset = $offset;
+	}
+	
+	public static function createFromJson($json) {
+		return TA_InlineQuery::createFromArray(json_decode($json));
+	}
+	
+	public static function createFromArray($arr) {
+		return new Self(
+				$arr['file_id'],
+				$arr['from'],
+				$arr['query'],
+				$arr['offset']
+			);
+	}
+	
+	public function getId() {
+		return $this->id;
+	}
+	
+	public function getFrom() {
+		return $this->from;
+	}
+	
+	public function getQuery() {
+		return $this->query;
+	}
+	
+	public function getOffset() {
+		return $this->offset;
+	}
+}
 
 
