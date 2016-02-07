@@ -2,9 +2,9 @@
 require_once('Plugin.php');
 require_once('TelegramBot/TelegramApi.php');
 
-class SendWarriorPlugin extends Plugin {
+class CancelPlugin extends Plugin {
    
-   public function SendWarriorPlugin() {
+   public function CancelPlugin() {
       //PluginManager::getInstance()->addPlugin($this);
    }
    
