@@ -296,8 +296,8 @@ class TA_User {
 		return new Self(
 				$arr['id'],
 				$arr['first_name'],
-				isset($arr['last_name']) ? $arr['last_name'] : null,
-				isset($arr['username']) ? $arr['username'] : null
+				isset($arr['last_name'])	? $arr['last_name']	: null,
+				isset($arr['username'])		? $arr['username']	: null
 			);
 	}
 	
@@ -344,10 +344,10 @@ class TA_Chat {
 		return new Self(
 				$arr['id'],
 				$arr['type'],
-				isset($arr['title']) ? $arr['title'] : null,
-				isset($arr['username']) ? $arr['username'] : null,
-				isset($arr['first_name']) ? $arr['first_name'] : null,
-				isset($arr['last_name']) ? $arr['last_name'] : null
+				isset($arr['title'])		? $arr['title']			: null,
+				isset($arr['username'])		? $arr['username']		: null,
+				isset($arr['first_name'])	? $arr['first_name']	: null,
+				isset($arr['last_name'])	? $arr['last_name']		: null
 			);
 	}
 	
@@ -445,12 +445,67 @@ class TA_Message {
 				$this->migrate_from_chat_id = $migrate_from_chat_id;
 	}
 	
+	public static function createFromJson($json) {
+		return TA_Message::createFromArray(json_decode($json));
+	}
+	
+	public static function createFromArray($arr) {
+		return new Self(
+				$arr['message_id'],
+				$arr['date'],
+				$arr['chat'],
+				isset($arr['from'])						? $arr['from']							: null,
+				isset($arr['fordward_from'])			? $arr['fordward_from']					: null,
+				isset($arr['forward_date'])				? $arr['forward_date']					: null,
+				isset($arr['reply_to_message'])			? $arr['reply_to_message']				: null,
+				isset($arr['text'])						? $arr['text']							: null,
+				isset($arr['audio'])					? $arr['audio']							: null,
+				isset($arr['document'])					? $arr['document']						: null,
+				isset($arr['photo'])					? $arr['photo']							: null,
+				isset($arr['sticker'])					? $arr['sticker']						: null,
+				isset($arr['video'])					? $arr['video']							: null,
+				isset($arr['voice'])					? $arr['voice']							: null,
+				isset($arr['caption'])					? $arr['caption']						: null,
+				isset($arr['contact'])					? $arr['contact']						: null,
+				isset($arr['location'])					? $arr['location']						: null,
+				isset($arr['new_chat_participant'])		? $arr['new_chat_participant']			: null,
+				isset($arr['left_chat_participant'])	? $arr['left_chat_participant']			: null,
+				isset($arr['new_chat_title'])			? $arr['new_chat_title']				: null,
+				isset($arr['new_chat_photo'])			? $arr['new_chat_photo']				: null,
+				isset($arr['delete_chat_photo'])		? $arr['delete_chat_photo']				: null,
+				isset($arr['group_chat_created'])		? $arr['group_chat_created']			: null,
+				isset($arr['channel_chat_created'])		? $arr['channel_chat_created']			: null,
+				isset($arr['migrate_to_chat_id'])		? $arr['migrate_to_chat_id']			: null,
+				isset($arr['migrate_from_chat_id'])		? $arr['migrate_from_chat_id']			: null
+			);
+	}
+	
 	public function getMessageId() {
 		return $this->message_id;
 	}
 	
 	public function getTest() {
 		return $this->text;
+	}
+	
+	public function hasText() {
+		return ($this->text !== null);
+	}
+	
+	public function hasMedia() {
+		return
+			($this->audio !== null)		||
+			($this->document !== null)	||
+			($this->photo !== null)		||
+			($this->sticker !== null)	||
+			($this->video !== null)		||
+			($this->voice !== null)		||
+			($this->contact !== null)	||
+			($this->location !== null);
+	}
+	
+	public function isForwarded() {
+		return ($this->fordward_from !== null);
 	}
 
 }
