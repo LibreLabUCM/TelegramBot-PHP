@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * Telegram api wrapper.
+ * 
+ * @api
+ * 
+ */
+class TelegramApi {
+	private $token;
+	
+	
+	public function TelegramApi($token) {
+		$this->token = $token;
+	}
+	
+	/**
+	 * Sends an api request to telegram
+	 *
+	 * @param string $method
+	 *        	the api method
+	 * @param array $params
+	 *        	(Optional) the parameters of the method (Default: null)
+	 * @param void $file
+	 *        	(Optional) (Unused) (Default: null)
+	 *        	
+	 * @return array the result of the api request
+	 */
+	private function sendApiRequest($method, $params = null, $file = null) {
+		if ($params === null) {
+			$url = 'https://api.telegram.org/bot' . $this->token . '/' . $method;
+		} else {
+			if (is_array ( $params )) {
+				$url = 'https://api.telegram.org/bot' . $this->token . '/' . $method . '?' . http_build_query ( $params );
+			} else {
+				// Exception! $params should be an array!
+			}
+		}
+		
+		$curl = curl_init ();
+		curl_setopt_array ( $curl, array (
+				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_URL => $url,
+				CURLOPT_SSL_VERIFYPEER => false 
+		) );
+		return json_decode ( curl_exec ( $curl ), true );
+	}
+	
+	/**
+	 * Sends a getMe request to get info about the bot
+	 * 
+	 * @return array the result of the api request
+	 */
+	public function getMe() {
+		return $this->sendApiRequest ( 'getMe' );
+	}
+	
+	/**
+	 * Sends a meessage by sending a sendMessage api request
+	 * 
+	 * @param int $chat_id id of the user the message is going to be sent to
+	 * @param string $text text to send as a message
+	 * @param bool $link_previews (Optional) If link previews should be shown (Default: true)
+	 * @param int $reply_id (Optional) Mark the message as a reply to other message in the same conversation (Default: null)
+	 * @param mixed $reply_markup (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+	 * 
+	 * @return mixed the result of the api request
+	 */
+	public function sendMessage($chat_id, $text, $link_previews = true, $reply_id = null, $reply_markup = null) {
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['text'] = $text;
+		$options ['parse_mode'] = 'Markdown';
+		
+		if ($link_previews === true || $link_previews === null) {
+			$options ['disable_web_page_preview'] = false;
+		} else if ($link_previews === false) {
+			$options ['disable_web_page_preview'] = true;
+		}
+		
+		if ($reply_id !== null) {
+			$options ['reply_id'] = $reply_id;
+		}
+		
+		if ($reply_markup !== null) {
+			$options ['reply_markup'] = json_encode ( $reply_markup );
+		}
+		
+		return $this->sendApiRequest ( 'sendMessage', $options );
+	}
+	
+	/**
+	 * Forwards a message from origin to destination chat
+	 * 
+	 * @param int $chat_id destination chat
+	 * @param int $from_chat_id origin chat
+	 * @param int $message_id id of the message in origin chat to fordward
+	 * 
+	 * @return mixed the result of the api request
+	 */
+	public function forwardMessage($chat_id, $from_chat_id, $message_id) {
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['from_chat_id'] = $from_chat_id;
+		$options ['message_id'] = $message_id;
+		return $this->sendApiRequest ( 'forwardMessage', $options );
+	}
+	
+	// Untested
+	public function sendPhoto($chat_id, $photo, $caption = "", $reply_id = null, $reply_markup = null) {
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['photo'] = $photo;
+		
+		if ($caption !== null && $caption !== "") {
+			$options ['caption'] = $caption;
+		}
+		
+		if ($reply_id !== null) {
+			$options ['reply_id'] = $reply_id;
+		}
+		
+		if ($reply_markup !== null) {
+			$options ['reply_markup'] = json_encode ( $reply_markup );
+		}
+		
+		return $this->sendApiRequest ( 'sendMessage', $options );
+	}
+	
+	// Untested
+	public function sendAudio($chat_id, $audio, $duration = "", $performer = "", $title = "", $reply_id = null, $reply_markup = null) {
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['audio'] = $audio;
+	
+		if ($duration !== null && $duration !== "") {
+			$options ['duration'] = $duration;
+		}
+		
+		if ($performer !== null && $performer !== "") {
+			$options ['performer'] = $performer;
+		}
+		
+		if ($title !== null && $title !== "") {
+			$options ['title'] = $title;
+		}
+	
+		if ($reply_id !== null) {
+			$options ['reply_id'] = $reply_id;
+		}
+	
+		if ($reply_markup !== null) {
+			$options ['reply_markup'] = json_encode ( $reply_markup );
+		}
+	
+		return $this->sendApiRequest ( 'sendMessage', $options );
+	}
+	
+	// Untested
+	public function sendDocument($chat_id, $document, $reply_id = null, $reply_markup = null) {
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['document'] = $document;
+		
+		if ($reply_id !== null) {
+			$options ['reply_id'] = $reply_id;
+		}
+		
+		if ($reply_markup !== null) {
+			$options ['reply_markup'] = json_encode ( $reply_markup );
+		}
+		
+		return $this->sendApiRequest ( 'sendMessage', $options );
+	}
+	
+	// Untested
+	public function sendSticker($chat_id, $sticker, $reply_id = null, $reply_markup = null) {
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['sticker'] = $sticker;
+	
+		if ($reply_id !== null) {
+			$options ['reply_id'] = $reply_id;
+		}
+	
+		if ($reply_markup !== null) {
+			$options ['reply_markup'] = json_encode ( $reply_markup );
+		}
+	
+		return $this->sendApiRequest ( 'sendMessage', $options );
+	}
+	
+	// Untested
+	public function sendVideo($chat_id, $video, $duration, $caption = "", $reply_id = null, $reply_markup = null) {
+		// TODO
+	}
+	
+	// Untested
+	public function sendVoice($chat_id, $vioce, $duration, $reply_id = null, $reply_markup = null) {
+		// TODO
+	}
+	
+	public function sendChatAction($chat_id, $action) {
+		$availableActions = array (
+				'typing',
+				'upload_photo',
+				'record_video',
+				'upload_video',
+				'record_audio',
+				'upload_audio',
+				'upload_document',
+				'find_location' 
+		);
+		
+		if (! in_array ( $action, $availableActions )) {
+			// Exception! Unknown action!
+		}
+		
+		$options = array ();
+		$options ['chat_id'] = $chat_id;
+		$options ['action'] = $action;
+		return $this->sendApiRequest ( 'sendChatAction', $options );
+	}
+	
+	public function getUserProfilePhotos($user_id, $offset = 0, $limit = 100) {
+		$options = array ();
+		$options ['user_id'] = $user_id;
+		$options ['offset'] = $offset;
+		$options ['limit'] = $limit;
+		
+		return $this->sendApiRequest ( 'getUserProfilePhotos', $options );
+	}
+	
+	// Untested
+	public function getFile($file_id) {
+		$options = array ();
+		$options ['file_id'] = $file_id;
+		return $this->sendApiRequest ( 'getFile', $options );
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+}
