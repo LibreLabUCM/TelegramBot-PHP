@@ -275,7 +275,48 @@ class TelegramApi {
 
 
 
-
+class TA_User {
+	private $id;
+	private $first_name;
+	private $last_name;
+	private $username;
+	
+	public function TA_User($id, $first_name, $last_name = null, $username = null) {
+		$this->id = $id;
+		$this->first_name = $first_name;
+		$this->last_name = $last_name;
+		$this->username = $username;
+	}
+	
+	public static function createFromJson($json) {
+		return TA_User::createFromArray(json_decode($json));
+	}
+	
+	public static function createFromArray($arr) {
+		return new Self(
+				$arr['id'],
+				$arr['first_name'],
+				isset($arr['last_name']) ? $arr['last_name'] : null,
+				isset($arr['username']) ? $arr['username'] : null
+			);
+	}
+	
+	public function getId() {
+		return $this->id;
+	}
+	
+	public function getFirstName() {
+		return $this->first_name;
+	}
+	
+	public function getLastName() {
+		return $this->last_name;
+	}
+	
+	public function getUsername() {
+		return $this->username;
+	}
+}
 
 
 
