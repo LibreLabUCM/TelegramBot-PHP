@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/TA_User.php');
+require_once(__DIR__ . '/TA_Message.php');
 
 /**
  * Telegram api wrapper.
@@ -59,7 +60,7 @@ class TelegramApi {
     * @return TA_User the result of the api request
     */
    public function getMe() {
-      return TA_User::createFromArray($this->sendApiRequest ( 'getMe' ));
+      return TA_User::createFromArray($this, $this->sendApiRequest ( 'getMe' ));
    }
 
    /**
@@ -97,7 +98,7 @@ class TelegramApi {
         $options ['reply_markup'] = json_encode ( $reply_markup );
       }
 
-      return TA_Message::createFromArray($this->sendApiRequest ( 'sendMessage', $options ));
+      return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendMessage', $options ));
    }
 
    /**
@@ -116,7 +117,7 @@ class TelegramApi {
       $options ['chat_id'] = $chat_id;
       $options ['from_chat_id'] = $from_chat_id;
       $options ['message_id'] = $message_id;
-      return TA_Message::createFromArray($this->sendApiRequest ( 'forwardMessage', $options ));
+      return TA_Message::createFromArray($this, $this->sendApiRequest ( 'forwardMessage', $options ));
    }
 
    // Untested

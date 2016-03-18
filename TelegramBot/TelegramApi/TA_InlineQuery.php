@@ -26,7 +26,7 @@ class TA_InlineQuery {
     return new Self(
           $api,
           $arr['file_id'],
-          TA_User::createFromArray($arr['from']),
+          TA_User::createFromArray($api, $arr['from']),
           $arr['query'],
           $arr['offset']
         );
