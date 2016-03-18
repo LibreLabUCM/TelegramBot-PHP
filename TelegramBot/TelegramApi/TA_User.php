@@ -45,4 +45,9 @@ class TA_User {
   public function getUsername() {
     return $this->username;
   }
+
+  public function sendMessage($text, $link_previews = true, $reply_markup = null) {
+    $this->$_api->sendMessage($this, $text, $link_previews, null, $reply_markup);
+    return false;
+  }
 }
