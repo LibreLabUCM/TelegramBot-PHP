@@ -118,6 +118,34 @@ class TA_Message {
     return ($this->text !== null);
   }
 
+  public function isForwarded() {
+    return ($this->fordward_from !== null);
+  }
+
+  public function getDate() {
+    return $this->date;
+  }
+
+  public function getChat() {
+    return $this->chat;
+  }
+
+  public function getFordwardFrom() {
+    return $this->fordward_from;
+  }
+
+  public function getForwardDate() {
+    return $this->forward_date;
+  }
+
+  public function isReply() {
+    return ($this->reply_to_message !== null);
+  }
+
+  public function getReplyToMessage() {
+    return $this->reply_to_message;
+  }
+
   public function hasMedia() {
     return
       ($this->audio     !== null) ||
@@ -130,10 +158,91 @@ class TA_Message {
       ($this->location  !== null);
   }
 
-  public function isForwarded() {
-    return ($this->fordward_from !== null);
+  public function isAudio() {
+    return ($this->audio !== null);
   }
 
-  // TODO Add all getters
+  public function getAudio() {
+    return $this->audio;
+  }
 
+  public function isDocument() {
+    return ($this->document !== null);
+  }
+
+  public function getDocument() {
+    return $this->document;
+  }
+
+  public function isPhoto() {
+    return ($this->photo !== null);
+  }
+
+  public function getPhoto() {
+    return $this->photo;
+  }
+
+  public function isSticker() {
+    return ($this->sticker !== null);
+  }
+
+  public function getSticker() {
+    return $this->sticker;
+  }
+
+  public function isVideo() {
+    return ($this->video !== null);
+  }
+
+  public function getVideo() {
+    return $this->video;
+  }
+
+  public function isVoice() {
+    return ($this->voice !== null);
+  }
+
+  public function getVoice() {
+    return $this->voice;
+  }
+
+  public function isContact() {
+    return ($this->contact !== null);
+  }
+
+  public function getContact() {
+    return $this->contact;
+  }
+
+  public function isLocation() {
+    return ($this->location !== null);
+  }
+
+  public function getLocation() {
+    return $this->location;
+  }
+
+  public function hasCaption() {
+    return ($this->caption !== null);
+  }
+
+  public function getVaption() {
+    return $this->caption;
+  }
+
+
+
+
+  // TODO Add all getters
+  /*
+  private $new_chat_participant; // TA_User
+  private $left_chat_participant; // TA_User
+  private $new_chat_title;
+  private $new_chat_photo;
+  private $delete_chat_photo;
+  private $group_chat_created;
+  private $channel_chat_created;
+  private $migrate_to_chat_id;
+  private $migrate_from_chat_id;
+  */
 }
