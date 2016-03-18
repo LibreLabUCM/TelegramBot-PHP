@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__ . '/TelegramApi.php');
 
 
 class TA_File {

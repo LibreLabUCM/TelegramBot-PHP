@@ -1,4 +1,7 @@
 <?php
+require_once(__DIR__ . '/TelegramApi.php');
+
+
 abstract class TA_ReplyMarkup {}
 
 class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{

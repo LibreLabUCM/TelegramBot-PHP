@@ -1,4 +1,6 @@
 <?php
+require_once(__DIR__ . '/TelegramApi.php');
+
 
 abstract class TA_InlineQueryResult {
   private $_api; // TelegramApi
