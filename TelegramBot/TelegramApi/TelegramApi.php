@@ -65,10 +65,10 @@ class TelegramApi {
    /**
     * Sends a meessage by sending a sendMessage api request
     *
-    * @param int $chat_id id of the user the message is going to be sent to
+    * @param int $chat_id id of the user the message is going to be sent to (accepted: int, TA_User, TA_Chat)
     * @param string $text text to send as a message
     * @param bool $link_previews (Optional) If link previews should be shown (Default: true)
-    * @param int $reply_id (Optional) Mark the message as a reply to other message in the same conversation (Default: null)
+    * @param int $reply_id (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
     * @param mixed $reply_markup (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
     *
     * @return mixed the result of the api request
@@ -83,17 +83,18 @@ class TelegramApi {
       $options ['parse_mode'] = 'Markdown';
 
       if ($link_previews === true || $link_previews === null) {
-         $options ['disable_web_page_preview'] = false;
+        $options ['disable_web_page_preview'] = false;
       } else if ($link_previews === false) {
-         $options ['disable_web_page_preview'] = true;
+        $options ['disable_web_page_preview'] = true;
       }
 
       if ($reply_id !== null) {
-         $options ['reply_id'] = $reply_id;
+        if ($reply_id instanceof TA_Message) $reply_id = $reply_id->getMessageId();
+        $options ['reply_id'] = $reply_id;
       }
 
       if ($reply_markup !== null) {
-         $options ['reply_markup'] = json_encode ( $reply_markup );
+        $options ['reply_markup'] = json_encode ( $reply_markup );
       }
 
       return TA_Message::createFromArray($this->sendApiRequest ( 'sendMessage', $options ));
