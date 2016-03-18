@@ -8,11 +8,11 @@ class BotConfig {
    private $admins;
    private $hookKey;
    private $validConfig;
-   
+
    public function __construct() {
       $this->validConfig = false;
    }
-   
+
    /**
    * Static constructor / factory
    */
@@ -20,8 +20,7 @@ class BotConfig {
       $instance = new self();
       return $instance;
    }
-   
-   
+
    /**
     * Config validator - fluent style
     */
@@ -38,9 +37,9 @@ class BotConfig {
       }
       return $this;
    }
-   
+
    // Setters
-   
+
    /**
     * token setter - fluent style
     */
@@ -48,7 +47,7 @@ class BotConfig {
       $this->token = $token;
       return $this;
    }
-   
+
    /**
     * webhookUrl setter - fluent style
     */
@@ -56,7 +55,7 @@ class BotConfig {
       $this->webhookUrl = $webhookUrl;
       return $this;
    }
-   
+
    /**
     * db setter - fluent style
     */
@@ -64,7 +63,7 @@ class BotConfig {
       $this->db = $db;
       return $this;
    }
-   
+
    /**
     * admins setter - fluent style
     */
@@ -72,7 +71,7 @@ class BotConfig {
       $this->admins = $admins;
       return $this;
    }
-   
+
    /**
     * hookKey setter - fluent style
     */
@@ -80,49 +79,49 @@ class BotConfig {
       $this->hookKey = $hookKey;
       return $this;
    }
-   
+
    // Getters
-   
+
    /**
     * token getter
     */
    public function getToken() {
       return $this->token;
    }
-   
+
    /**
     * webhookUrl getter
     */
    public function getWebhookUrl() {
       return $this->webhookUrl;
    }
-   
+
    /**
     * db getter
     */
    public function getDb() {
       return $this->db;
    }
-   
+
    /**
     * admins getter
     */
    public function getAdmins() {
       return $this->admins;
    }
-   
+
    /**
     * hookKey getter
     */
    public function getHookKey() {
       return $this->hookKey;
    }
-   
+
    /**
     * vaidConfig getter
     */
    public function isValid() {
       return $this->validConfig;
    }
-   
+
 }
