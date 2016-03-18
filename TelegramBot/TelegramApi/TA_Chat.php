@@ -2,6 +2,12 @@
 require_once(__DIR__ . '/TelegramApi.php');
 
 
+/**
+ * Telegram Api Chat
+ *
+ * @api
+ *
+ */
 class TA_Chat {
   private $_api; // TelegramApi
   private $id;
@@ -21,10 +27,30 @@ class TA_Chat {
     $this->last_name = $last_name;
   }
 
+  /**
+  * Creates a TA_Chat from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_Chat
+  *
+  * @return a TA_Chat object
+  */
   public static function createFromJson(TelegramApi $api, $json) {
     return TA_Chat::createFromArray($api, json_decode($json));
   }
 
+  /**
+  * Creates a TA_Chat from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_Chat
+  *
+  * @return a TA_Chat object
+  */
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,

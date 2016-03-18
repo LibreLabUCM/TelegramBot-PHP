@@ -2,6 +2,12 @@
 require_once(__DIR__ . '/TelegramApi.php');
 
 
+/**
+ * Telegram Api ReplyMarkup
+ *
+ * @api
+ *
+ */
 abstract class TA_ReplyMarkup {}
 
 class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{

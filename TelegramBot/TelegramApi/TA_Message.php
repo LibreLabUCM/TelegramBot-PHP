@@ -4,6 +4,12 @@ require_once(__DIR__ . '/TA_User.php');
 require_once(__DIR__ . '/TA_Chat.php');
 
 
+/**
+ * Telegram Api Message
+ *
+ * @api
+ *
+ */
 class TA_Message {
   private $_api; // TelegramApi
   private $message_id;

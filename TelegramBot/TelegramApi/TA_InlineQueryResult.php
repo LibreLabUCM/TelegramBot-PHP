@@ -2,6 +2,12 @@
 require_once(__DIR__ . '/TelegramApi.php');
 
 
+/**
+ * Telegram Api InlineQueryResult
+ *
+ * @api
+ *
+ */
 abstract class TA_InlineQueryResult {
   private $_api; // TelegramApi
   protected $type;
@@ -12,11 +18,23 @@ abstract class TA_InlineQueryResult {
 
 
 
+/**
+ * Telegram Api ChosenInlineQueryResult
+ *
+ * @api
+ *
+ */
 class TA_ChosenInlineResult {
 
 }
 
 
+/**
+ * Telegram Api InlineQueryResultArticle
+ *
+ * @api
+ *
+ */
 class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
   private $title;
   private $message_text;
@@ -107,18 +125,42 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
   }
 }
 
+/**
+ * Telegram Api InlineQueryResultPhoto
+ *
+ * @api
+ *
+ */
 class TA_InlineQueryResultPhoto extends TA_InlineQueryResult {
 
 }
 
+/**
+ * Telegram Api InlineQueryResultGif
+ *
+ * @api
+ *
+ */
 class TA_InlineQueryResultGif extends TA_InlineQueryResult {
 
 }
 
+/**
+ * Telegram Api InlineQueryResultMpeg4Gif
+ *
+ * @api
+ *
+ */
 class TA_InlineQueryResultMpeg4Gif extends TA_InlineQueryResult {
 
 }
 
+/**
+ * Telegram Api InlineQueryResultVideo
+ *
+ * @api
+ *
+ */
 class TA_InlineQueryResultVideo extends TA_InlineQueryResult {
 
 }

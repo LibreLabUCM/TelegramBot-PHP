@@ -3,6 +3,12 @@ require_once(__DIR__ . '/TelegramApi.php');
 require_once(__DIR__ . '/TA_User.php');
 
 
+/**
+ * Telegram Api InlineQuery
+ *
+ * @api
+ *
+ */
 class TA_InlineQuery {
   private $_api; // TelegramApi
   private $id;

@@ -2,6 +2,12 @@
 require_once(__DIR__ . '/TelegramApi.php');
 
 
+/**
+ * Telegram Api File
+ *
+ * @api
+ *
+ */
 class TA_File {
   private $_api; // TelegramApi
   private $file_id;
