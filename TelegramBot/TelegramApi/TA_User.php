@@ -47,7 +47,10 @@ class TA_User {
   }
 
   public function sendMessage($text, $link_previews = true, $reply_markup = null) {
-    $this->$_api->sendMessage($this, $text, $link_previews, null, $reply_markup);
-    return false;
+    return $this->$_api->sendMessage($this, $text, $link_previews, null, $reply_markup);
+  }
+
+  public function getUserProfilePhotos($offset = 0, $limit = 100) {
+    return $this->$_api->getUserProfilePhotos($this, $offset, $limit);
   }
 }
