@@ -33,7 +33,7 @@ class TA_Message {
   private $migrate_to_chat_id;
   private $migrate_from_chat_id;
 
-  private function TA_Message($api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
+  private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
       $text = null, $audio = null, $document = null, $photo = null, $sticker = null, $video = null, $voice = null, $caption = null, $contact = null, $location = null,
       TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
@@ -67,11 +67,11 @@ class TA_Message {
     $this->migrate_from_chat_id = $migrate_from_chat_id;
   }
 
-  public static function createFromJson($api, $json) {
+  public static function createFromJson(TelegramApi $api, $json) {
     return TA_Message::createFromArray($api, json_decode($json));
   }
 
-  public static function createFromArray($api, $arr) {
+  public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
           $arr['message_id'],

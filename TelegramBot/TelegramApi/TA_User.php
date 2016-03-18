@@ -9,7 +9,7 @@ class TA_User {
   private $last_name;
   private $username;
 
-  private function TA_User($api, $id, $first_name, $last_name = null, $username = null) {
+  private function TA_User(TelegramApi $api, $id, $first_name, $last_name = null, $username = null) {
     $this->_api = $api;
     $this->id = $id;
     $this->first_name = $first_name;
@@ -17,11 +17,11 @@ class TA_User {
     $this->username = $username;
   }
 
-  public static function createFromJson($api, $json) {
+  public static function createFromJson(TelegramApi $api, $json) {
     return TA_User::createFromArray($api, json_decode($json));
   }
 
-  public static function createFromArray($api, $arr) {
+  public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
       $api,
       $arr['id'],

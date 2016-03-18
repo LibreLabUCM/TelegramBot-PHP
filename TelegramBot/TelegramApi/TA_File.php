@@ -8,18 +8,18 @@ class TA_File {
   private $file_size;
   private $file_path;
 
-  private function TA_File($api, $file_id, $file_size = null, $file_path = null) {
+  private function TA_File(TelegramApi $api, $file_id, $file_size = null, $file_path = null) {
     $this->_api = $api;
     $this->file_id = $file_id;
     $this->file_size = $file_size;
     $this->file_path = $file_path;
   }
 
-  public static function createFromJson($api, $json) {
+  public static function createFromJson(TelegramApi $api, $json) {
     return TA_File::createFromArray($api, json_decode($json));
   }
 
-  public static function createFromArray($api, $arr) {
+  public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
           $arr['file_id'],

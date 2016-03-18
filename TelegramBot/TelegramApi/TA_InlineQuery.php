@@ -10,7 +10,7 @@ class TA_InlineQuery {
   private $query;
   private $offset;
 
-  private function TA_InlineQuery($api, $id, $from, $query, $offset) {
+  private function TA_InlineQuery(TelegramApi $api, $id, $from, $query, $offset) {
     $this->_api = $api;
     $this->id = $id;
     $this->from = $from;
@@ -18,11 +18,11 @@ class TA_InlineQuery {
     $this->offset = $offset;
   }
 
-  public static function createFromJson($api, $json) {
+  public static function createFromJson(TelegramApi $api, $json) {
     return TA_InlineQuery::createFromArray($api, json_decode($json));
   }
 
-  public static function createFromArray($api, $arr) {
+  public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
           $arr['file_id'],

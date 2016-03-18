@@ -11,7 +11,7 @@ class TA_Chat {
   private $first_name;
   private $last_name;
 
-  private function TA_Chat($api, $id, $type, $title = null, $username = null, $first_name = null, $last_name = null) {
+  private function TA_Chat(TelegramApi $api, $id, $type, $title = null, $username = null, $first_name = null, $last_name = null) {
     $this->_api = $api;
     $this->id = $id;
     $this->type = $type;
@@ -21,11 +21,11 @@ class TA_Chat {
     $this->last_name = $last_name;
   }
 
-  public static function createFromJson($api, $json) {
+  public static function createFromJson(TelegramApi $api, $json) {
     return TA_Chat::createFromArray($api, json_decode($json));
   }
 
-  public static function createFromArray($api, $arr) {
+  public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
           $arr['id'],

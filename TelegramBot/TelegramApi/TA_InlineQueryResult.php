@@ -29,7 +29,7 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
   private $thumb_width;
   private $thumb_height;
 
-  private function TA_InlineQueryResultArticle($api, $id, $title, $message_text, $parse_mode, $disable_web_page_preview, $url, $hide_url, $description, $thumb_url, $thumb_width, $thumb_height) {
+  private function TA_InlineQueryResultArticle(TelegramApi $api, $id, $title, $message_text, $parse_mode, $disable_web_page_preview, $url, $hide_url, $description, $thumb_url, $thumb_width, $thumb_height) {
     $this->_api = $api;
     $this->type = "article";
     $this->id = $id;
@@ -45,11 +45,11 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
     $this-> thumb_height = $thumb_height;
   }
 
-  public static function createFromJson($api, $json) {
+  public static function createFromJson(TelegramApi $api, $json) {
     return TA_InlineQueryResultArticle::createFromArray($api, json_decode($json));
   }
 
-  public static function createMinimum($api, $id, $title, $message_text) {
+  public static function createMinimum(TelegramApi $api, $id, $title, $message_text) {
     return TA_InlineQueryResultArticle::createFromArray($api, array(
           'id' => $id,
           'title' => $title,
@@ -57,7 +57,7 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
         ));
   }
 
-  public static function createFromArray($api, $arr) {
+  public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
           $arr['id'],
