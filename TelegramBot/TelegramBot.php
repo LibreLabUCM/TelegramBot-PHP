@@ -1,6 +1,6 @@
 <?php
 require_once('./TelegramBot/BotConfig.php');
-require_once('./TelegramBot/TelegramApi.php');
+require_once('./TelegramBot/TelegramApi/TelegramApi.php');
 
 
 class TelegramBot {
