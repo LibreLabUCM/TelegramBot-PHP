@@ -73,10 +73,30 @@ class TA_Message {
     $this->migrate_from_chat_id = $migrate_from_chat_id;
   }
 
+  /**
+  * Creates a TA_Message from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_Message
+  *
+  * @return a TA_Message object
+  */
   public static function createFromJson(TelegramApi $api, $json) {
     return TA_Message::createFromArray($api, json_decode($json));
   }
 
+  /**
+  * Creates a TA_Message from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_Message
+  *
+  * @return a TA_Message object
+  */
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,

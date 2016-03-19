@@ -21,10 +21,30 @@ class TA_File {
     $this->file_path = $file_path;
   }
 
+  /**
+  * Creates a TA_File from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_File
+  *
+  * @return a TA_File object
+  */
   public static function createFromJson(TelegramApi $api, $json) {
     return TA_File::createFromArray($api, json_decode($json));
   }
 
+  /**
+  * Creates a TA_File from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_File
+  *
+  * @return a TA_File object
+  */
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,

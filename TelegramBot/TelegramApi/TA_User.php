@@ -23,10 +23,30 @@ class TA_User {
     $this->username = $username;
   }
 
+  /**
+  * Creates a TA_User from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_User
+  *
+  * @return a TA_User object
+  */
   public static function createFromJson(TelegramApi $api, $json) {
     return TA_User::createFromArray($api, json_decode($json));
   }
 
+  /**
+  * Creates a TA_User from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_User
+  *
+  * @return a TA_User object
+  */
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
       $api,

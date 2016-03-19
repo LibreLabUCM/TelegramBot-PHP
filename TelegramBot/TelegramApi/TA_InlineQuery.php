@@ -24,10 +24,30 @@ class TA_InlineQuery {
     $this->offset = $offset;
   }
 
+  /**
+  * Creates a TA_InlineQuery from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_InlineQuery
+  *
+  * @return a TA_InlineQuery object
+  */
   public static function createFromJson(TelegramApi $api, $json) {
     return TA_InlineQuery::createFromArray($api, json_decode($json));
   }
 
+  /**
+  * Creates a TA_InlineQuery from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_InlineQuery
+  *
+  * @return a TA_InlineQuery object
+  */
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
