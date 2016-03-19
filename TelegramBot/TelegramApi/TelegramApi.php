@@ -153,23 +153,23 @@ class TelegramApi {
     $options ['audio'] = $audio;
 
     if ($duration !== null && $duration !== "") {
-     $options ['duration'] = $duration;
+      $options ['duration'] = $duration;
     }
 
     if ($performer !== null && $performer !== "") {
-     $options ['performer'] = $performer;
+      $options ['performer'] = $performer;
     }
 
     if ($title !== null && $title !== "") {
-     $options ['title'] = $title;
+      $options ['title'] = $title;
     }
 
     if ($reply_id !== null) {
-     $options ['reply_id'] = $reply_id;
+      $options ['reply_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
-       options ['reply_markup'] = json_encode ( $reply_markup );
+      $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
     return $this->sendApiRequest ( 'sendMessage', $options );
@@ -249,7 +249,7 @@ class TelegramApi {
     );
 
     if (! in_array ( $action, $availableActions )) {
-      throw new Exception('Unknown action: ' . $action):
+      throw new Exception('Unknown action: ' . $action);
     }
 
     $options = array ();
