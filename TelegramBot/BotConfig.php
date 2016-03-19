@@ -26,14 +26,14 @@ class BotConfig {
     */
    public function validate() {
       if (
-         empty($this->token) ||
-         empty($this->webhookUrl) ||
-         empty($this->db) ||
-         empty($this->admins) ||
-         empty($this->hookKey) ) {
-         $this->validConfig = false;
+        empty($this->token) ||
+        empty($this->webhookUrl) ||
+        empty($this->db) ||
+        empty($this->admins) ||
+        empty($this->hookKey) ) {
+        $this->validConfig = false;
       } else {
-         $this->validConfig = true;
+        $this->validConfig = true;
       }
       return $this;
    }
