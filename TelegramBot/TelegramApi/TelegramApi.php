@@ -312,4 +312,27 @@ class TelegramApi {
     return $this->sendApiRequest ( 'answerInlineQuery', $options );
   }
 
+  // Untested
+  public function downloadFile($file_path) {
+    $url = 'https://api.telegram.org/file/bot'.$this->token.'/'.$file_path;
+
+    $newfname = tempnam(sys_get_temp_dir(), 'Tg');
+    $file = fopen ($url, 'rb');
+    if ($file) {
+      $newf = fopen ($newfname, 'wb');
+      if ($newf) {
+        while(!feof($file)) {
+          fwrite($newf, fread($file, 1024 * 8), 1024 * 8);
+        }
+      }
+    }
+    if ($file) {
+      fclose($file);
+    }
+    if ($newf) {
+      fclose($newf);
+    }
+    return $newfname;
+  }
+
 }
