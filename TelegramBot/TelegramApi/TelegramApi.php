@@ -77,7 +77,7 @@ class TelegramApi {
   * @param mixed $reply_markup
   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
   *
-  * @return mixed the result of the api request
+  * @return TA_Message the result of the api request
   */
   public function sendMessage($chat_id, $text, $link_previews = true, $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
