@@ -129,114 +129,286 @@ class TA_Message {
         );
   }
 
+  /**
+   * Gets the message id
+   *
+   * Unique message identifier
+   *
+   * @return int message id
+   */
   public function getMessageId() {
     return $this->message_id;
   }
 
+  /**
+   * Gets the message text
+   *
+   * For text messages, the actual UTF-8 text of the message, 0-4096 characters.
+   *
+   * @return string message text
+   */
   public function getText() {
     return $this->text;
   }
 
+  /**
+   * Gets the message sender
+   *
+   * Sender, can be empty for messages sent to channels
+   *
+   * @return TA_User message sender
+   */
   public function getFrom() {
     return $this->from;
   }
 
+  /**
+   * Checks if the message contains text
+   *
+   * @return boolean if the message contains text
+   */
   public function hasText() {
     return ($this->text !== null);
   }
 
+  /**
+   * Checks if the message has been fordwarded
+   *
+   * @return boolean if the message has been fordwarded
+   */
   public function isForwarded() {
     return ($this->fordward_from !== null);
   }
 
+  /**
+   * Gets the message date
+   *
+   * Date the message was sent in Unix time
+   *
+   * @return int message date
+   */
   public function getDate() {
     return $this->date;
   }
 
+  /**
+   * Gets the message chat
+   *
+   * Conversation the message belongs to
+   *
+   * @return TA_Chat message chat
+   */
   public function getChat() {
     return $this->chat;
   }
 
+  /**
+   * Gets the sender of the original message
+   *
+   * For forwarded messages, sender of the original message
+   *
+   * @return TA_User sender of the original message
+   */
   public function getFordwardFrom() {
     return $this->fordward_from;
   }
 
+  /**
+   * Gets the date the original message was sent
+   *
+   * For forwarded messages, date the original message was sent in Unix time
+   *
+   * @return int date the original message was sent
+   */
   public function getForwardDate() {
     return $this->forward_date;
   }
 
+  /**
+   * Checks if the message is a reply
+   *
+   * @return boolean if the message is a reply
+   */
   public function isReply() {
     return ($this->reply_to_message !== null);
   }
 
+  /**
+   * Gets the message the current message is a reply to
+   *
+   * For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
+   *
+   * @return TA_Message [description]
+   */
   public function getReplyToMessage() {
     return $this->reply_to_message;
   }
 
+  /**
+   * Checks if the current message contains audio
+   *
+   * @return boolean if the current message contains audio
+   */
   public function isAudio() {
     return ($this->audio !== null);
   }
 
+  /**
+   * Gets the message audio
+   *
+   * Message is an audio file, information about the file
+   *
+   * @return unspecified message audio
+   */
   public function getAudio() {
     return $this->audio;
   }
 
+  /**
+   * Checks if the current message contains a document
+   *
+   * @return boolean if the current message contains a document
+   */
   public function isDocument() {
     return ($this->document !== null);
   }
 
+  /**
+   * Gets the message document
+   *
+   * Message is a general file, information about the file
+   *
+   * @return unspecified message document
+   */
   public function getDocument() {
     return $this->document;
   }
 
+  /**
+   * Checks if the current message contains a photo
+   *
+   * @return boolean if the current message contains a photo
+   */
   public function isPhoto() {
     return ($this->photo !== null);
   }
 
+  /**
+   * Gets the message photo
+   *
+   * Message is a photo, available sizes of the photo
+   *
+   * @return unspecified message photo
+   */
   public function getPhoto() {
     return $this->photo;
   }
 
+  /**
+   * Checks if the current message contains a sticker
+   *
+   * @return boolean if the current message contains a sticker
+   */
   public function isSticker() {
     return ($this->sticker !== null);
   }
 
+  /**
+   * Gets the message sticker
+   *
+   * Message is a sticker, information about the sticker
+   *
+   * @return unspecified message sticker
+   */
   public function getSticker() {
     return $this->sticker;
   }
 
+  /**
+   * Checks if the current message contains a video
+   *
+   * @return boolean if the current message contains a video
+   */
   public function isVideo() {
     return ($this->video !== null);
   }
 
+  /**
+   * Gets the message video
+   *
+   * Message is a video, information about the video
+   *
+   * @return unspecified message video
+   */
   public function getVideo() {
     return $this->video;
   }
 
+  /**
+   * Checks if the current message contains a voice
+   *
+   * @return boolean if the current message contains a voice
+   */
   public function isVoice() {
     return ($this->voice !== null);
   }
 
+  /**
+   * Gets the message voice
+   *
+   * Message is a voice message, information about the file
+   *
+   * @return unspecified message voice
+   */
   public function getVoice() {
     return $this->voice;
   }
 
+  /**
+   * Checks if the current message contains a contact
+   *
+   * @return boolean if the current message contains a contact
+   */
   public function isContact() {
     return ($this->contact !== null);
   }
 
+  /**
+   * Gets the message contact
+   *
+   * Message is a shared contact, information about the contact
+   *
+   * @return unspecified message contact
+   */
   public function getContact() {
     return $this->contact;
   }
 
+  /**
+   * Checks if the current message contains a location
+   *
+   * @return boolean if the current message contains a location
+   */
   public function isLocation() {
     return ($this->location !== null);
   }
 
+  /**
+   * Gets the message location
+   *
+   * Message is a shared location, information about the location
+   *
+   * @return unspecified message location
+   */
   public function getLocation() {
     return $this->location;
   }
 
+  /**
+   * Gets the message media content
+   *
+   * @return unspecified message media content
+   */
   public function getMedia() {
     if ($this->isAudio()) return $this->getAudio();
     if ($this->isDocument()) return $this->getDocument();
@@ -249,6 +421,11 @@ class TA_Message {
     return false;
   }
 
+  /**
+   * Gets the messgage media type
+   *
+   * @return string message media type
+   */
   public function getMediaType() {
     if ($this->isAudio()) return 'audio';
     if ($this->isDocument()) return 'document';
@@ -261,14 +438,29 @@ class TA_Message {
     return false;
   }
 
+  /**
+   * Checks if the message contains media
+   *
+   * @return boolean if the message contains media
+   */
   public function hasMedia() {
     return ($this->getMediaType() !== false);
   }
 
+  /**
+   * Checks if the message contains a caption
+   *
+   * @return boolean if the message contains a caption
+   */
   public function hasCaption() {
     return ($this->caption !== null);
   }
 
+  /**
+   * Gets the message caption
+   *
+   * @return string message caption
+   */
   public function getCaption() {
     return $this->caption;
   }
