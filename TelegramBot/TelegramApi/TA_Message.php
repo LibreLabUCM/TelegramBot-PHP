@@ -153,18 +153,6 @@ class TA_Message {
     return $this->reply_to_message;
   }
 
-  public function hasMedia() {
-    return
-      ($this->audio     !== null) ||
-      ($this->document  !== null) ||
-      ($this->photo     !== null) ||
-      ($this->sticker   !== null) ||
-      ($this->video     !== null) ||
-      ($this->voice     !== null) ||
-      ($this->contact   !== null) ||
-      ($this->location  !== null);
-  }
-
   public function isAudio() {
     return ($this->audio !== null);
   }
@@ -229,11 +217,39 @@ class TA_Message {
     return $this->location;
   }
 
+  public function getMedia() {
+    if ($this->isAudio()) return $this->getAudio();
+    if ($this->isDocument()) return $this->getDocument();
+    if ($this->isPhoto()) return $this->getPhoto();
+    if ($this->isSticker()) return $this->getSticker();
+    if ($this->isVideo()) return $this->getVideo();
+    if ($this->isVoice()) return $this->getVoice();
+    if ($this->isContact()) return $this->getContact();
+    if ($this->isLocation()) return $this->getLocation();
+    return false;
+  }
+
+  public function getMediaType() {
+    if ($this->isAudio()) return 'audio';
+    if ($this->isDocument()) return 'document';
+    if ($this->isPhoto()) return 'photo';
+    if ($this->isSticker()) return 'sticker';
+    if ($this->isVideo()) return 'video';
+    if ($this->isVoice()) return 'voice';
+    if ($this->isContact()) return 'contact';
+    if ($this->isLocation()) return 'location';
+    return false;
+  }
+
+  public function hasMedia() {
+    return ($this->getMediaType() !== false);
+  }
+
   public function hasCaption() {
     return ($this->caption !== null);
   }
 
-  public function getVaption() {
+  public function getCaption() {
     return $this->caption;
   }
 
@@ -252,4 +268,21 @@ class TA_Message {
   private $migrate_to_chat_id;
   private $migrate_from_chat_id;
   */
+
+
+
+  public function __toString() {
+    if ($this->hasText())
+      return $this->getText();
+
+    if ($this->hasMedia()) {
+      $ret = $this->getMediaType();
+      if ($this->hasCaption()) {
+        $ret .= ': ' . $this->getCaption();
+      }
+      echo $ret . "<br>\n";
+      return $ret;
+    }
+    return 'Unknown message';
+  }
 }
