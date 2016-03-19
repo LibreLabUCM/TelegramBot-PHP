@@ -18,35 +18,34 @@ class TelegramApi {
   }
 
   /**
-  * Sends an api request to telegram
-  *
-  * @param string $method
-  *        	the api method
-  * @param array $params
-  *        	(Optional) the parameters of the method (Default: null)
-  * @param void $file
-  *        	(Optional) (Unused) (Default: null)
-  *
-  * @return array the result of the api request
-  */
+   * Sends an api request to telegram
+   *
+   * @param string $method
+   *        	the api method
+   * @param array $params
+   *        	(Optional) the parameters of the method (Default: null)
+   * @param void $file
+   *        	(Optional) (Unused) (Default: null)
+   *
+   * @return array the result of the api request
+   */
   private function sendApiRequest($method, $params = null, $file = null) {
     if ($params === null) {
-       $url = 'https://api.telegram.org/bot' . $this->token . '/' . $method;
+      $url = 'https://api.telegram.org/bot' . $this->token . '/' . $method;
     } else {
-       if (is_array ( $params )) {
-          $url = 'https://api.telegram.org/bot' . $this->token . '/' . $method . '?' . http_build_query ( $params );
-       } else {
-          throw new Exception('$params should be an array!');
-          return false;
-       }
+      if (is_array ( $params )) {
+        $url = 'https://api.telegram.org/bot' . $this->token . '/' . $method . '?' . http_build_query ( $params );
+      } else {
+        throw new Exception('$params should be an array!');
+      }
     }
 
     $curl = curl_init ();
     curl_setopt_array ( $curl, array (
-       CURLOPT_RETURNTRANSFER => 1,
-       CURLOPT_URL => $url,
-       CURLOPT_SSL_VERIFYPEER => false
-    ) );
+      CURLOPT_RETURNTRANSFER => 1,
+      CURLOPT_URL => $url,
+      CURLOPT_SSL_VERIFYPEER => false
+    ));
     $r = json_decode ( curl_exec ( $curl ), true );
     if (!$r['ok']) {
       throw new Exception($r['description']);
@@ -55,30 +54,30 @@ class TelegramApi {
   }
 
   /**
-  * Sends a getMe request to get info about the bot
-  *
-  * @return TA_User the result of the api request
-  */
+   * Sends a getMe request to get info about the bot
+   *
+   * @return TA_User the result of the api request
+   */
   public function getMe() {
     return TA_User::createFromArray($this, $this->sendApiRequest ( 'getMe' ));
   }
 
   /**
-  * Sends a meessage by sending a sendMessage api request
-  *
-  * @param int $chat_id
-  *         id of the user the message is going to be sent to (accepted: int, TA_User, TA_Chat)
-  * @param string $text
-  *         text to send as a message
-  * @param bool $link_previews
-  *         (Optional) If link previews should be shown (Default: true)
-  * @param int $reply_id
-  *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
-  * @param mixed $reply_markup
-  *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
-  *
-  * @return TA_Message the result of the api request
-  */
+   * Sends a meessage by sending a sendMessage api request
+   *
+   * @param int $chat_id
+   *         id of the user the message is going to be sent to (accepted: int, TA_User, TA_Chat)
+   * @param string $text
+   *         text to send as a message
+   * @param bool $link_previews
+   *         (Optional) If link previews should be shown (Default: true)
+   * @param int $reply_id
+   *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
   public function sendMessage($chat_id, $text, $link_previews = true, $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
     if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
@@ -106,17 +105,17 @@ class TelegramApi {
   }
 
   /**
-  * Forwards a message from origin to destination chat
-  *
-  * @param int $chat_id
-  *         destination chat
-  * @param int $from_chat_id
-  *         origin chat
-  * @param int $message_id
-  *         id of the message in origin chat to fordward
-  *
-  * @return mixed the result of the api request
-  */
+   * Forwards a message from origin to destination chat
+   *
+   * @param int $chat_id
+   *         destination chat
+   * @param int $from_chat_id
+   *         origin chat
+   * @param int $message_id
+   *         id of the message in origin chat to fordward
+   *
+   * @return mixed the result of the api request
+   */
   public function forwardMessage($chat_id, $from_chat_id, $message_id) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -136,15 +135,15 @@ class TelegramApi {
     $options ['photo'] = $photo;
 
     if ($caption !== null && $caption !== "") {
-     $options ['caption'] = $caption;
+      $options ['caption'] = $caption;
     }
 
     if ($reply_id !== null) {
-     $options ['reply_id'] = $reply_id;
+      $options ['reply_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
-     $options ['reply_markup'] = json_encode ( $reply_markup );
+      $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
     return $this->sendApiRequest ( 'sendMessage', $options );
@@ -234,12 +233,12 @@ class TelegramApi {
   }
 
   /**
-  * Sends an api request to show a chat action for the client
-  * @param int $chat_id target chat
-  * @param string $action string representing the action.
-  *
-  * @return mixed the result of the api request
-  */
+   * Sends an api request to show a chat action for the client
+   * @param int $chat_id target chat
+   * @param string $action string representing the action.
+   *
+   * @return mixed the result of the api request
+   */
   public function sendChatAction($chat_id, $action) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -264,6 +263,7 @@ class TelegramApi {
     return $this->sendApiRequest ( 'sendChatAction', $options );
   }
 
+  // Unseted
   public function getUserProfilePhotos($user_id, $offset = 0, $limit = 100) {
     if ($user_id instanceof TA_User) $user_id = $user_id->getId();
 
@@ -292,16 +292,16 @@ class TelegramApi {
 
   // Untested
   /**
-  * Answer an inline query request
-  *
-  * @param string $inline_query_id id of the query to answer
-  * @param mixed $results results to show to the user
-  * @param int $cache_time (Optional) time the server can save the answer in cache (Default: 0)
-  * @param bool $is_personal (Optional) if the answer should not be the same for other users (Default: true)
-  * @param string $next_offset  (Optional) (Default: "")
-  *
-  * @return mixed the result of the api request
-  */
+   * Answer an inline query request
+   *
+   * @param string $inline_query_id id of the query to answer
+   * @param mixed $results results to show to the user
+   * @param int $cache_time (Optional) time the server can save the answer in cache (Default: 0)
+   * @param bool $is_personal (Optional) if the answer should not be the same for other users (Default: true)
+   * @param string $next_offset  (Optional) (Default: "")
+   *
+   * @return mixed the result of the api request
+   */
   public function answerInlineQuery($inline_query_id, $results, $cache_time = 0, $is_personal = true, $next_offset = "") {
     $options = array ();
     $options ['inline_query_id'] = $inline_query_id;
