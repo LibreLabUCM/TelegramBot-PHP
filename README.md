@@ -12,7 +12,7 @@
 
 If you want to test the bot, uncomment the second part of the config file and set $testId to your id.
 Then access the url where the bot is located. You should receive a message to the account specified in $testId.
-To access the bot by url, use this url: <webhookUrl>?key=<hookKey>
+To access the bot by url, use this url: **webhookUrl**?key=**hookKey**
 
 Something like: https://example.com/TelegramBot/?key=561gbrz566zsw
 If the key is not specified, you should get and error: "Invalid key!"
