@@ -2,6 +2,7 @@
 require_once(__DIR__ . '/TelegramApi.php');
 require_once(__DIR__ . '/TA_User.php');
 require_once(__DIR__ . '/TA_Chat.php');
+require_once(__DIR__ . '/TA_File.php');
 
 
 /**
@@ -103,13 +104,13 @@ class TA_Message {
           $arr['message_id'],
           $arr['date'],
           TA_Chat::createFromArray($api, $arr['chat']),
-          isset($arr['from'])                    ? TA_User::createFromArray($api, $arr['from'])                 : null,
-          isset($arr['fordward_from'])           ? TA_User::createFromArray($api, $arr['fordward_from'])        : null,
+          isset($arr['from'])                    ? TA_User::createFromArray($api, $arr['from'])           : null,
+          isset($arr['fordward_from'])           ? TA_User::createFromArray($api, $arr['fordward_from'])  : null,
           isset($arr['forward_date'])            ? $arr['forward_date']								                 		: null,
           isset($arr['reply_to_message'])        ? TA_Message::createFromArray($api, $arr['reply_to_message'])  : null,
           isset($arr['text'])                    ? $arr['text']                                           : null,
           isset($arr['audio'])                   ? $arr['audio']                                          : null,
-          isset($arr['document'])                ? $arr['document']                                       : null,
+          isset($arr['document'])                ? TA_Document::createFromArray($api, $arr['document'])   : null,
           isset($arr['photo'])                   ? $arr['photo']                                          : null,
           isset($arr['sticker'])                 ? $arr['sticker']                                        : null,
           isset($arr['video'])                   ? $arr['video']                                          : null,
