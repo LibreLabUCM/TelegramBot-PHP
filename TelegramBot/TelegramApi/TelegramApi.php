@@ -312,7 +312,12 @@ class TelegramApi {
     return $this->sendApiRequest ( 'answerInlineQuery', $options );
   }
 
-  // Untested
+  /**
+   * Download a TA_File by its file_path
+   *
+   * @param  string $file_path file_path provided by getFile()
+   * @return string            path to the downloaded temp file
+   */
   public function downloadFile($file_path) {
     $url = 'https://api.telegram.org/file/bot'.$this->token.'/'.$file_path;
 
