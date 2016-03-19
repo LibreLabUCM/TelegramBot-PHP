@@ -49,8 +49,7 @@ class TelegramApi {
     ) );
     $r = json_decode ( curl_exec ( $curl ), true );
     if (!$r['ok']) {
-       // Exception!
-       return false;
+      throw new Exception($r['description']);
     }
     return $r['result'];
   }
@@ -81,8 +80,8 @@ class TelegramApi {
 
     $options = array ();
     $options ['chat_id'] = $chat_id;
-    $options ['text'] = $text;
-    $options ['parse_mode'] = 'Markdown';
+    $options ['text'] = (string)$text;
+    //$options ['parse_mode'] = 'Markdown';
 
     if ($link_previews === true || $link_previews === null) {
       $options ['disable_web_page_preview'] = false;
@@ -98,7 +97,6 @@ class TelegramApi {
     if ($reply_markup !== null) {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
-
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendMessage', $options ));
   }
 
