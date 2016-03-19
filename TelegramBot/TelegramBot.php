@@ -42,11 +42,18 @@ class TelegramBot {
   }
 
   public function processMessage(TA_Message $message) {
-    if ($message->getText() === "/help" || $message->getText() === "/start") {
-      $t = $this->api->sendMessage($message->getFrom(), "Developing...");
-      return $t->getText();
-    } else {
-      return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
+    if ($message->hasText()) {
+      if ($message->getText() === "/help" || $message->getText() === "/start") {
+        $t = $this->api->sendMessage($message->getFrom(), "Developing...");
+        return $t->getText();
+      } else {
+        return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
+      }
+    } else if ($message->isDocument()) {
+      $doc = $message->getDocument();
+      $downloadPath = $doc->downloadFile();
+      rename($downloadPath, 'files/'.$message->getDate().$doc->getFileName());
+      return $this->api->sendMessage($message->getFrom(), $this->config->getWebhookUrl().'files/'.$message->getDate().$doc->getFileName());
     }
     return false;
   }
