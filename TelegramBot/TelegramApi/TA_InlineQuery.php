@@ -58,18 +58,38 @@ class TA_InlineQuery {
         );
   }
 
+  /**
+   * Gets the inline query id
+   *
+   * @return string inline query id
+   */
   public function getId() {
     return $this->id;
   }
 
+  /**
+   * Gets the user requesting the inline query
+   *
+   * @return TA_User user requesting the inline query
+   */
   public function getFrom() {
     return $this->from;
   }
 
+  /**
+   * Gets the text of the query
+   *
+   * @return string text of the query
+   */
   public function getQuery() {
     return $this->query;
   }
 
+  /**
+   * Gets the offset of the results to be returned
+   *
+   * @return string Offset of the results
+   */
   public function getOffset() {
     return $this->offset;
   }
