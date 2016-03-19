@@ -22,29 +22,29 @@ class TA_File {
   }
 
   /**
-  * Creates a TA_File from a json string
-  *
-  * @param string $api
-  *        	an instance to the TelegramApi wrapper
-  * @param array $json
-  *        	a json string representing a TA_File
-  *
-  * @return a TA_File object
-  */
+   * Creates a TA_File from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_File
+   *
+   * @return a TA_File object
+   */
   public static function createFromJson(TelegramApi $api, $json) {
     return TA_File::createFromArray($api, json_decode($json));
   }
 
   /**
-  * Creates a TA_File from an associative array
-  *
-  * @param string $api
-  *        	an instance to the TelegramApi wrapper
-  * @param array $json
-  *        	an associative array representing a TA_File
-  *
-  * @return a TA_File object
-  */
+   * Creates a TA_File from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_File
+   *
+   * @return a TA_File object
+   */
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
@@ -54,15 +54,40 @@ class TA_File {
         );
   }
 
+  /**
+   * Gets the file id
+   *
+   * @return string file id
+   */
   public function getFileId() {
     return $this->file_id;
   }
 
+  /**
+   * Gets the file size
+   *
+   * @return int file size
+   */
   public function getFileSize() {
     return $this->file_size;
   }
 
+  /**
+   * Gets the file path
+   * To download the file: https://api.telegram.org/file/bot<token>/<file_path>
+   *
+   * @return string file path
+   */
   public function getFilePath() {
     return $this->file_path;
+  }
+
+  /**
+   * Downloads a file to tmp
+   *
+   * @return string path to the downloaded file
+   */
+  public function downloadFile() {
+    // https://api.telegram.org/file/bot<token>/<file_path>
   }
 }
