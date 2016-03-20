@@ -64,7 +64,11 @@ class TelegramBot {
         */
       } else {
         if ($message->isLocation()) {
-          return $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude() . "\n");
+          return $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude());
+        } else if ($message->isContact()) {
+          return $this->api->sendMessage($message->getFrom(), "Name: ".$f->getFirstName()."\nPhone: ".$f->getPhoneNumber());
+        } else {
+          return $this->api->sendMessage($message->getFrom(), "I can't understand that media message!");
         }
       }
     } else  {
