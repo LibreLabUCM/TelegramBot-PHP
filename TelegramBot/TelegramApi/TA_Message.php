@@ -41,7 +41,7 @@ class TA_Message {
   private $migrate_from_chat_id;
 
   private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
-      $text = null, $audio = null, $document = null, $photo = null, $sticker = null, $video = null, $voice = null, $caption = null, $contact = null, $location = null,
+      $text = null, TA_Audio $audio = null, TA_Document $document = null, $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, $voice = null, $caption = null, $contact = null, $location = null,
       TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
 
@@ -54,11 +54,11 @@ class TA_Message {
     $this->forward_date = $forward_date;
     $this->reply_to_message = $reply_to_message; // TA_Message
     $this->text = $text;
-    $this->audio = $audio;
-    $this->document = $document;
+    $this->audio = $audio; // TA_Audio
+    $this->document = $document; // TA_Document
     $this->photo = $photo;
-    $this->sticker = $sticker;
-    $this->video = $video;
+    $this->sticker = $sticker; // TA_Sticker
+    $this->video = $video; // TA_Video
     $this->voice = $voice;
     $this->caption = $caption;
     $this->contact = $contact;
@@ -109,11 +109,11 @@ class TA_Message {
           isset($arr['forward_date'])            ? $arr['forward_date']								                 		: null,
           isset($arr['reply_to_message'])        ? TA_Message::createFromArray($api, $arr['reply_to_message'])  : null,
           isset($arr['text'])                    ? $arr['text']                                           : null,
-          isset($arr['audio'])                   ? $arr['audio']                                          : null,
+          isset($arr['audio'])                   ? TA_Audio::createFromArray($api, $arr['audio'])         : null,
           isset($arr['document'])                ? TA_Document::createFromArray($api, $arr['document'])   : null,
           isset($arr['photo'])                   ? $arr['photo']                                          : null,
-          isset($arr['sticker'])                 ? $arr['sticker']                                        : null,
-          isset($arr['video'])                   ? $arr['video']                                          : null,
+          isset($arr['sticker'])                 ? TA_Sticker::createFromArray($api, $arr['sticker'])     : null,
+          isset($arr['video'])                   ? TA_Video::createFromArray($api, $arr['video'])         : null,
           isset($arr['voice'])                   ? $arr['voice']                                          : null,
           isset($arr['caption'])                 ? $arr['caption']                                        : null,
           isset($arr['contact'])                 ? $arr['contact']                                        : null,
