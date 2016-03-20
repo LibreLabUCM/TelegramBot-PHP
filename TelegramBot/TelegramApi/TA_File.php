@@ -619,3 +619,67 @@ class TA_Voice {
   }
 
 }
+
+
+class TA_Location {
+  private $_api; // TelegramApi
+  private $longitude;
+  private $latitude;
+
+  private function TA_Voice(TelegramApi $api, $longitude, $latitude) {
+    $this->_api = $api;
+    $this->longitude = $longitude;
+    $this->latitude = $latitude;
+  }
+
+  /**
+   * Creates a TA_Location from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Location
+   *
+   * @return a TA_Location object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Location::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_Location from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Location
+   *
+   * @return a TA_Location object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['longitude'],
+          $arr['latitude']
+        );
+  }
+
+  /**
+   * Gets the location longitude
+   *
+   * @return float location longitude
+   */
+  public function getLongitude() {
+    return $this->longitude;
+  }
+
+  /**
+   * Gets the location latitude
+   *
+   * @return float location latitude
+   */
+  public function getLatitude() {
+    return $this->latitude;
+  }
+
+}
