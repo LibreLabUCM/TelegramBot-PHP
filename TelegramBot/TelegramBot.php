@@ -33,6 +33,7 @@ class TelegramBot {
     $update_id = $update['update_id'];
 
     if (isset($update['message'])) {
+      //return $this->api->sendMessage(TA_Message::createFromArray($this->api, $update['message'])->getFrom(), print_r($update['message'], true));
       return $this->processMessage(TA_Message::createFromArray($this->api, $update['message']));
     } else if (isset($update['inline_query'])) {
       return $inline_query = TA_InlineQuery::createFromArray($this->api, $update['inline_query']);
@@ -49,18 +50,24 @@ class TelegramBot {
       } else {
         return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
       }
-    } else if ($message->isDocument() || $message->isAudio() || $message->isSticker() ||$message->isVideo()) {
-      return $this->api->sendMessage($message->getFrom(), "I haven't downloaded your ".$message->getMediaType()."....\nI have deactivated it ;)");
-
-      /*
-      // Download the media file and answer with the link to the file downloaded
+    } else if ($message->hasMedia()) {
       $f = $message->getMedia();
-      $finalPath = 'files/'.$message->getDate() .'-'. $message->getMediaType() .'.'. $f->getFileExtension();
-      $downloadPath = $f->downloadFile();
-      rename($downloadPath, $finalPath);
-      return $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
-      */
-    } else {
+      if ($f->hasFile()) {
+        return $this->api->sendMessage($message->getFrom(), "I haven't downloaded your ".$message->getMediaType()."....\nI have deactivated it ;)");
+
+        /*
+        // Download the media file and answer with the link to the file downloaded
+        $finalPath = 'files/'.$message->getDate() .'-'. $message->getMediaType() .'.'. $f->getFileExtension();
+        $downloadPath = $f->downloadFile();
+        rename($downloadPath, $finalPath);
+        return $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
+        */
+      } else {
+        if ($message->isLocation()) {
+          return $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude() . "\n");
+        }
+      }
+    } else  {
       return $this->api->sendMessage($message->getFrom(), "What have you sent me???");
     }
     return false;
