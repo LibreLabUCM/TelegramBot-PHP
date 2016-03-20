@@ -93,6 +93,111 @@ class TA_File {
   }
 }
 
+class TA_Audio {
+  private $_api; // TelegramApi
+  private $file_id;
+  private $duration;
+  private $performer;
+  private $title;
+  private $mime_type;
+  private $file_size;
+  private $_file;
+
+  private function TA_Audio(TelegramApi $api, $file_id, $duration, $performer = null, $title = null, $mime_type = null, $file_size = null) {
+    $this->_api = $api;
+    $this->file_id = $file_id;
+    $this->duration = $duration;
+    $this->performer = $performer;
+    $this->title = $title;
+    $this->mime_type = $mime_type;
+    $this->file_size = $file_size;
+  }
+
+  /**
+   * Creates a TA_Audio from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Audio
+   *
+   * @return a TA_Audio object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Audio::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_Audio from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Audio
+   *
+   * @return a TA_Audio object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['file_id'],
+          $arr['duration'],
+          isset($arr['performer'])   ? $arr['performer']  : null,
+          isset($arr['title'])       ? $arr['title']      : null,
+          isset($arr['mime_type'])   ? $arr['mime_type']  : null,
+          isset($arr['file_size'])   ? $arr['file_size']  : null
+        );
+  }
+
+  /**
+   * Gets the file id
+   *
+   * @return string file id
+   */
+  public function getFileId() {
+    return $this->file_id;
+  }
+
+  /**
+   * Gets the file size
+   *
+   * @return int file size
+   */
+  public function getFileSize() {
+    return $this->file_size;
+  }
+
+  /**
+   * Gets the audio performer
+   *
+   * @return string audio performer
+   */
+  public function getAudioPerformer() {
+    return $this->performer;
+  }
+
+  /**
+   * Gets the audio title
+   *
+   * @return string audio title
+   */
+  public function getAudioTitle() {
+    return $this->title;
+  }
+
+  private function updateFile() {
+    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+  }
+
+  public function downloadFile() {
+    if ($this->_file == null)
+      $this->updateFile();
+    return $this->_file->downloadFile();
+  }
+
+}
+
+
 class TA_Document {
   private $_api; // TelegramApi
   private $file_id;
@@ -102,7 +207,7 @@ class TA_Document {
   private $file_size;
   private $_file;
 
-  private function TA_Document(TelegramApi $api, $file_id, $thumb, $file_name, $mime_type, $file_size) {
+  private function TA_Document(TelegramApi $api, $file_id, $thumb = null, $file_name = null, $mime_type = null, $file_size = null) {
     $this->_api = $api;
     $this->file_id = $file_id;
     $this->thumb = $thumb;
