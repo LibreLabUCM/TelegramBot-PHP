@@ -61,6 +61,9 @@ class TelegramBot {
       rename($downloadPath, $finalPath);
       return $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
       */
+    } else if ($message->isLocation()) {
+      $f = $message->getLocation();
+      return $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude() . "\n");
     } else {
       return $this->api->sendMessage($message->getFrom(), "What have you sent me???");
     }
