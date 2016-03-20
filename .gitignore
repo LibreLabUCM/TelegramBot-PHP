@@ -1,7 +1,2 @@
-bin/*
-warriors/*
-config.php
-.buildpath
-.project
-.settings/*
-OLD/*
+files/
+config_file.php
