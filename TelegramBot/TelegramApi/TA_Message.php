@@ -28,7 +28,7 @@ class TA_Message {
   private $video; // TA_Video
   private $voice; // TA_Voice
   private $caption;
-  private $contact;
+  private $contact; // TA_Contact
   private $location; // TA_Location
   private $new_chat_participant; // TA_User
   private $left_chat_participant; // TA_User
@@ -41,7 +41,7 @@ class TA_Message {
   private $migrate_from_chat_id;
 
   private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
-      $text = null, TA_Audio $audio = null, TA_Document $document = null, $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, $contact = null, TA_Location $location = null,
+      $text = null, TA_Audio $audio = null, TA_Document $document = null, $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
       TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
 
@@ -61,7 +61,7 @@ class TA_Message {
     $this->video = $video; // TA_Video
     $this->voice = $voice; // TA_Voice
     $this->caption = $caption;
-    $this->contact = $contact;
+    $this->contact = $contact; // TA_Contact
     $this->location = $location; // TA_Location
     $this->new_chat_participant = $new_chat_participant; // TA_User
     $this->left_chat_participant = $left_chat_participant; // TA_User
@@ -116,7 +116,7 @@ class TA_Message {
           isset($arr['video'])                   ? TA_Video::createFromArray($api, $arr['video'])               : null,
           isset($arr['voice'])                   ? TA_Voice::createFromArray($api, $arr['voice'])               : null,
           isset($arr['caption'])                 ? $arr['caption']                                              : null,
-          isset($arr['contact'])                 ? $arr['contact']                                              : null,
+          isset($arr['contact'])                 ? TA_Contact::createFromArray($api, $arr['contact'])          : null,
           isset($arr['location'])                ? TA_Location::createFromArray($api, $arr['location'])         : null,
           isset($arr['new_chat_participant'])    ? TA_User::createFromArray($api, $arr['new_chat_participant']) : null,
           isset($arr['left_chat_participant'])   ? TA_User::createFromArray($api, $arr['left_chat_participant']): null,

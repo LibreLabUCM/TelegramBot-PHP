@@ -737,3 +737,82 @@ class TA_Location {
   }
 
 }
+
+
+class TA_Contact {
+  private $_api; // TelegramApi
+  private $phone_number;
+  private $first_name;
+  private $last_name;
+  private $user_id;
+
+  private function TA_Contact(TelegramApi $api, $phone_number, $first_name, $last_name = null, $user_id = null) {
+    $this->_api = $api;
+    $this->phone_number = $phone_number;
+    $this->first_name = $first_name;
+    $this->last_name = $last_name;
+    $this->user_id = $user_id;
+  }
+
+  /**
+   * Creates a TA_Contact from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Contact
+   *
+   * @return a TA_Contact object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Contact::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_Contact from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Contact
+   *
+   * @return a TA_Contact object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['phone_number'],
+          $arr['first_name'],
+          isset($arr['last_name'])   ? $arr['last_name']  : null,
+          isset($arr['user_id'])     ? $arr['user_id']    : null
+        );
+  }
+
+  /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return false;
+  }
+
+  /**
+   * Gets the contact phone number
+   *
+   * @return string contact phone number
+   */
+  public function getPhoneNumber() {
+    return $this->phone_number;
+  }
+
+  /**
+   * Gets the contact first name
+   *
+   * @return string contact first name
+   */
+  public function getFirstName() {
+    return $this->first_name;
+  }
+
+}
