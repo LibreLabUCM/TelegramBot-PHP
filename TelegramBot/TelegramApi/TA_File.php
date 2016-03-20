@@ -151,6 +151,15 @@ class TA_Audio {
   }
 
   /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
+  }
+
+  /**
    * Gets the file id
    *
    * @return string file id
@@ -257,6 +266,15 @@ class TA_Document {
   }
 
   /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
+  }
+
+  /**
    * Gets the file id
    *
    * @return string file id
@@ -351,6 +369,15 @@ class TA_Sticker {
           isset($arr['thumb'])       ? TA_File::createFromArray($api, $arr['thumb']) : null,
           isset($arr['file_size'])   ? $arr['file_size']  : null
         );
+  }
+
+  /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
   }
 
   /**
@@ -466,6 +493,15 @@ class TA_Video {
   }
 
   /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
+  }
+
+  /**
    * Gets the file id
    *
    * @return string file id
@@ -578,6 +614,15 @@ class TA_Voice {
   }
 
   /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
+  }
+
+  /**
    * Gets the file id
    *
    * @return string file id
@@ -662,6 +707,15 @@ class TA_Location {
           $arr['longitude'],
           $arr['latitude']
         );
+  }
+
+  /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return false;
   }
 
   /**
