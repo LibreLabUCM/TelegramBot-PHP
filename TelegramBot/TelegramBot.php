@@ -50,7 +50,7 @@ class TelegramBot {
       } else {
         return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
       }
-    } else if ($message->isDocument() || $message->isAudio() || $message->isSticker() ||$message->isVideo()) {
+    } else if ($message->isDocument() || $message->isAudio() || $message->isSticker() || $message->isVideo() || $message->isVoice()) {
       return $this->api->sendMessage($message->getFrom(), "I haven't downloaded your ".$message->getMediaType()."....\nI have deactivated it ;)");
 
       /*
