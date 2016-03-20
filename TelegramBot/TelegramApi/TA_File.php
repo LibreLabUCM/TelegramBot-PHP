@@ -289,3 +289,104 @@ class TA_Document {
   }
 
 }
+
+class TA_Sticker {
+  private $_api; // TelegramApi
+  private $file_id;
+  private $width;
+  private $height;
+  private $thumb;
+  private $file_size;
+  private $_file;
+
+  private function TA_Sticker(TelegramApi $api, $file_id, $width, $height, $thumb = null, $file_size = null) {
+    $this->_api = $api;
+    $this->file_id = $file_id;
+    $this->width = $width;
+    $this->height = $height;
+    $this->thumb = $thumb;
+    $this->file_size = $file_size;
+  }
+
+  /**
+   * Creates a TA_Sticker from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Sticker
+   *
+   * @return a TA_Sticker object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Sticker::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_Sticker from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Sticker
+   *
+   * @return a TA_Sticker object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['file_id'],
+          $arr['width'],
+          $arr['height'],
+          isset($arr['thumb'])       ? TA_File::createFromArray($api, $arr['thumb']) : null,
+          isset($arr['file_size'])   ? $arr['file_size']  : null
+        );
+  }
+
+  /**
+   * Gets the file id
+   *
+   * @return string file id
+   */
+  public function getFileId() {
+    return $this->file_id;
+  }
+
+  /**
+   * Gets the file size
+   *
+   * @return int file size
+   */
+  public function getFileSize() {
+    return $this->file_size;
+  }
+
+  /**
+   * Gets the sticker width
+   *
+   * @return string sticker width
+   */
+  public function getWidth() {
+    return $this->width;
+  }
+
+  /**
+   * Gets the sticker height
+   *
+   * @return string sticker height
+   */
+  public function getHeight() {
+    return $this->height;
+  }
+
+  private function updateFile() {
+    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+  }
+
+  public function downloadFile() {
+    if ($this->_file == null)
+      $this->updateFile();
+    return $this->_file->downloadFile();
+  }
+
+}
