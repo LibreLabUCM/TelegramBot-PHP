@@ -49,12 +49,19 @@ class TelegramBot {
       } else {
         return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
       }
-    } else if ($message->isDocument()) {
-      $doc = $message->getDocument();
-      //$downloadPath = $doc->downloadFile();
-      //rename($downloadPath, 'files/'.$message->getDate().$doc->getFileName());
-      //return $this->api->sendMessage($message->getFrom(), $this->config->getWebhookUrl().'files/'.$message->getDate().$doc->getFileName());
-      return $this->api->sendMessage($message->getFrom(), $doc->getFileName()."\nI haven't downloaded your file....\nI have deactivated it ;)");
+    } else if ($message->isDocument() || $message->isAudio() || $message->isSticker() ||$message->isVideo()) {
+      return $this->api->sendMessage($message->getFrom(), "I haven't downloaded your ".$message->getMediaType()."....\nI have deactivated it ;)");
+
+      /*
+      // Download the media file and answer with the link to the file downloaded
+      $f = $message->getMedia();
+      $finalPath = 'files/'.$message->getDate() .'-'. $message->getMediaType() .'.'. $f->getFileExtension();
+      $downloadPath = $f->downloadFile();
+      rename($downloadPath, $finalPath);
+      return $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
+      */
+    } else {
+      return $this->api->sendMessage($message->getFrom(), "What have you sent me???");
     }
     return false;
   }
