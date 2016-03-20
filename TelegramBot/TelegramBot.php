@@ -33,6 +33,7 @@ class TelegramBot {
     $update_id = $update['update_id'];
 
     if (isset($update['message'])) {
+      //return $this->api->sendMessage(TA_Message::createFromArray($this->api, $update['message'])->getFrom(), print_r($update['message'], true));
       return $this->processMessage(TA_Message::createFromArray($this->api, $update['message']));
     } else if (isset($update['inline_query'])) {
       return $inline_query = TA_InlineQuery::createFromArray($this->api, $update['inline_query']);
