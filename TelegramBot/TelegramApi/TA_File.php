@@ -525,3 +525,97 @@ class TA_Video {
   }
 
 }
+
+
+class TA_Voice {
+  private $_api; // TelegramApi
+  private $file_id;
+  private $duration;
+  private $mime_type;
+  private $file_size;
+  private $_file;
+
+  private function TA_Voice(TelegramApi $api, $file_id, $duration, $mime_type = null, $file_size = null) {
+    $this->_api = $api;
+    $this->file_id = $file_id;
+    $this->duration = $duration;
+    $this->mime_type = $mime_type;
+    $this->file_size = $file_size;
+  }
+
+  /**
+   * Creates a TA_Voice from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Voice
+   *
+   * @return a TA_Voice object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Voice::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_Voice from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Voice
+   *
+   * @return a TA_Voice object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['file_id'],
+          $arr['duration'],
+          isset($arr['mime_type'])   ? $arr['mime_type']  : null,
+          isset($arr['file_size'])   ? $arr['file_size']  : null
+        );
+  }
+
+  /**
+   * Gets the file id
+   *
+   * @return string file id
+   */
+  public function getFileId() {
+    return $this->file_id;
+  }
+
+  /**
+   * Gets the file size
+   *
+   * @return int file size
+   */
+  public function getFileSize() {
+    return $this->file_size;
+  }
+
+  /**
+   * Gets the voice duration
+   *
+   * @return string voice duration
+   */
+  public function getVoiceDuration() {
+    return $this->duration;
+  }
+
+  private function updateFile() {
+    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+  }
+
+  public function downloadFile() {
+    if ($this->_file == null)
+      $this->updateFile();
+    return $this->_file->downloadFile();
+  }
+
+  public function getFileExtension() {
+    return 'ogg';
+  }
+
+}
