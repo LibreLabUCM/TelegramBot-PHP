@@ -51,9 +51,10 @@ class TelegramBot {
       }
     } else if ($message->isDocument()) {
       $doc = $message->getDocument();
-      $downloadPath = $doc->downloadFile();
-      rename($downloadPath, 'files/'.$message->getDate().$doc->getFileName());
-      return $this->api->sendMessage($message->getFrom(), $this->config->getWebhookUrl().'files/'.$message->getDate().$doc->getFileName());
+      //$downloadPath = $doc->downloadFile();
+      //rename($downloadPath, 'files/'.$message->getDate().$doc->getFileName());
+      //return $this->api->sendMessage($message->getFrom(), $this->config->getWebhookUrl().'files/'.$message->getDate().$doc->getFileName());
+      return $this->api->sendMessage($message->getFrom(), $doc->getFileName()."\nI haven't downloaded your file....\nI have deactivated it ;)");
     }
     return false;
   }
