@@ -196,6 +196,10 @@ class TA_Audio {
     return $this->_file->downloadFile();
   }
 
+  public function getFileExtension() {
+    return 'mp3';
+  }
+
 }
 
 
@@ -287,6 +291,10 @@ class TA_Document {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
+  }
+
+  public function getFileExtension() {
+    return pathinfo($this->getFileName(), PATHINFO_EXTENSION);
   }
 
 }
@@ -389,6 +397,10 @@ class TA_Sticker {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
+  }
+
+  public function getFileExtension() {
+    return 'webp';
   }
 
 }
@@ -506,6 +518,10 @@ class TA_Video {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
+  }
+
+  public function getFileExtension() {
+    return 'mp4';
   }
 
 }
