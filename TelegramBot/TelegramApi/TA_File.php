@@ -626,7 +626,7 @@ class TA_Location {
   private $longitude;
   private $latitude;
 
-  private function TA_Voice(TelegramApi $api, $longitude, $latitude) {
+  private function TA_Location(TelegramApi $api, $longitude, $latitude) {
     $this->_api = $api;
     $this->longitude = $longitude;
     $this->latitude = $latitude;
