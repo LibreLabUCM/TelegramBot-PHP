@@ -54,6 +54,7 @@ class TelegramBot {
         return $message->sendReply("Reply to message with id: " . $message->getMessageId());
       } else if ($message->getText() === "/test_typing") {
         $this->api->sendChatAction($message->getFrom(), "typing");
+        return 'Typing';
       } else {
         return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
       }
@@ -78,10 +79,8 @@ class TelegramBot {
           return $this->api->sendMessage($message->getFrom(), "I can't understand that media message!");
         }
       }
-    } else  {
-      return $this->api->sendMessage($message->getFrom(), "What have you sent me???");
     }
-    return false;
+    return $this->api->sendMessage($message->getFrom(), "What have you sent me???");
   }
 
   public function processInlineQuery(TA_InlineQuery $inline_query) {
