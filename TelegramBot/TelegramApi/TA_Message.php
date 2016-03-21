@@ -111,7 +111,7 @@ class TA_Message {
           isset($arr['text'])                    ? $arr['text']                                                 : null,
           isset($arr['audio'])                   ? TA_Audio::createFromArray($api, $arr['audio'])               : null,
           isset($arr['document'])                ? TA_Document::createFromArray($api, $arr['document'])         : null,
-          isset($arr['photo'])                   ? $arr['photo']                                                : null,
+          isset($arr['photo'])                   ? TA_Photo::createFromArray($api, $arr['photo'])             : null,
           isset($arr['sticker'])                 ? TA_Sticker::createFromArray($api, $arr['sticker'])           : null,
           isset($arr['video'])                   ? TA_Video::createFromArray($api, $arr['video'])               : null,
           isset($arr['voice'])                   ? TA_Voice::createFromArray($api, $arr['voice'])               : null,
