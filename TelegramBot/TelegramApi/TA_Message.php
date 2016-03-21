@@ -466,6 +466,10 @@ class TA_Message {
     return $this->caption;
   }
 
+  public function sendReply($text, $link_previews = true, $reply_markup = null) {
+    return $this->_api->sendMessage($this->getChat()->getId(), $text, $link_previews, $this->getMessageId(), $reply_markup);
+  }
+
 
 
 
