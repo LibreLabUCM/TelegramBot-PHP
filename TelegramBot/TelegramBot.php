@@ -45,7 +45,7 @@ class TelegramBot {
   public function processMessage(TA_Message $message) {
     if ($message->hasText()) {
       if ($message->getText() === "/help" || $message->getText() === "/start") {
-        $t = $this->api->sendMessage($message->getFrom(), "Developing...");
+        $t = $this->api->sendMessage($message->getFrom(), "Developing... If you want to /test ...");
         return $t->getText();
       } else if ($message->getText() === "/test") {
         return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing");
