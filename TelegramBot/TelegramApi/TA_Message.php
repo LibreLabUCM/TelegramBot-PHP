@@ -493,7 +493,6 @@ class TA_Message {
       if ($this->hasCaption()) {
         $ret .= ': ' . $this->getCaption();
       }
-      echo $ret . "<br>\n";
       return $ret;
     }
     return 'Unknown message';

@@ -146,7 +146,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendPhoto', $options ));
   }
 
   // Untested
@@ -177,7 +177,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendAudio', $options ));
   }
 
   // Untested
@@ -196,7 +196,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendDocument', $options ));
   }
 
   // Untested
@@ -215,7 +215,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendSticker', $options ));
   }
 
   // Untested
@@ -226,10 +226,28 @@ class TelegramApi {
   }
 
   // Untested
-  public function sendVoice($chat_id, $vioce, $duration, $reply_id = null, $reply_markup = null) {
+  public function sendVoice($chat_id, $voice, $duration, $disable_notification = false, $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
-    // TODO
+    $options = array ();
+    $options ['chat_id'] = $chat_id;
+    $options ['voice'] = $voice;
+
+    if ($duration !== null) {
+      $options ['duration'] = $duration;
+    }
+
+    $options ['disable_notification'] = $disable_notification;
+
+    if ($reply_id !== null) {
+      $options ['reply_id'] = $reply_id;
+    }
+
+    if ($reply_markup !== null) {
+      $options ['reply_markup'] = json_encode ( $reply_markup );
+    }
+
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendVoice', $options ));
   }
 
   /**

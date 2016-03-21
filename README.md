@@ -15,7 +15,7 @@ Then access the url where the bot is located. You should receive a message to th
 To access the bot by url, use this url: **webhookUrl**?key=**hookKey**
 
 Something like: https://example.com/TelegramBot/?key=561gbrz566zsw
-If the key is not specified, you should get and error: "Invalid key!"
+If the key is not specified, you should get an error: "Invalid key!"
 
 Once you are sure it is working, you can set up the webhook by adding: &setwebhook
 to the end of the url:
