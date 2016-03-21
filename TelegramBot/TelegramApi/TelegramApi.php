@@ -146,7 +146,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendPhoto', $options ));
   }
 
   // Untested
@@ -177,7 +177,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendAudio', $options ));
   }
 
   // Untested
@@ -196,7 +196,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendDocument', $options ));
   }
 
   // Untested
@@ -215,7 +215,7 @@ class TelegramApi {
       $options ['reply_markup'] = json_encode ( $reply_markup );
     }
 
-    return $this->sendApiRequest ( 'sendMessage', $options );
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendSticker', $options ));
   }
 
   // Untested
