@@ -63,7 +63,7 @@ class TelegramApi {
   }
 
   /**
-   * Sends a meessage by sending a sendMessage api request
+   * Sends a message by sending a sendMessage api request
    *
    * @param int $chat_id
    *         id of the user the message is going to be sent to (accepted: int, TA_User, TA_Chat)
