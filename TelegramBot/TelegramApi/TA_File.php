@@ -816,3 +816,225 @@ class TA_Contact {
   }
 
 }
+
+
+class TA_PhotoSize {
+  private $_api; // TelegramApi
+  private $file_id;
+  private $width;
+  private $height;
+  private $file_size;
+  private $_file;
+
+  private function TA_PhotoSize(TelegramApi $api, $file_id, $width, $height, $file_size = null) {
+    $this->_api = $api;
+    $this->file_id = $file_id;
+    $this->width = $width;
+    $this->height = $height;
+    $this->file_size = $file_size;
+  }
+
+  /**
+   * Creates a TA_PhotoSize from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_PhotoSize
+   *
+   * @return a TA_PhotoSize object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_PhotoSize::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_PhotoSize from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_PhotoSize
+   *
+   * @return a TA_PhotoSize object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['file_id'],
+          $arr['width'],
+          $arr['height'],
+          isset($arr['file_size'])   ? $arr['file_size']  : null
+        );
+  }
+
+  /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
+  }
+
+  /**
+   * Gets the file id
+   *
+   * @return string file id
+   */
+  public function getFileId() {
+    return $this->file_id;
+  }
+
+  /**
+   * Gets the file size
+   *
+   * @return int file size
+   */
+  public function getFileSize() {
+    return $this->file_size;
+  }
+
+  /**
+   * Gets the photo width
+   *
+   * @return string photo width
+   */
+  public function getWidth() {
+    return $this->width;
+  }
+
+  /**
+   * Gets the photo height
+   *
+   * @return string photo height
+   */
+  public function getHeight() {
+    return $this->height;
+  }
+
+  private function updateFile() {
+    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+  }
+
+  public function downloadFile() {
+    if ($this->_file == null)
+      $this->updateFile();
+    return $this->_file->downloadFile();
+  }
+
+  public function getFileExtension() {
+    return 'jpg';
+  }
+
+}
+
+
+// Unofficial
+class TA_Photo {
+  private $_api; // TelegramApi
+  private $photoSizeArr; // TA_PhotoSize[]
+
+  private function TA_Photo(TelegramApi $api, $photoSizeArr) {
+    $this->_api = $api;
+    $this->photoSizeArr = $photoSizeArr;
+  }
+
+  /**
+   * Creates a TA_Photo from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Photo
+   *
+   * @return a TA_Photo object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Photo::createFromArray($api, json_decode($json));
+  }
+
+  /**
+   * Creates a TA_Photo from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Photo
+   *
+   * @return a TA_Photo object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    $photoArr = array();
+    foreach ($arr as $photo) {
+      array_push($photoArr, TA_PhotoSize::createFromArray($api, $photo));
+    }
+
+    return new Self(
+          $api,
+          $photoArr
+        );
+  }
+
+  private function getFileByIndex($i = null) {
+    if ($i === null) $i = count($this->photoSizeArr) - 1;
+    return $this->photoSizeArr[$i];
+  }
+
+  /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return true;
+  }
+
+  /**
+   * Gets the file id
+   *
+   * @return string file id
+   */
+  public function getFileId() {
+    return $this->getFileByIndex()->file_id;
+  }
+
+  /**
+   * Gets the file size
+   *
+   * @return int file size
+   */
+  public function getFileSize() {
+    return $this->getFileByIndex()->file_size;
+  }
+
+  /**
+   * Gets the photo width
+   *
+   * @return string photo width
+   */
+  public function getWidth() {
+    return $this->getFileByIndex()->width;
+  }
+
+  /**
+   * Gets the photo height
+   *
+   * @return string photo height
+   */
+  public function getHeight() {
+    return $this->getFileByIndex()->height;
+  }
+
+  private function updateFile() {
+    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+  }
+
+  public function downloadFile() {
+    return $this->getFileByIndex()->downloadFile();
+  }
+
+  public function getFileExtension() {
+    return 'jpg';
+  }
+}
