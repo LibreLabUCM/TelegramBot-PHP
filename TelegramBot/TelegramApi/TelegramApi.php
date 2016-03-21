@@ -63,7 +63,7 @@ class TelegramApi {
   }
 
   /**
-   * Sends a meessage by sending a sendMessage api request
+   * Sends a message by sending a sendMessage api request
    *
    * @param int $chat_id
    *         id of the user the message is going to be sent to (accepted: int, TA_User, TA_Chat)
@@ -95,7 +95,7 @@ class TelegramApi {
 
     if ($reply_id !== null) {
       if ($reply_id instanceof TA_Message) $reply_id = $reply_id->getMessageId();
-      $options ['reply_id'] = $reply_id;
+      $options ['reply_to_message_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
@@ -126,7 +126,22 @@ class TelegramApi {
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'forwardMessage', $options ));
   }
 
-  // Untested
+  /**
+   * Sends a photo
+   *
+   * @param int $chat_id
+   *         id of the user the photo is going to be sent to (accepted: int, TA_User, TA_Chat)
+   * @param string $photo
+   *         file_id of the photo
+   * @param string $caption
+   *         (Optional) Caption for the photo (Default: "")
+   * @param int $reply_id
+   *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
   public function sendPhoto($chat_id, $photo, $caption = "", $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -149,7 +164,26 @@ class TelegramApi {
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendPhoto', $options ));
   }
 
-  // Untested
+  /**
+   * Sends an audio
+   *
+   * @param int $chat_id
+   *         id of the user the audio is going to be sent to (accepted: int, TA_User, TA_Chat)
+   * @param string $audio
+   *         file_id of the audio
+   * @param int $duration
+   *         (Optional) Duration of the audio (Default: "")
+   * @param string $performer
+   *         (Optional) performer of the audio (Default: "")
+   * @param string $title
+   *         (Optional) title of the audio (Default: "")
+   * @param int $reply_id
+   *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
   public function sendAudio($chat_id, $audio, $duration = "", $performer = "", $title = "", $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -170,7 +204,7 @@ class TelegramApi {
     }
 
     if ($reply_id !== null) {
-      $options ['reply_id'] = $reply_id;
+      $options ['reply_to_message_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
@@ -180,7 +214,20 @@ class TelegramApi {
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendAudio', $options ));
   }
 
-  // Untested
+  /**
+   * Sends a document
+   *
+   * @param int $chat_id
+   *         id of the user the document is going to be sent to (accepted: int, TA_User, TA_Chat)
+   * @param string $document
+   *         file_id of the document
+   * @param int $reply_id
+   *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
   public function sendDocument($chat_id, $document, $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -189,7 +236,7 @@ class TelegramApi {
     $options ['document'] = $document;
 
     if ($reply_id !== null) {
-      $options ['reply_id'] = $reply_id;
+      $options ['reply_to_message_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
@@ -199,7 +246,20 @@ class TelegramApi {
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendDocument', $options ));
   }
 
-  // Untested
+  /**
+   * Sends a sticker
+   *
+   * @param int $chat_id
+   *         id of the user the sticker is going to be sent to (accepted: int, TA_User, TA_Chat)
+   * @param string $sticker
+   *         file_id of the sticker
+   * @param int $reply_id
+   *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
   public function sendSticker($chat_id, $sticker, $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -208,7 +268,7 @@ class TelegramApi {
     $options ['sticker'] = $sticker;
 
     if ($reply_id !== null) {
-      $options ['reply_id'] = $reply_id;
+      $options ['reply_to_message_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
@@ -225,7 +285,24 @@ class TelegramApi {
     // TODO
   }
 
-  // Untested
+  /**
+   * Sends a voice message
+   *
+   * @param int $chat_id
+   *         id of the user the voice message is going to be sent to (accepted: int, TA_User, TA_Chat)
+   * @param string $voice
+   *         file_id of the voice message
+   * @param int $duration
+   *         Duration of the audio
+   * @param boolean $disable_notification
+   *         (Optional) If the message should not generate a notification (Default: false)
+   * @param int $reply_id
+   *         (Optional) Mark the message as a reply to other message in the same conversation (accepted: int, TA_Message)(Default: null)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
   public function sendVoice($chat_id, $voice, $duration, $disable_notification = false, $reply_id = null, $reply_markup = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
 
@@ -240,7 +317,7 @@ class TelegramApi {
     $options ['disable_notification'] = $disable_notification;
 
     if ($reply_id !== null) {
-      $options ['reply_id'] = $reply_id;
+      $options ['reply_to_message_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {

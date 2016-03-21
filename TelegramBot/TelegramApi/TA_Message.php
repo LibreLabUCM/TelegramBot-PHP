@@ -466,6 +466,22 @@ class TA_Message {
     return $this->caption;
   }
 
+  /**
+   * Sends a reply to this message
+   *
+   * @param string $text
+   *         text to send as a message
+   * @param bool $link_previews
+   *         (Optional) If link previews should be shown (Default: true)
+   * @param mixed $reply_markup
+   *         (Optional) Extra markup: keyboard, close keyboard, or force reply (Default: null)
+   *
+   * @return TA_Message the result of the api request
+   */
+  public function sendReply($text, $link_previews = true, $reply_markup = null) {
+    return $this->_api->sendMessage($this->getChat()->getId(), $text, $link_previews, $this->getMessageId(), $reply_markup);
+  }
+
 
 
 

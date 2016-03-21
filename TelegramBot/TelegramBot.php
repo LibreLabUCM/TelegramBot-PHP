@@ -47,6 +47,13 @@ class TelegramBot {
       if ($message->getText() === "/help" || $message->getText() === "/start") {
         $t = $this->api->sendMessage($message->getFrom(), "Developing...");
         return $t->getText();
+      } else if ($message->getText() === "/test") {
+        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing");
+      } else if ($message->getText() === "/test_reply") {
+        //return $this->api->sendMessage($message->getFrom(), "Reply to message with id: " . $message->getMessageId(), null, $message->getMessageId());
+        return $message->sendReply("Reply to message with id: " . $message->getMessageId());
+      } else if ($message->getText() === "/test_typing") {
+        $this->api->sendChatAction($message->getFrom(), "typing");
       } else {
         return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
       }
