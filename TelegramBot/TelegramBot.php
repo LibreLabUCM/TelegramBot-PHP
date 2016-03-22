@@ -51,7 +51,17 @@ class TelegramBot {
         $t = $this->api->sendMessage($message->getFrom(), "Developing... If you want to /test ...");
         return $t->getText();
       } else if ($message->getText() === "/test") {
-        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing");
+        $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_keyboard'],['/test_hideKeyboard']], null, true);
+        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_keyboard\n/test_hideKeyboard", null, null, $k);
+      } else if ($message->getText() === "/test_keyboard") {
+        $k = new TA_ReplyKeyboardMarkup([[' - - - ']]); // 0
+        $k->addRow()->addOption("/test_hideKeyboard") // 1
+          ->addRow()->addOption("A") // 2
+          ->addRow()->addOption("C")->addOption("D") // 2
+          ->addOption("B", 2); // Add "B" to row 2
+        return $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
+      } else if ($message->getText() === "/test_hideKeyboard") {
+        return $this->api->sendMessage($message->getFrom(), "Hide!", null, null, '{"hide_keyboard":true}');
       } else if ($message->getText() === "/test_reply") {
         //return $this->api->sendMessage($message->getFrom(), "Reply to message with id: " . $message->getMessageId(), null, $message->getMessageId());
         return $message->sendReply("Reply to message with id: " . $message->getMessageId());
