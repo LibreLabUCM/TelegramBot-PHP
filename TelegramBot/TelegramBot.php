@@ -3,6 +3,7 @@ require_once(__DIR__ . '/BotConfig.php');
 require_once(__DIR__ . '/TelegramApi/TelegramApi.php');
 date_default_timezone_set('Europe/Madrid');
 
+
 class InvalidConfigException extends Exception { }
 class InvalidKeyException extends Exception { }
 
@@ -29,14 +30,16 @@ class TelegramBot {
   }
 
   public function processUpdate($update) {
-    if (!is_array($update)) $update = json_decode($update, true);
-    $update_id = $update['update_id'];
-
-    if (isset($update['message'])) {
-      //return $this->api->sendMessage(TA_Message::createFromArray($this->api, $update['message'])->getFrom(), print_r($update['message'], true));
-      return $this->processMessage(TA_Message::createFromArray($this->api, $update['message']));
-    } else if (isset($update['inline_query'])) {
-      return $inline_query = TA_InlineQuery::createFromArray($this->api, $update['inline_query']);
+    if (!is_array($update)) $updateObj = TA_Update::createFromJson($this->api, $update);
+    else                    $updateObj = TA_Update::createFromArray($this->api, $update);
+    echo 'Update: '.$updateObj->getType()."<br>\n";
+    if ($updateObj->hasMessage()) {
+      //return $this->api->sendMessage($updateObj->getMessage()->getFrom(), print_r(json_decode($update, true)['message'], true));
+      return $this->processMessage($updateObj->getMessage());
+    } else if ($updateObj->hasInlineQuery()) {
+      return $this->processInlineQuery($updateObj->getInlineQuery());
+    } else if ($updateObj->hasChosenInlineResult()) {
+      return $this->processChosenInlineResult($updateObj->getChosenInlineResult());
     } else {
       throw new Exception('This is not a message or an inline query!');
     }
@@ -48,7 +51,17 @@ class TelegramBot {
         $t = $this->api->sendMessage($message->getFrom(), "Developing... If you want to /test ...");
         return $t->getText();
       } else if ($message->getText() === "/test") {
-        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing");
+        $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_keyboard'],['/test_hideKeyboard']], null, true);
+        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_keyboard\n/test_hideKeyboard", null, null, $k);
+      } else if ($message->getText() === "/test_keyboard") {
+        $k = new TA_ReplyKeyboardMarkup([[' - - - ']]); // 0
+        $k->addRow()->addOption("/test_hideKeyboard") // 1
+          ->addRow()->addOption("A") // 2
+          ->addRow()->addOption("C")->addOption("D") // 2
+          ->addOption("B", 2); // Add "B" to row 2
+        return $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
+      } else if ($message->getText() === "/test_hideKeyboard") {
+        return $this->api->sendMessage($message->getFrom(), "Hide!", null, null, '{"hide_keyboard":true}');
       } else if ($message->getText() === "/test_reply") {
         //return $this->api->sendMessage($message->getFrom(), "Reply to message with id: " . $message->getMessageId(), null, $message->getMessageId());
         return $message->sendReply("Reply to message with id: " . $message->getMessageId());

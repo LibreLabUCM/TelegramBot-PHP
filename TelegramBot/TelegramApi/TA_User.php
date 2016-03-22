@@ -34,7 +34,7 @@ class TA_User {
   * @return a TA_User object
   */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_User::createFromArray($api, json_decode($json));
+    return TA_User::createFromArray($api, json_decode($json, true));
   }
 
   /**

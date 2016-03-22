@@ -85,7 +85,7 @@ class TA_Message {
   * @return a TA_Message object
   */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Message::createFromArray($api, json_decode($json));
+    return TA_Message::createFromArray($api, json_decode($json, true));
   }
 
   /**
