@@ -34,7 +34,7 @@ class TA_Update {
    * @return a TA_Update object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Update::createFromArray($api, json_decode($json));
+    return TA_Update::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -51,9 +51,9 @@ class TA_Update {
     return new Self(
           $api,
           $arr['update_id'],
-          isset($arr['message'])               ? TA_Message::createFromArray($api, $update['message'])         : null,
+          isset($arr['message'])               ? TA_Message::createFromArray($api, $arr['message'])         : null,
           isset($arr['inline_query'])          ? $arr['inline_query']                                          : null,
-          isset($arr['chosen_inline_result'])  ? $arr['chosen_inline_result']                                  : null,
+          isset($arr['chosen_inline_result'])  ? $arr['chosen_inline_result']                                  : null
         );
   }
 

@@ -64,7 +64,7 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
   }
 
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_InlineQueryResultArticle::createFromArray($api, json_decode($json));
+    return TA_InlineQueryResultArticle::createFromArray($api, json_decode($json, true));
   }
 
   public static function createMinimum(TelegramApi $api, $id, $title, $message_text) {

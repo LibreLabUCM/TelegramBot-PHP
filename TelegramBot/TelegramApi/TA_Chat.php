@@ -38,7 +38,7 @@ class TA_Chat {
    * @return a TA_Chat object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Chat::createFromArray($api, json_decode($json));
+    return TA_Chat::createFromArray($api, json_decode($json, true));
   }
 
   /**

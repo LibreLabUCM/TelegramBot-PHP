@@ -32,7 +32,7 @@ class TA_File {
    * @return a TA_File object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_File::createFromArray($api, json_decode($json));
+    return TA_File::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -125,7 +125,7 @@ class TA_Audio {
    * @return a TA_Audio object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Audio::createFromArray($api, json_decode($json));
+    return TA_Audio::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -241,7 +241,7 @@ class TA_Document {
    * @return a TA_Document object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Document::createFromArray($api, json_decode($json));
+    return TA_Document::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -347,7 +347,7 @@ class TA_Sticker {
    * @return a TA_Sticker object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Sticker::createFromArray($api, json_decode($json));
+    return TA_Sticker::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -466,7 +466,7 @@ class TA_Video {
    * @return a TA_Video object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Video::createFromArray($api, json_decode($json));
+    return TA_Video::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -590,7 +590,7 @@ class TA_Voice {
    * @return a TA_Voice object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Voice::createFromArray($api, json_decode($json));
+    return TA_Voice::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -688,7 +688,7 @@ class TA_Location {
    * @return a TA_Location object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Location::createFromArray($api, json_decode($json));
+    return TA_Location::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -765,7 +765,7 @@ class TA_Contact {
    * @return a TA_Contact object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Contact::createFromArray($api, json_decode($json));
+    return TA_Contact::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -845,7 +845,7 @@ class TA_PhotoSize {
    * @return a TA_PhotoSize object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_PhotoSize::createFromArray($api, json_decode($json));
+    return TA_PhotoSize::createFromArray($api, json_decode($json, true));
   }
 
   /**
@@ -951,7 +951,7 @@ class TA_Photo {
    * @return a TA_Photo object
    */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_Photo::createFromArray($api, json_decode($json));
+    return TA_Photo::createFromArray($api, json_decode($json, true));
   }
 
   /**

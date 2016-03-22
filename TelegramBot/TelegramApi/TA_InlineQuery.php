@@ -35,7 +35,7 @@ class TA_InlineQuery {
   * @return a TA_InlineQuery object
   */
   public static function createFromJson(TelegramApi $api, $json) {
-    return TA_InlineQuery::createFromArray($api, json_decode($json));
+    return TA_InlineQuery::createFromArray($api, json_decode($json, true));
   }
 
   /**
