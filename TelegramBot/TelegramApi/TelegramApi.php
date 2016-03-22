@@ -2,6 +2,7 @@
 require_once(__DIR__ . '/TA_User.php');
 require_once(__DIR__ . '/TA_Message.php');
 require_once(__DIR__ . '/TA_Update.php');
+require_once(__DIR__ . '/TA_ReplyMarkup.php');
 
 
 /**
@@ -100,7 +101,7 @@ class TelegramApi {
     }
 
     if ($reply_markup !== null) {
-      $options ['reply_markup'] = json_encode ( $reply_markup );
+      $options ['reply_markup'] = (string)$reply_markup;
     }
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendMessage', $options ));
   }
