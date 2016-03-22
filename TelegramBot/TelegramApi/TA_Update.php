@@ -80,6 +80,10 @@ class TA_Update {
     return false;
   }
 
+  public function hasMessage() {
+    return ($this->message !== null);
+  }
+
   /**
    * Gets the update message
    *
