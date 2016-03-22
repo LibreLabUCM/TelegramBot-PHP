@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/TA_User.php');
 require_once(__DIR__ . '/TA_Message.php');
+require_once(__DIR__ . '/TA_Update.php');
 
 
 /**
