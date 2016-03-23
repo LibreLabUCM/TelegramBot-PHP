@@ -61,7 +61,7 @@ class TelegramBot {
           ->addOption("B", 2); // Add "B" to row 2
         return $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
       } else if ($message->getText() === "/test_hideKeyboard") {
-        return $this->api->sendMessage($message->getFrom(), "Hide!", null, null, '{"hide_keyboard":true}');
+        return $this->api->sendMessage($message->getFrom(), "Hide!", null, null, new TA_ReplyKeyboardHide());
       } else if ($message->getText() === "/test_reply") {
         //return $this->api->sendMessage($message->getFrom(), "Reply to message with id: " . $message->getMessageId(), null, $message->getMessageId());
         return $message->sendReply("Reply to message with id: " . $message->getMessageId());
