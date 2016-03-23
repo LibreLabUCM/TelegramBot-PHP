@@ -10,6 +10,10 @@ require_once(__DIR__ . '/TelegramApi.php');
  */
 abstract class TA_ReplyMarkup {
   public abstract function toJson();
+
+  public function __toString() {
+    return $this->toJson();
+  }
 }
 
 class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{ // reply_markup={"keyboard":[["option1"],["option2","3"]]}
@@ -52,15 +56,25 @@ class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{ // reply_markup={"keyboard"
     if ($this->selective !== null) $obj['selective'] = $this->selective;
     return json_encode($obj);
   }
-
-  public function __toString() {
-    return $this->toJson();
-  }
+  
 }
 
 class TA_ReplyKeyboardHide extends TA_ReplyMarkup{
-   // TODO
-  public function toJson(){}
+   private $hide_keyboard;
+   private $selective;
+
+   public function TA_ReplyKeyboardHide($hide_keyboard = true, $selective = false) {
+     $this->hide_keyboard = $hide_keyboard;
+     $this->selective = $selective;
+   }
+
+   public function toJson() {
+     $obj = array(
+       'hide_keyboard' => $this->hide_keyboard
+     );
+     if ($this->selective !== null) $obj['selective'] = $this->selective;
+     return json_encode($obj);
+   }
 }
 
 class TA_ForceReply extends TA_ReplyMarkup{
