@@ -68,6 +68,8 @@ class TelegramBot {
       } else if ($message->getText() === "/test_typing") {
         $this->api->sendChatAction($message->getFrom(), "typing");
         return 'Typing';
+      } else if ($message->getText() === "/id" || $message->getText() === "/start id") {
+        return $message->sendReply($message->getFrom()->getId());
       } else {
         return $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
       }
