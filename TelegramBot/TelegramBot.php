@@ -109,6 +109,19 @@ class TelegramBot {
   }
 
   public function processInlineQuery(TA_InlineQuery $inline_query) {
-    return false;
+    $jpg = 'https://pixabay.com/static/uploads/photo/2015/10/01/21/39/background-image-967820_960_720.jpg';
+    $ans = new TA_InlineQueryResultArray();
+    $ans
+
+      // Articles
+      ->addResult(new TA_InlineQueryResultArticle($this->api, TA_InlineQueryResult::$incrementalId++, "Query", empty($inline_query->getQuery())?'Empty!':$inline_query->getQuery()))
+      ->addResult(new TA_InlineQueryResultArticle($this->api, TA_InlineQueryResult::$incrementalId++, "User", '@'.$inline_query->getFrom()->getUsername()))
+      ->addResult(new TA_InlineQueryResultArticle($this->api, TA_InlineQueryResult::$incrementalId++, "Bold", "B*ol*d!", "Markdown", null, null, null, "Bold 'ol'!"))
+      ->addResult(new TA_InlineQueryResultArticle($this->api, TA_InlineQueryResult::$incrementalId++, "Italic", "It_ali_c!", "Markdown", null, null, null, "Italic 'ali'!"))
+
+      // Photos:
+      ->addResult(new TA_InlineQueryResultPhoto($this->api, TA_InlineQueryResult::$incrementalId++, $jpg, $jpg, $jpg))
+      ->addResult(new TA_InlineQueryResultPhoto($this->api, TA_InlineQueryResult::$incrementalId++, $jpg, $jpg, $jpg));
+    return $this->api->answerInlineQuery($inline_query->getId(), $ans);
   }
 }

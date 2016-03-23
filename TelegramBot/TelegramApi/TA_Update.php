@@ -51,9 +51,9 @@ class TA_Update {
     return new Self(
           $api,
           $arr['update_id'],
-          isset($arr['message'])               ? TA_Message::createFromArray($api, $arr['message'])         : null,
-          isset($arr['inline_query'])          ? $arr['inline_query']                                          : null,
-          isset($arr['chosen_inline_result'])  ? $arr['chosen_inline_result']                                  : null
+          isset($arr['message'])               ? TA_Message::createFromArray($api, $arr['message'])          : null,
+          isset($arr['inline_query'])          ? TA_InlineQuery::createFromArray($api, $arr['inline_query']) : null,
+          isset($arr['chosen_inline_result'])  ? $arr['chosen_inline_result']                                : null
         );
   }
 
@@ -93,6 +93,10 @@ class TA_Update {
    */
   public function getMessage() {
     return $this->message;
+  }
+
+  public function hasInlineQuery() {
+    return ($this->inline_query !== null);
   }
 
   /**
