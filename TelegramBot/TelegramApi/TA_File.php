@@ -923,6 +923,12 @@ class TA_PhotoSize {
     return $this->_file->downloadFile();
   }
 
+  public function getFile() {
+    if ($this->_file == null)
+      $this->updateFile();
+    return $this->_file;
+  }
+
   public function getFileExtension() {
     return 'jpg';
   }
@@ -976,7 +982,7 @@ class TA_Photo {
         );
   }
 
-  private function getFileByIndex($i = null) {
+  public function getFileByIndex($i = null) {
     if ($i === null) $i = count($this->photoSizeArr) - 1;
     return $this->photoSizeArr[$i];
   }
@@ -996,7 +1002,7 @@ class TA_Photo {
    * @return string file id
    */
   public function getFileId() {
-    return $this->getFileByIndex()->file_id;
+    return $this->getFileByIndex()->getFileId();
   }
 
   /**
@@ -1036,5 +1042,69 @@ class TA_Photo {
 
   public function getFileExtension() {
     return 'jpg';
+  }
+}
+
+
+class TA_UserProfilePhotos {
+  private $_api; // TelegramApi
+  private $total_count;
+  private $photoArr; // TA_Photo[]
+
+  private function TA_UserProfilePhotos(TelegramApi $api, $total_count, $photoArr) {
+    $this->_api = $api;
+    $this->total_count = $total_count;
+    $this->photoArr = $photoArr;
+  }
+
+  /**
+   * Creates a TA_UserProfilePhotos from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_UserProfilePhotos
+   *
+   * @return a TA_UserProfilePhotos object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_UserProfilePhotos::createFromArray($api, json_decode($json, true));
+  }
+
+  /**
+   * Creates a TA_UserProfilePhotos from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_UserProfilePhotos
+   *
+   * @return a TA_UserProfilePhotos object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    $photoArr = array();
+    foreach ($arr['photos'] as $photo) {
+      array_push($photoArr, TA_Photo::createFromArray($api, $photo));
+    }
+
+    return new Self(
+          $api,
+          $arr['total_count'],
+          $photoArr
+        );
+  }
+
+  public function getPhoto($index) {
+    return $this->photoArr[$index];
+  }
+
+  public function getNumberOfPhotos() {
+    return $this->total_count;
+  }
+
+  public function getAll() {
+    foreach($this->photoArr as $key => $photo) {
+      yield $key => $photo;
+    }
   }
 }
