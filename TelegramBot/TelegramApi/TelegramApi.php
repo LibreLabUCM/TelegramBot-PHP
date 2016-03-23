@@ -2,6 +2,7 @@
 require_once(__DIR__ . '/TA_User.php');
 require_once(__DIR__ . '/TA_Message.php');
 require_once(__DIR__ . '/TA_InlineQuery.php');
+require_once(__DIR__ . '/TA_InlineQueryResult.php');
 require_once(__DIR__ . '/TA_Update.php');
 require_once(__DIR__ . '/TA_ReplyMarkup.php');
 
@@ -403,10 +404,10 @@ class TelegramApi {
    *
    * @return mixed the result of the api request
    */
-  public function answerInlineQuery($inline_query_id, $results, $cache_time = 0, $is_personal = true, $next_offset = "") {
+  public function answerInlineQuery($inline_query_id, TA_InlineQueryResultArray $results, $cache_time = 0, $is_personal = true, $next_offset = "") {
     $options = array ();
     $options ['inline_query_id'] = $inline_query_id;
-    $options ['results'] = $results;
+    $options ['results'] = $results->toJson();
     $options ['cache_time'] = $cache_time;
     $options ['is_personal'] = $is_personal;
     $options ['next_offset'] = $next_offset;
