@@ -150,7 +150,33 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
  *
  */
 class TA_InlineQueryResultPhoto extends TA_InlineQueryResult {
-  public function toArr(){}
+  private $photo_url;
+  private $thumb_url;
+
+  private $title;
+
+  public function TA_InlineQueryResultPhoto($api, $id, $photo_url, $thumb_url = null, $title = null) {
+    if ($thumb_url === null) $thumb_url = $photo_url;
+
+    $this->_api = $api;
+    $this->type = "photo";
+    $this->id = (string)$id;
+    $this->photo_url = $photo_url;
+    $this->thumb_url = $thumb_url;
+    $this->title = $title;
+  }
+
+
+  public function toArr(){
+    $ret = array();
+    $ret['type']           = $this->type;
+    $ret['id']             = $this->id;
+    $ret['photo_url']      = $this->photo_url;
+    $ret['thumb_url']      = $this->thumb_url;
+
+    if (isset($this->title))             $ret['title']              = $this->title;
+    return $ret;
+  }
 }
 
 /**
