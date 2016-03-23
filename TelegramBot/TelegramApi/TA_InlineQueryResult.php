@@ -9,11 +9,12 @@ require_once(__DIR__ . '/TelegramApi.php');
  *
  */
 abstract class TA_InlineQueryResult {
-  private $_api; // TelegramApi
+  protected $_api; // TelegramApi
   protected $type;
   protected $id;
+  public static $incrementalId = 0;
 
-  //public abstract function toJson();
+  public abstract function toArr();
 }
 
 
@@ -47,20 +48,20 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
   private $thumb_width;
   private $thumb_height;
 
-  private function TA_InlineQueryResultArticle(TelegramApi $api, $id, $title, $message_text, $parse_mode, $disable_web_page_preview, $url, $hide_url, $description, $thumb_url, $thumb_width, $thumb_height) {
+  public function TA_InlineQueryResultArticle(TelegramApi $api, $id, $title, $message_text, $parse_mode = null, $disable_web_page_preview = null, $url = null, $hide_url = null, $description = null, $thumb_url = null, $thumb_width = null, $thumb_height = null) {
     $this->_api = $api;
     $this->type = "article";
-    $this->id = $id;
+    $this->id = (string)$id;
     $this->title = $title;
-    $this-> message_text = $message_text;
-    $this-> parse_mode = $parse_mode;
-    $this-> disable_web_page_preview = $disable_web_page_preview;
-    $this-> url = $url;
-    $this-> hide_url = $hide_url;
-    $this-> description = $description;
-    $this-> thumb_url = $thumb_url;
-    $this-> thumb_width = $thumb_width;
-    $this-> thumb_height = $thumb_height;
+    $this->message_text = $message_text;
+    $this->parse_mode = $parse_mode;
+    $this->disable_web_page_preview = $disable_web_page_preview;
+    $this->url = $url;
+    $this->hide_url = $hide_url;
+    $this->description = $description;
+    $this->thumb_url = $thumb_url;
+    $this->thumb_width = $thumb_width;
+    $this->thumb_height = $thumb_height;
   }
 
   public static function createFromJson(TelegramApi $api, $json) {
@@ -81,14 +82,14 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
           $arr['id'],
           $arr['title'],
           $arr['message_text'],
-          isset($arr['parse_mode'])                 ? $arr['parse_mode'] : "Markdown",
+          isset($arr['parse_mode'])                 ? $arr['parse_mode']               : null,
           isset($arr['disable_web_page_preview'])   ? $arr['disable_web_page_preview'] : null,
-          isset($arr['url'])                        ? $arr['url'] : null,
-          isset($arr['hide_url'])                   ? $arr['hide_url'] : null,
-          isset($arr['description'])                ? $arr['description'] : null,
-          isset($arr['thumb_url'])                  ? $arr['thumb_url'] : null,
-          isset($arr['thumb_width'])                ? $arr['thumb_width'] : null,
-          isset($arr['thumb_height'])               ? $arr['thumb_height'] : null
+          isset($arr['url'])                        ? $arr['url']                      : null,
+          isset($arr['hide_url'])                   ? $arr['hide_url']                 : null,
+          isset($arr['description'])                ? $arr['description']              : null,
+          isset($arr['thumb_url'])                  ? $arr['thumb_url']                : null,
+          isset($arr['thumb_width'])                ? $arr['thumb_width']              : null,
+          isset($arr['thumb_height'])               ? $arr['thumb_height']             : null
         );
   }
 
@@ -123,6 +124,23 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
     $this->thumb_height = $thumb_height;
     return $this;
   }
+
+  public function toArr(){
+    $ret = array();
+    $ret['type']           = $this->type;
+    $ret['id']             = $this->id;
+    $ret['title']          = $this->title;
+    $ret['message_text']   = $this->message_text;
+    if (isset($this->parse_mode))               $ret['parse_mode']                = $this->parse_mode;
+    if (isset($this->disable_web_page_preview)) $ret['disable_web_page_preview']  = $this->disable_web_page_preview;
+    if (isset($this->url))                      $ret['url']                       = $this->url;
+    if (isset($this->hide_url))                 $ret['hide_url']                  = $this->hide_url;
+    if (isset($this->description))              $ret['description']               = $this->description;
+    if (isset($this->thumb_url))                $ret['thumb_url']                 = $this->thumb_url;
+    if (isset($this->thumb_width))              $ret['thumb_width']               = $this->thumb_width;
+    if (isset($this->thumb_height))             $ret['thumb_height']              = $this->thumb_height;
+    return $ret;
+  }
 }
 
 /**
@@ -132,7 +150,7 @@ class TA_InlineQueryResultArticle extends TA_InlineQueryResult {
  *
  */
 class TA_InlineQueryResultPhoto extends TA_InlineQueryResult {
-
+  public function toArr(){}
 }
 
 /**
@@ -142,7 +160,7 @@ class TA_InlineQueryResultPhoto extends TA_InlineQueryResult {
  *
  */
 class TA_InlineQueryResultGif extends TA_InlineQueryResult {
-
+  public function toArr(){}
 }
 
 /**
@@ -152,7 +170,7 @@ class TA_InlineQueryResultGif extends TA_InlineQueryResult {
  *
  */
 class TA_InlineQueryResultMpeg4Gif extends TA_InlineQueryResult {
-
+  public function toArr(){}
 }
 
 /**
@@ -162,5 +180,25 @@ class TA_InlineQueryResultMpeg4Gif extends TA_InlineQueryResult {
  *
  */
 class TA_InlineQueryResultVideo extends TA_InlineQueryResult {
+  public function toArr(){}
+}
 
+
+// Unofficial
+class TA_InlineQueryResultArray {
+  private $_api; // TelegramApi
+  private $results; // TA_InlineQueryResult[]
+
+  public function TA_InlineQueryResult() {
+    $this->results = [];
+  }
+
+  public function addResult(TA_InlineQueryResult $result) {
+    $this->results[] = $result->toArr();
+    return $this;
+  }
+
+  public function toJson() {
+    return json_encode($this->results);
+  }
 }
