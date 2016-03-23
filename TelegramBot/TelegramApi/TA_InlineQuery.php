@@ -51,7 +51,7 @@ class TA_InlineQuery {
   public static function createFromArray(TelegramApi $api, $arr) {
     return new Self(
           $api,
-          $arr['file_id'],
+          $arr['id'],
           TA_User::createFromArray($api, $arr['from']),
           $arr['query'],
           $arr['offset']
