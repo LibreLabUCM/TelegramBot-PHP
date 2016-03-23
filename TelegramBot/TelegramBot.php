@@ -51,8 +51,8 @@ class TelegramBot {
         $t = $this->api->sendMessage($message->getFrom(), "Developing... If you want to /test ...");
         return $t->getText();
       } else if ($message->getText() === "/test") {
-        $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_keyboard'],['/test_hideKeyboard']], null, true);
-        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_keyboard\n/test_hideKeyboard", null, null, $k);
+        $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_forceReplay'],['/test_keyboard'],['/test_hideKeyboard']], null, true);
+        return $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_forceReplay\n/test_keyboard\n/test_hideKeyboard", null, null, $k);
       } else if ($message->getText() === "/test_keyboard") {
         $k = new TA_ReplyKeyboardMarkup([[' - - - ']]); // 0
         $k->addRow()->addOption("/test_hideKeyboard") // 1
@@ -68,6 +68,8 @@ class TelegramBot {
       } else if ($message->getText() === "/test_typing") {
         $this->api->sendChatAction($message->getFrom(), "typing");
         return 'Typing';
+      } else if ($message->getText() === "/test_forceReplay") {
+        return $this->api->sendMessage($message->getFrom(), "Reply to me!", null, null, new TA_ForceReply());
       } else if ($message->getText() === "/id" || $message->getText() === "/start id") {
         return $message->sendReply($message->getFrom()->getId());
       } else {

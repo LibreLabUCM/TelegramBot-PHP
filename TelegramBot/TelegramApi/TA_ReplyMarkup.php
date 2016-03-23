@@ -16,7 +16,7 @@ abstract class TA_ReplyMarkup {
   }
 }
 
-class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{ // reply_markup={"keyboard":[["option1"],["option2","3"]]}
+class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup {
   private $keyboard;
   private $resize_keyboard;
   private $one_time_keyboard;
@@ -33,8 +33,6 @@ class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{ // reply_markup={"keyboard"
   }
 
   public function addRow() {
-    //echo (count($this->keyboard) - 1)."<br>\n";
-    //echo (count($this->keyboard[count($this->keyboard) - 1]))."<br>\n";
     if (count($this->keyboard[count($this->keyboard) - 1]) !== 0 || true) {
       array_push($this->keyboard, []);
     }
@@ -56,28 +54,40 @@ class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup{ // reply_markup={"keyboard"
     if ($this->selective !== null) $obj['selective'] = $this->selective;
     return json_encode($obj);
   }
-  
+
 }
 
 class TA_ReplyKeyboardHide extends TA_ReplyMarkup{
-   private $hide_keyboard;
-   private $selective;
+  private $hide_keyboard;
+  private $selective;
 
-   public function TA_ReplyKeyboardHide($hide_keyboard = true, $selective = false) {
-     $this->hide_keyboard = $hide_keyboard;
-     $this->selective = $selective;
-   }
+  public function TA_ReplyKeyboardHide($selective = false) {
+    $this->hide_keyboard = true;
+    $this->selective = $selective;
+  }
 
-   public function toJson() {
-     $obj = array(
-       'hide_keyboard' => $this->hide_keyboard
-     );
-     if ($this->selective !== null) $obj['selective'] = $this->selective;
-     return json_encode($obj);
-   }
+  public function toJson() {
+    $obj = array(
+      'hide_keyboard' => $this->hide_keyboard
+    );
+    if ($this->selective !== null) $obj['selective'] = $this->selective;
+    return json_encode($obj);
+  }
 }
 
-class TA_ForceReply extends TA_ReplyMarkup{
-   // TODO
-  public function toJson(){}
+class TA_ForceReply extends TA_ReplyMarkup {
+  private $force_reply;
+  private $selective;
+  public function TA_ForceReply($selective = false) {
+    $this->force_reply = true;
+    $this->selective = $selective;
+  }
+
+  public function toJson(){
+    $obj = array(
+      'force_reply' => $this->force_reply
+    );
+    if ($this->selective !== null) $obj['selective'] = $this->selective;
+    return json_encode($obj);
+  }
 }
