@@ -75,7 +75,19 @@ class TA_ReplyKeyboardHide extends TA_ReplyMarkup{
   }
 }
 
-class TA_ForceReply extends TA_ReplyMarkup{
-   // TODO
-  public function toJson(){}
+class TA_ForceReply extends TA_ReplyMarkup {
+  private $force_reply;
+  private $selective;
+  public function TA_ForceReply($selective = false) {
+    $this->force_reply = true;
+    $this->selective = $selective;
+  }
+
+  public function toJson(){
+    $obj = array(
+      'force_reply' => $this->force_reply
+    );
+    if ($this->selective !== null) $obj['selective'] = $this->selective;
+    return json_encode($obj);
+  }
 }
