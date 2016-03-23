@@ -149,14 +149,18 @@ class TelegramApi {
 
     $options = array ();
     $options ['chat_id'] = $chat_id;
-    $options ['photo'] = $photo;
+
+    if ($photo instanceof TA_Photo) $options ['photo'] = $photo->getFileByIndex()->getFile()->getFileId();
+    else if ($photo instanceof TA_PhotoSize) $options ['photo'] = $photo->getFile()->getFileId();
+    else $options ['photo'] = $photo;
 
     if ($caption !== null && $caption !== "") {
       $options ['caption'] = $caption;
     }
 
     if ($reply_id !== null) {
-      $options ['reply_id'] = $reply_id;
+      if ($reply_id instanceof TA_Message) $reply_id = $reply_id->getMessageId();
+      $options ['reply_to_message_id'] = $reply_id;
     }
 
     if ($reply_markup !== null) {
@@ -368,8 +372,7 @@ class TelegramApi {
     $options ['user_id'] = $user_id;
     $options ['offset'] = $offset;
     $options ['limit'] = $limit;
-
-    return $this->sendApiRequest ( 'getUserProfilePhotos', $options );
+    return TA_UserProfilePhotos::createFromArray($this, $this->sendApiRequest ( 'getUserProfilePhotos', $options ));
   }
 
   // Untested
