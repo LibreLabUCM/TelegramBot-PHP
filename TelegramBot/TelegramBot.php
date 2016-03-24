@@ -12,9 +12,6 @@ class TelegramBot {
   private $api;
 
   public function TelegramBot(BotConfig $config) {
-    if (empty($_GET['key']) || $_GET['key'] !== $config->getHookKey()) {
-      throw new InvalidConfigException('Invalid key!');
-    }
     if (!$config->isValid ()) {
       throw new InvalidConfigException('Bot is NOT configured properly!');
     }
