@@ -12,9 +12,6 @@ class TelegramBot {
   private $api;
 
   public function TelegramBot(BotConfig $config) {
-    if (empty($_GET['key']) || $_GET['key'] !== $config->getHookKey()) {
-      throw new InvalidConfigException('Invalid key!');
-    }
     if (!$config->isValid ()) {
       throw new InvalidConfigException('Bot is NOT configured properly!');
     }
@@ -30,6 +27,7 @@ class TelegramBot {
   }
 
   public function processUpdate($update) {
+    if (empty($update)) throw new Exception('Empty update!');
     if (!is_array($update)) $updateObj = TA_Update::createFromJson($this->api, $update);
     else                    $updateObj = TA_Update::createFromArray($this->api, $update);
 

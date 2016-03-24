@@ -2,126 +2,143 @@
 
 
 class BotConfig {
-   private $token;
-   private $webhookUrl;
-   private $db;
-   private $admins;
-   private $hookKey;
-   private $validConfig;
+  private $token;
+  private $webhookUrl;
+  private $baseUrl;
+  private $db;
+  private $admins;
+  private $hookKey;
+  private $validConfig;
 
-   public function __construct() {
+  public function __construct() {
+    $this->validConfig = false;
+  }
+
+  /**
+  * Static constructor / factory
+  */
+  public static function create() {
+    $instance = new self();
+    return $instance;
+  }
+
+  /**
+  * Config validator - fluent style
+  */
+  public function validate() {
+    if (
+      empty($this->token) ||
+      empty($this->webhookUrl) ||
+      empty($this->baseUrl) ||
+      empty($this->db) ||
+      empty($this->admins) ||
+      empty($this->hookKey) ) {
       $this->validConfig = false;
-   }
+    } else {
+      $this->validConfig = true;
+    }
+    return $this;
+  }
 
-   /**
-   * Static constructor / factory
-   */
-   public static function create() {
-      $instance = new self();
-      return $instance;
-   }
+  // Setters
 
-   /**
-    * Config validator - fluent style
-    */
-   public function validate() {
-      if (
-        empty($this->token) ||
-        empty($this->webhookUrl) ||
-        empty($this->db) ||
-        empty($this->admins) ||
-        empty($this->hookKey) ) {
-        $this->validConfig = false;
-      } else {
-        $this->validConfig = true;
-      }
-      return $this;
-   }
+  /**
+  * token setter - fluent style
+  */
+  public function setToken($token) {
+    $this->token = $token;
+    return $this;
+  }
 
-   // Setters
+  /**
+  * webhookUrl setter - fluent style
+  */
+  public function setWebhookUrl($webhookUrl) {
+    $this->webhookUrl = $webhookUrl;
+    return $this;
+  }
 
-   /**
-    * token setter - fluent style
-    */
-   public function setToken($token) {
-      $this->token = $token;
-      return $this;
-   }
+  /**
+  * baseUrl setter - fluent style
+  */
+  public function setBaseUrl($baseUrl) {
+    $this->baseUrl = $baseUrl;
+    return $this;
+  }
 
-   /**
-    * webhookUrl setter - fluent style
-    */
-   public function setWebhookUrl($webhookUrl) {
-      $this->webhookUrl = $webhookUrl;
-      return $this;
-   }
+  /**
+  * db setter - fluent style
+  */
+  public function setDb($db) {
+    $this->db = $db;
+    return $this;
+  }
 
-   /**
-    * db setter - fluent style
-    */
-   public function setDb($db) {
-      $this->db = $db;
-      return $this;
-   }
+  /**
+  * admins setter - fluent style
+  */
+  public function setAdmins($admins) {
+    $this->admins = $admins;
+    return $this;
+  }
 
-   /**
-    * admins setter - fluent style
-    */
-   public function setAdmins($admins) {
-      $this->admins = $admins;
-      return $this;
-   }
+  /**
+  * hookKey setter - fluent style
+  */
+  public function setHookKey($hookKey) {
+    $this->hookKey = $hookKey;
+    return $this;
+  }
 
-   /**
-    * hookKey setter - fluent style
-    */
-   public function setHookKey($hookKey) {
-      $this->hookKey = $hookKey;
-      return $this;
-   }
+  // Getters
 
-   // Getters
+  /**
+  * token getter
+  */
+  public function getToken() {
+    return $this->token;
+  }
 
-   /**
-    * token getter
-    */
-   public function getToken() {
-      return $this->token;
-   }
+  /**
+  * webhookUrl getter
+  */
+  public function getWebhookUrl() {
+    return $this->webhookUrl;
+  }
 
-   /**
-    * webhookUrl getter
-    */
-   public function getWebhookUrl() {
-      return $this->webhookUrl;
-   }
+  /**
+  * baseUrl getter
+  */
+  public function getBaseUrl() {
+    return $this->baseUrl;
+  }
 
-   /**
-    * db getter
-    */
-   public function getDb() {
-      return $this->db;
-   }
+  /**
+  * db getter
+  */
+  public function getDb() {
+    return $this->db;
+  }
 
-   /**
-    * admins getter
-    */
-   public function getAdmins() {
-      return $this->admins;
-   }
+  /**
+  * admins getter
+  */
+  public function getAdmins() {
+    return $this->admins;
+  }
 
-   /**
-    * hookKey getter
-    */
-   public function getHookKey() {
-      return $this->hookKey;
-   }
+  /**
+  * hookKey getter
+  */
+  public function getHookKey() {
+    return $this->hookKey;
+  }
 
-   /**
-    * vaidConfig getter
-    */
-   public function isValid() {
-      return $this->validConfig;
-   }
+  /**
+  * vaidConfig getter
+  */
+  public function isValid() {
+    return $this->validConfig;
+  }
 
 }
