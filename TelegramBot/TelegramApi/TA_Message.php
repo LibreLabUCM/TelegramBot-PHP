@@ -41,7 +41,7 @@ class TA_Message {
   private $migrate_from_chat_id;
 
   private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
-      $text = null, TA_Audio $audio = null, TA_Document $document = null, $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
+      $text = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
       TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
 
@@ -56,7 +56,7 @@ class TA_Message {
     $this->text = $text;
     $this->audio = $audio; // TA_Audio
     $this->document = $document; // TA_Document
-    $this->photo = $photo;
+    $this->photo = $photo; // TA_Photo
     $this->sticker = $sticker; // TA_Sticker
     $this->video = $video; // TA_Video
     $this->voice = $voice; // TA_Voice
