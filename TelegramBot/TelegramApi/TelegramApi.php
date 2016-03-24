@@ -389,16 +389,14 @@ class TelegramApi {
   /**
    * Gets a file by its file id
    *
-   * (This should return a TA_File object!)
-   *
    * @param  string $file_id the id of the file
    *
-   * @return string          json representation of a file
+   * @return TA_File file object
    */
   public function getFile($file_id) {
     $options = array ();
     $options ['file_id'] = $file_id;
-    return $this->sendApiRequest ( 'getFile', $options );
+    return TA_File::createFromArray($this, $this->sendApiRequest ( 'getFile', $options ));
   }
 
   // Certificate not used (for now)
@@ -445,7 +443,7 @@ class TelegramApi {
    * Download a TA_File by its file_path
    *
    * @param  string $file_path file_path provided by getFile()
-   * 
+   *
    * @return string            path to the downloaded temp file
    */
   public function downloadFile($file_path) {

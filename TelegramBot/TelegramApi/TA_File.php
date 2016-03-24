@@ -199,7 +199,7 @@ class TA_Audio {
    * Updates the file object on the audio
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
@@ -318,7 +318,7 @@ class TA_Document {
    * Updates the file object on the document
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
@@ -446,7 +446,7 @@ class TA_Sticker {
    * Updates the file object on the sticker
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
@@ -589,7 +589,7 @@ class TA_Video {
    * Updates the file object on the video
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
@@ -705,7 +705,7 @@ class TA_Voice {
    * Updates the file object on the voice
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
@@ -982,7 +982,7 @@ class TA_PhotoSize {
    * Updates the file object on the photo
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
@@ -1119,7 +1119,7 @@ class TA_Photo {
    * Updates the file object on the photo
    */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
   /**
