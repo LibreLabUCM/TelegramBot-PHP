@@ -15,6 +15,8 @@ $config = BotConfig::create()
 
 try {
   $bot = new TelegramBot($config);
+  unset($_BOT_CONFIG);
+  unset($config);
 } catch (InvalidConfigException $e) {
   die('Error on creating bot: '.$e->getMessage());
 }
