@@ -80,6 +80,11 @@ class TA_Update {
     return false;
   }
 
+  /**
+   * Checks if the update contains a message
+   *
+   * @return boolean if the update contains a message
+   */
   public function hasMessage() {
     return ($this->message !== null);
   }
@@ -95,6 +100,11 @@ class TA_Update {
     return $this->message;
   }
 
+  /**
+   * Checks if the update contains an inline query
+   *
+   * @return boolean if the update contains an inline query
+   */
   public function hasInlineQuery() {
     return ($this->inline_query !== null);
   }
@@ -108,6 +118,15 @@ class TA_Update {
    */
   public function getInlineQuery() {
     return $this->inline_query;
+  }
+
+  /**
+   * Checks if the update contains a chosen inline query
+   *
+   * @return boolean if the update contains a chosen inline query
+   */
+  public function hasChosenInlineQuery() {
+    return ($this->chosen_inline_result !== null);
   }
 
   /**

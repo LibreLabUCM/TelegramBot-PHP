@@ -195,16 +195,29 @@ class TA_Audio {
     return $this->title;
   }
 
+  /**
+   * Updates the file object on the audio
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the audio
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return 'mp3';
   }
@@ -301,16 +314,29 @@ class TA_Document {
     return $this->file_name;
   }
 
+  /**
+   * Updates the file object on the document
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the document
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return pathinfo($this->getFileName(), PATHINFO_EXTENSION);
   }
@@ -416,16 +442,29 @@ class TA_Sticker {
     return $this->height;
   }
 
+  /**
+   * Updates the file object on the sticker
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the sticker
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return 'webp';
   }
@@ -546,16 +585,29 @@ class TA_Video {
     return $this->duration;
   }
 
+  /**
+   * Updates the file object on the video
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the video
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return 'mp4';
   }
@@ -649,16 +701,29 @@ class TA_Voice {
     return $this->duration;
   }
 
+  /**
+   * Updates the file object on the voice
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the voice
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return 'ogg';
   }
@@ -913,22 +978,40 @@ class TA_PhotoSize {
     return $this->height;
   }
 
+  /**
+   * Updates the file object on the photo
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the photo
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file->downloadFile();
   }
 
+  /**
+   * Gets the file object on the photo
+   *
+   * @return TA_File the file object on the photo
+   */
   public function getFile() {
     if ($this->_file == null)
       $this->updateFile();
     return $this->_file;
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return 'jpg';
   }
@@ -1032,14 +1115,27 @@ class TA_Photo {
     return $this->getFileByIndex()->height;
   }
 
+  /**
+   * Updates the file object on the photo
+   */
   private function updateFile() {
-    $this->_file = TA_File::createFromArray($this->_api, $this->_api->getFile($this->getFileId()));
+    $this->_file = $this->_api->getFile($this->getFileId());
   }
 
+  /**
+   * Downloads the photo
+   *
+   * @return string path to the downloaded file
+   */
   public function downloadFile() {
     return $this->getFileByIndex()->downloadFile();
   }
 
+  /**
+   * Gets the file extension
+   *
+   * @return string the file extension
+   */
   public function getFileExtension() {
     return 'jpg';
   }
@@ -1094,14 +1190,29 @@ class TA_UserProfilePhotos {
         );
   }
 
+  /**
+   * Gets one of the user profile photos
+   *
+   * @param  int $index index of the photo. 0 -> current photo; 1 -> photo before the current photo; etc...
+   *
+   * @return TA_Photo one of the user profile photos
+   */
   public function getPhoto($index) {
     return $this->photoArr[$index];
   }
 
+  /**
+   * Gets the number of profile pictures the user has
+   *
+   * @return int number of profile pictures
+   */
   public function getNumberOfPhotos() {
     return $this->total_count;
   }
 
+  /**
+   * Yields photos to iterate over them
+   */
   public function getAll() {
     foreach($this->photoArr as $key => $photo) {
       yield $key => $photo;

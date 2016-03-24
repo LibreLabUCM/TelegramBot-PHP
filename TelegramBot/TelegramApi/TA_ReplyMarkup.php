@@ -32,6 +32,9 @@ class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup {
     $this->selective = $selective;
   }
 
+  /**
+   * Adds a new empty row - fluent style
+   */
   public function addRow() {
     if (count($this->keyboard[count($this->keyboard) - 1]) !== 0 || true) {
       array_push($this->keyboard, []);
@@ -39,12 +42,21 @@ class TA_ReplyKeyboardMarkup extends TA_ReplyMarkup {
     return $this;
   }
 
+  /**
+   * Adds a new option - fluent style
+   * @param string $option the new option text
+   * @param [type] $row    (Optional) The option will be added in the specified row (Default: the last row)
+   */
   public function addOption($option, $row = null) {
     if ($row === null) $row = count($this->keyboard) - 1;
     array_push($this->keyboard[$row], $option);
     return $this;
   }
 
+  /**
+   * Gets a json representation of this object
+   * @return string json representation
+   */
   public function toJson() {
     $obj = array(
       'keyboard' => $this->keyboard
@@ -66,6 +78,10 @@ class TA_ReplyKeyboardHide extends TA_ReplyMarkup{
     $this->selective = $selective;
   }
 
+  /**
+   * Gets a json representation of this object
+   * @return string json representation
+   */
   public function toJson() {
     $obj = array(
       'hide_keyboard' => $this->hide_keyboard
@@ -78,11 +94,16 @@ class TA_ReplyKeyboardHide extends TA_ReplyMarkup{
 class TA_ForceReply extends TA_ReplyMarkup {
   private $force_reply;
   private $selective;
+  
   public function TA_ForceReply($selective = false) {
     $this->force_reply = true;
     $this->selective = $selective;
   }
 
+  /**
+   * Gets a json representation of this object
+   * @return string json representation
+   */
   public function toJson(){
     $obj = array(
       'force_reply' => $this->force_reply
