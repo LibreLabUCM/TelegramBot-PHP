@@ -20,8 +20,8 @@ class TelegramBot {
     }
     $this->config = $config;
     $this->api = new TelegramApi ( $config->getToken () );
-    $username = $this->api->getMe()->getUsername();
-    echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
+    //$username = $this->api->getMe()->getUsername();
+    //echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
   }
 
   public function setWebhook() {
