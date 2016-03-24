@@ -30,6 +30,7 @@ class TelegramBot {
   }
 
   public function processUpdate($update) {
+    if (empty($update)) throw new Exception('Empty update!');
     if (!is_array($update)) $updateObj = TA_Update::createFromJson($this->api, $update);
     else                    $updateObj = TA_Update::createFromArray($this->api, $update);
 
