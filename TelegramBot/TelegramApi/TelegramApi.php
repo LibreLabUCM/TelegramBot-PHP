@@ -366,7 +366,14 @@ class TelegramApi {
     return $this->sendApiRequest ( 'sendChatAction', $options );
   }
 
-  // Unseted
+  /**
+   * Gets the user profile photos
+   *
+   * @param  int     $user_id user id
+   * @param  int     $offset  (Optional) Sequential number of the first photo to be returned. By default, all photos are returned. (Default: 0)
+   * @param  int     $limit   (Optional) Limits the number of photos to be retrieved. Values between 1—100 are accepted. (Defaults: 100)
+   * @return TA_UserProfilePhotos      the user profile photos
+   */
   public function getUserProfilePhotos($user_id, $offset = 0, $limit = 100) {
     if ($user_id instanceof TA_User) $user_id = $user_id->getId();
 
@@ -377,7 +384,14 @@ class TelegramApi {
     return TA_UserProfilePhotos::createFromArray($this, $this->sendApiRequest ( 'getUserProfilePhotos', $options ));
   }
 
-  // Untested
+  /**
+   * Gets a file by its file id
+   *
+   * (This should return a TA_File object!)
+   *
+   * @param  string $file_id the id of the file
+   * @return string          json representation of a file
+   */
   public function getFile($file_id) {
     $options = array ();
     $options ['file_id'] = $file_id;
