@@ -5,6 +5,12 @@ if ($configExists) {
   if (!isset($_BOT_CONFIG)) $configExists = false;
 }
 
+if ($configExists) {
+  echo "<p style=\"color:red;\">Config file already exists! Delete it or clear its contents before trying to install!</p><br><br>\n";
+  echo '<a href="index.php">Go to index</a>';
+  exit();
+}
+
 $token = empty($_POST['token']) ? "" : $_POST['token'];
 if (!empty($token)) {
   if (preg_match('/^\d*\:[0-9a-zA-Z]*$/', $token)) {
@@ -28,21 +34,24 @@ if (!empty($token)) {
   'hookKey' => '$hookKey' // Something like: 6Obdqaab44b4fb2e . After changing this, you should set the webhook again!
 );
 ";
-      file_put_contents('./config_file.php', $configText);
-      $url = 'https://api.telegram.org/bot' . $token . '/setWebhook?'.http_build_query (array('url' => $baseUrl.'bot.php?key='.$hookKey));
-      $curl = curl_init ();
-      curl_setopt_array ( $curl, array (
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => $url,
-        CURLOPT_SSL_VERIFYPEER => false
-      ));
-      $r = json_decode ( curl_exec ( $curl ), true );
-      if ($r['ok']) {
-        header('Location: index.php');
-        echo 'Ok!';
-        exit();
+      if (file_put_contents('./config_file.php', $configText)) {
+        $url = 'https://api.telegram.org/bot' . $token . '/setWebhook?'.http_build_query (array('url' => $baseUrl.'bot.php?key='.$hookKey));
+        $curl = curl_init ();
+        curl_setopt_array ( $curl, array (
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_URL => $url,
+          CURLOPT_SSL_VERIFYPEER => false
+        ));
+        $r = json_decode ( curl_exec ( $curl ), true );
+        if ($r['ok']) {
+          header('Location: index.php');
+          echo 'Ok!';
+          exit();
+        } else {
+          echo "<p style=\"color:red;\">Couldn't setup the webhook </p><br><br>\n";
+        }
       } else {
-        echo "<p style=\"color:red;\">Couldn't setup the webhook </p><br><br>\n";
+        echo "<p style=\"color:red;\">Couldn't write the configuration! Please create an empty file 'config_file.php' in the root of the repository and make it writable.</p><br><br>chown www-data config_file.php<br><br><br>\n";
       }
     } else {
       echo "<p style=\"color:red;\">That token doesn't seem to be valid!</p><br><br>\n";
