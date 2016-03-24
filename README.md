@@ -12,14 +12,14 @@
 
 If you want to test the bot, uncomment the second part of the config file and set $testId to your id.
 Then access the url where the bot is located. You should receive a message to the account specified in $testId.
-To access the bot by url, use this url: **webhookUrl**?key=**hookKey**
+To access the bot by url, use this url: **webhookUrl**bot.php?key=**hookKey**
 
-Something like: https://example.com/TelegramBot/?key=561gbrz566zsw
+Something like: https://example.com/TelegramBot/bot.php?key=561gbrz566zsw
 If the key is not specified, you should get an error: "Invalid key!"
 
 Once you are sure it is working, you can set up the webhook by adding: &setwebhook
 to the end of the url:
-https://example.com/TelegramBot/?key=561gbrz566zsw&setwebhook
+https://example.com/TelegramBot/bot.php?key=561gbrz566zsw&setwebhook
 
 Once the webhook is set, be sure to comment out the second part of the config file (if not, every update will be the one specified there!).
 
