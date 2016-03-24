@@ -337,6 +337,7 @@ class TelegramApi {
 
   /**
    * Sends an api request to show a chat action for the client
+   *
    * @param int $chat_id target chat
    * @param string $action string representing the action.
    *
@@ -372,6 +373,7 @@ class TelegramApi {
    * @param  int     $user_id user id
    * @param  int     $offset  (Optional) Sequential number of the first photo to be returned. By default, all photos are returned. (Default: 0)
    * @param  int     $limit   (Optional) Limits the number of photos to be retrieved. Values between 1—100 are accepted. (Defaults: 100)
+   *
    * @return TA_UserProfilePhotos      the user profile photos
    */
   public function getUserProfilePhotos($user_id, $offset = 0, $limit = 100) {
@@ -390,6 +392,7 @@ class TelegramApi {
    * (This should return a TA_File object!)
    *
    * @param  string $file_id the id of the file
+   *
    * @return string          json representation of a file
    */
   public function getFile($file_id) {
@@ -399,19 +402,29 @@ class TelegramApi {
   }
 
   // Certificate not used (for now)
-  public function setWebhook($url, $certificate = null) {
+  /**
+   * Sets the webhook url
+   *
+   * @param string $url         new webhook. Use an empty string or null to remove the webhook
+   * @param mixed $certificate  not used!
+   *
+   * @return bool if the webhook was set correctly
+   */
+  public function setWebhook($url = null, $certificate = null) {
     $options = array ();
-    $options ['url'] = $url;
-    return $this->sendApiRequest ( 'setWebhook', $options );
+    if ($url !== null)
+      $options ['url'] = $url;
+    else
+      $options ['url'] = '';
+    return (bool)$this->sendApiRequest ( 'setWebhook', $options );
   }
 
 
-  // Untested
   /**
    * Answer an inline query request
    *
    * @param string $inline_query_id id of the query to answer
-   * @param mixed $results results to show to the user
+   * @param TA_InlineQueryResultArray $results results to show to the user
    * @param int $cache_time (Optional) time the server can save the answer in cache (Default: 0)
    * @param bool $is_personal (Optional) if the answer should not be the same for other users (Default: true)
    * @param string $next_offset  (Optional) (Default: "")
@@ -432,6 +445,7 @@ class TelegramApi {
    * Download a TA_File by its file_path
    *
    * @param  string $file_path file_path provided by getFile()
+   * 
    * @return string            path to the downloaded temp file
    */
   public function downloadFile($file_path) {
