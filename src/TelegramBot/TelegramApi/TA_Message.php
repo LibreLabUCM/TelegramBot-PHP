@@ -483,22 +483,140 @@ class TA_Message {
   }
 
 
+  /**
+   * Checks if there is a new chat participant
+   *
+   * @return bool if there is a new chat participant
+   */
+  public function isNewChatParticipant() {
+    return ($this->new_chat_participant !== null);
+  }
 
+  /**
+   * Gets the new chat participant
+   *
+   * @return TA_User the new chat participant
+   */
+  public function getNewChatParticipant() {
+    return $this->new_chat_participant;
+  }
 
-  // TODO Add all getters
-  /*
-  private $new_chat_participant; // TA_User
-  private $left_chat_participant; // TA_User
-  private $new_chat_title;
-  private $new_chat_photo;
-  private $delete_chat_photo;
-  private $group_chat_created;
-  private $channel_chat_created;
-  private $migrate_to_chat_id;
-  private $migrate_from_chat_id;
-  */
+  /**
+   * Checks if a chat participant left
+   *
+   * @return bool if a chat participant left
+   */
+  public function isLeftChatParticipant() {
+    return ($this->left_chat_participant !== null);
+  }
 
+  /**
+   * Gets the chat participant that left
+   *
+   * @return TA_User the chat participant that left
+   */
+  public function getLeftChatParticipant() {
+    return $this->left_chat_participant;
+  }
 
+  /**
+   * Checks if the chat title was updated
+   *
+   * @return bool if the chat title was updated
+   */
+  public function isNewChatTitle() {
+    return ($this->new_chat_title !== null);
+  }
+
+  /**
+   * Gets the updated chat title
+   *
+   * @return string the updated chat title
+   */
+  public function getNewChatTitle() {
+    return $this->new_chat_title;
+  }
+
+  /**
+   * Checks if the chat photo was updated
+   *
+   * @return bool if the chat photo was updated
+   */
+  public function isNewChatPhoto() {
+    return ($this->new_chat_photo !== null);
+  }
+
+  /**
+   * Gets the updated chat photo
+   *
+   * @return TA_Photo the updated chat photo
+   */
+  public function getNewChatPhoto() {
+    return $this->new_chat_photo;
+  }
+
+  /**
+   * Checks if the chat photo was deleted
+   *
+   * @return bool if the chat photo was deleted
+   */
+  public function isDeleteChatPhoto() {
+    return ($this->delete_chat_photo !== null && $this->delete_chat_photo);
+  }
+
+  /**
+   * Checks if the group has been created
+   *
+   * @return bool if the group has been created
+   */
+  public function isGroupChatCreated() {
+    return ($this->group_chat_created !== null && $this->group_chat_created);
+  }
+
+  /**
+   * Checks if the channel has been created
+   *
+   * @return bool if the channel has been created
+   */
+  public function isChannelChatCreated() {
+    return ($this->channel_chat_created !== null && $this->channel_chat_created);
+  }
+
+  /**
+   * Checks if the group has been migrated to supergroup
+   *
+   * @return bool if the group has been migrated to supergroup
+   */
+  public function isGroupMigratedToChatId() {
+    return ($this->migrate_to_chat_id !== null);
+  }
+
+  /**
+   * Gets the id group after migration
+   *
+   * @return int the id group after migration
+   */
+  public function getMigratedToChatId() {
+    return $this->migrate_to_chat_id;
+  }
+
+  /**
+   * Checks if the group has been migrated from group
+   *
+   * @return bool if the group has been migrated from group
+   */
+  public function isGroupMigratedFromChatId() {
+    return ($this->migrate_from_chat_id !== null);
+  }
+
+  /**
+   * Gets the id group before migration
+   *
+   * @return int the id group before migration
+   */
+  public function getMigratedFromChatId() {
+    return $this->migrate_from_chat_id;
+  }
 
   public function __toString() {
     if ($this->hasText())
@@ -510,6 +628,18 @@ class TA_Message {
         $ret .= ': ' . $this->getCaption();
       }
       return $ret;
+    } else if ($this->isNewChatParticipant()) {
+      return 'New chat participant';
+    } else if ($this->isLeftChatParticipant()) {
+      return 'Left chat participant';
+    } else if ($this->isGroupChatCreated()) {
+      return 'Chat created';
+    } else if ($this->isChannelChatCreated()) {
+      return 'Channel created';
+    } else if ($this->isNewChatTitle() || $this->isNewChatPhoto() || $this->isDeleteChatPhoto()) {
+      return 'Chat status msg';
+    } else if ($this->isGroupMigratedToChatId() || $this->isGroupMigratedFromChatId()) {
+      return 'Group migration';
     }
     return 'Unknown message';
   }
