@@ -26,7 +26,28 @@ abstract class TA_InlineQueryResult {
  *
  */
 class TA_ChosenInlineResult {
+  private $_api;
+  private $result_id;
+  private $from;
+  private $query;
 
+  private function TA_ChosenInlineResult($result_id, $from, $query) {
+    $this->result_id;
+    $this->from;
+    $this->query;
+  }
+
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_ChosenInlineResult::createFromArray($api, json_decode($json, true));
+  }
+
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['result_id'],
+          $arr['from'],
+          $arr['query']
+        );
 }
 
 
@@ -315,7 +336,55 @@ class TA_InlineQueryResultMpeg4Gif extends TA_InlineQueryResult {
  *
  */
 class TA_InlineQueryResultVideo extends TA_InlineQueryResult {
-  public function toArr(){}
+  private $mpeg4_url;
+  private $thumb_url;
+  private $title;
+  private $video_width;
+  private $video_height;
+  private $description;
+  private $duration;
+  private $message_text;
+  private $parse_mode;
+  private $disable_web_page_preview;
+  private $mime_type;
+
+  public function TA_InlineQueryResultVideo($api, $id, $video_url, $thumb_url, $title, $message_text, $mime_type, $parse_mode, $video_width = null, $duration = null, $video_height = null, $description = null, $disable_web_page_preview = null) {
+    $this->_api = $api;
+    $this->type = "video";
+    $this->id = (string)$id;
+    $this->video_url = $video_url;
+    $this->thumb_url = $thumb_url;
+    $this->title = $title;
+    $this->message_text = $message_text;
+    $this->mime_type = $mime_type;
+    $this->parse_mode = $parse_mode;
+    $this->video_width = $video_width;
+    $this->video_height = $video_height;
+    $this->description = $description;
+    $this->duration = $duration;
+
+
+    $this->disable_web_page_preview = $disable_web_page_preview;
+  }
+
+  public function toArr(){
+    $ret = array();
+    $ret['type']           = $this->type;
+    $ret['id']             = $this->id;
+    $ret['video_url']        = $this->video_url;
+    $ret['thumb_url']      = $this->thumb_url;
+
+    if (isset($this->title))             $ret['title']              = $this->title;
+    if (isset($this->video_width))       $ret['video_width']        = $this->video_width;
+    if (isset($this->video_height))      $ret['video_height']       = $this->video_height;
+    if (isset($this->description))       $ret['description']        = $this->description;
+    if (isset($this->mime_type))         $ret['mime_type']          = $this->mime_type;
+    if (isset($this->duration))          $ret['duration']           = $this->duration;
+    if (isset($this->message_text))      $ret['message_text']       = $this->message_text;
+    if (isset($this->parse_mode))        $ret['parse_mode']         = $this->parse_mode;
+    if (isset($this->disable_web_page_preview))   $ret['disable_web_page_preview']   = $this->disable_web_page_preview;
+    return $ret;
+  }
 }
 
 
