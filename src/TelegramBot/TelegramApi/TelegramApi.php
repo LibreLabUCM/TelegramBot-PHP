@@ -364,7 +364,7 @@ class TelegramApi {
     $options = array ();
     $options ['chat_id'] = $chat_id;
     $options ['action'] = $action;
-    return $this->sendApiRequest ( 'sendChatAction', $options );
+    return (bool)$this->sendApiRequest ( 'sendChatAction', $options );
   }
 
   /**
