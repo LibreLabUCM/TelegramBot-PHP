@@ -31,10 +31,11 @@ class TA_ChosenInlineResult {
   private $from;
   private $query;
 
-  private function TA_ChosenInlineResult($result_id, $from, $query) {
-    $this->result_id;
-    $this->from;
-    $this->query;
+  private function TA_ChosenInlineResult($api, $result_id, $from, $query) {
+    $this->_api = $api;
+    $this->result_id = $result_id;
+    $this->from = $from;
+    $this->query = $query;
   }
 
   public static function createFromJson(TelegramApi $api, $json) {
@@ -45,7 +46,7 @@ class TA_ChosenInlineResult {
     return new Self(
           $api,
           $arr['result_id'],
-          $arr['from'],
+          TA_User::createFromArray($api, $arr['from']),
           $arr['query']
         );
   }
@@ -59,7 +60,7 @@ class TA_ChosenInlineResult {
   }
 
   public function getQuery() {
-    return $this->query;
+    return ''.$this->query;
   }
 
 }
