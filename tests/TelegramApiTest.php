@@ -35,6 +35,50 @@ class TelegramApiTest extends PHPUnit_Framework_TestCase {
     $this->assertNull($r->getForwardDate());
   }
 
+  public function testSendPhoto() {
+    // Unimplemented
+  }
+
+  public function testSendAudio() {
+    // Unimplemented
+  }
+
+  public function testSendDocument() {
+    // Unimplemented
+  }
+
+  public function testSendSticker() {
+    // Unimplemented
+  }
+
+  public function testSendVideo() {
+    // Unimplemented
+  }
+
+  public function testSendVoice() {
+    // Unimplemented
+  }
+
+  public function testSendChatAction() {
+    $availableActions = array (
+      'typing',
+      'upload_photo',
+      'record_video',
+      'upload_video',
+      'record_audio',
+      'upload_audio',
+      'upload_document',
+      'find_location'
+    );
+    foreach($availableActions as $action) {
+      $this->assertTrue($this->api->sendChatAction($this->config['admins'][0], $action), 'Error on sending chat action: '.$action);
+    }
+  }
+
+  public function testGetUserProfilePhotos() {
+    // Unimplemented
+  }
+
 
 
 }
