@@ -628,6 +628,18 @@ class TA_Message {
         $ret .= ': ' . $this->getCaption();
       }
       return $ret;
+    } else if ($this->isNewChatParticipant()) {
+      return 'New chat participant';
+    } else if ($this->isLeftChatParticipant()) {
+      return 'Left chat participant';
+    } else if ($this->isGroupChatCreated()) {
+      return 'Chat created';
+    } else if ($this->isChannelChatCreated()) {
+      return 'Channel created';
+    } else if ($this->isNewChatTitle() || $this->isNewChatPhoto() || $this->isDeleteChatPhoto()) {
+      return 'Chat status msg';
+    } else if ($this->isGroupMigratedToChatId() || $this->isGroupMigratedFromChatId()) {
+      return 'Group migration';
     }
     return 'Unknown message';
   }
