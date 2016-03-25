@@ -79,6 +79,12 @@ class TelegramApiTest extends PHPUnit_Framework_TestCase {
     // Unimplemented
   }
 
+  public function testGetFile() {
+    // Unimplemented
+  }
 
+  public function testSetWebhook() {
+    // Unimplemented
+  }
 
 }
