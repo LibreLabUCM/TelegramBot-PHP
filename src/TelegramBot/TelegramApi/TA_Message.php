@@ -17,7 +17,7 @@ class TA_Message {
   private $from; // TA_User
   private $date;
   private $chat; // TA_Chat
-  private $fordward_from; // TA_User
+  private $forward_from; // TA_User
   private $forward_date;
   private $reply_to_message; // TA_Message
   private $text;
@@ -40,7 +40,7 @@ class TA_Message {
   private $migrate_to_chat_id;
   private $migrate_from_chat_id;
 
-  private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $fordward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
+  private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $forward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
       $text = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
       TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
@@ -50,7 +50,7 @@ class TA_Message {
     $this->date = $date;
     $this->chat = $chat;
     $this->from = $from;
-    $this->fordward_from = $fordward_from; // TA_User
+    $this->forward_from = $forward_from; // TA_User
     $this->forward_date = $forward_date;
     $this->reply_to_message = $reply_to_message; // TA_Message
     $this->text = $text;
@@ -210,7 +210,7 @@ class TA_Message {
    *
    * @return TA_User sender of the original message
    */
-  public function getFordwardFrom() {
+  public function getForwardFrom() {
     return $this->fordward_from;
   }
 
