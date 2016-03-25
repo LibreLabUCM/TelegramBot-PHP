@@ -50,6 +50,18 @@ class TA_ChosenInlineResult {
         );
   }
 
+  public function getResultId() {
+    return $this->result_id;
+  }
+
+  public function getFrom() {
+    return $this->from;
+  }
+
+  public function getQuery() {
+    return $this->query;
+  }
+
 }
 
 
