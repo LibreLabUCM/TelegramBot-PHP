@@ -51,9 +51,9 @@ class TA_Update {
     return new Self(
           $api,
           $arr['update_id'],
-          isset($arr['message'])               ? TA_Message::createFromArray($api, $arr['message'])          : null,
-          isset($arr['inline_query'])          ? TA_InlineQuery::createFromArray($api, $arr['inline_query']) : null,
-          isset($arr['chosen_inline_result'])  ? $arr['chosen_inline_result']                                : null
+          isset($arr['message'])               ? TA_Message::createFromArray($api, $arr['message'])                    : null,
+          isset($arr['inline_query'])          ? TA_InlineQuery::createFromArray($api, $arr['inline_query'])           : null,
+          isset($arr['chosen_inline_result'])  ? TA_ChosenInlineResult::createFromArray($api, $arr['chosen_inline_result'])  : null
         );
   }
 
@@ -125,7 +125,7 @@ class TA_Update {
    *
    * @return boolean if the update contains a chosen inline query
    */
-  public function hasChosenInlineQuery() {
+  public function hasChosenInlineResult() {
     return ($this->chosen_inline_result !== null);
   }
 

@@ -139,4 +139,10 @@ class TelegramBot {
       throw new Exception('Couldn\'t answer the inline query!');
     }
   }
+
+  public function processChosenInlineResult(TA_ChosenInlineResult $inlineQueryResult) {
+    $myfile = fopen("./files/log.txt", "a");
+    fwrite($myfile, "\n--------------------\n".$inlineQueryResult->getQuery()."\n--------------------\n");
+    fclose($myfile);
+  }
 }
