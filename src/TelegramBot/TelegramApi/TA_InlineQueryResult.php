@@ -48,6 +48,8 @@ class TA_ChosenInlineResult {
           $arr['from'],
           $arr['query']
         );
+  }
+
 }
 
 
