@@ -7,6 +7,8 @@ require_once(__DIR__ . '/TA_Update.php');
 require_once(__DIR__ . '/TA_ReplyMarkup.php');
 
 
+class TAE_ApiException extends Exception{}
+
 /**
  * Telegram api wrapper.
  *
@@ -50,9 +52,17 @@ class TelegramApi {
       CURLOPT_URL => $url,
       CURLOPT_SSL_VERIFYPEER => false
     ));
-    $r = json_decode ( curl_exec ( $curl ), true );
-    if (!$r['ok']) {
-      throw new Exception($r['description']);
+    $response = curl_exec ( $curl );
+    $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    if(curl_error($curl)) {
+      throw new Exception('Request error: ' . curl_error($curl));
+    }
+    $r = json_decode ( $response, true );
+    if ($r === FALSE || $r === null || !$r['ok']) {
+      throw new TAE_ApiException($r['description']);
+    }
+    if ($http_status != 200) {
+      throw new Exception('Request error: status ' . $http_status);
     }
     return $r['result'];
   }
@@ -378,7 +388,7 @@ class TelegramApi {
     );
 
     if (! in_array ( $action, $availableActions )) {
-      throw new Exception('Unknown action: ' . $action);
+      throw new TAE_Exception('Unknown action: ' . $action);
     }
 
     $options = array ();
