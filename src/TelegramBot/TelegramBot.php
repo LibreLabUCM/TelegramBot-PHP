@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/BotConfig.php');
 require_once(__DIR__ . '/TelegramApi/TelegramApi.php');
+require_once(__DIR__ . '/PluginManager.php');
 date_default_timezone_set('Europe/Madrid');
 
 
@@ -17,6 +18,8 @@ class TelegramBot {
     }
     $this->config = $config;
     $this->api = new TelegramApi ( $config->getToken () );
+    $this->pluginManager = new PluginManager($this->api);
+    $this->pluginManager->registerAll();
     //$username = $this->api->getMe()->getUsername();
     //echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
   }
@@ -44,36 +47,9 @@ class TelegramBot {
   }
 
   public function processMessage(TA_Message $message) {
+    $this->pluginManager->onMessageReceived($message);
     if ($message->hasText()) {
-      if ($message->getText() === "/help" || $message->getText() === "/start") {
-        $t = $this->api->sendMessage($message->getFrom(), "Developing... If you want to /test ...");
-      } else if ($message->getText() === "/test") {
-        $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_forceReplay'],['/test_keyboard'],['/test_hideKeyboard'],['/test_profilephotos']], null, true);
-        $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_forceReplay\n/test_keyboard\n/test_hideKeyboard\n/test_profilephotos", null, null, $k);
-      } else if ($message->getText() === "/test_keyboard") {
-        $k = new TA_ReplyKeyboardMarkup([[' - - - ']]); // 0
-        $k->addRow()->addOption("/test_hideKeyboard") // 1
-          ->addRow()->addOption("A") // 2
-          ->addRow()->addOption("C")->addOption("D") // 2
-          ->addOption("B", 2); // Add "B" to row 2
-        $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
-      } else if ($message->getText() === "/test_hideKeyboard") {
-        $this->api->sendMessage($message->getFrom(), "Hide!", null, null, new TA_ReplyKeyboardHide());
-      } else if ($message->getText() === "/test_reply") {
-        // $this->api->sendMessage($message->getFrom(), "Reply to message with id: " . $message->getMessageId(), null, $message->getMessageId());
-        $message->sendReply("Reply to message with id: " . $message->getMessageId());
-      } else if ($message->getText() === "/test_typing") {
-        $this->api->sendChatAction($message->getFrom(), "typing");
-      } else if ($message->getText() === "/test_forceReplay") {
-        $this->api->sendMessage($message->getFrom(), "Reply to me!", null, null, new TA_ForceReply());
-      } else if ($message->getText() === "/test_profilephotos") {
-        $profilePhotos = $this->api->getUserProfilePhotos($message->getFrom());
-        //$this->api->sendPhoto($message->getFrom(), $profilePhotos->getPhoto($profilePhotos->getNumberOfPhotos() - 1), "First"); // Gets first profile photo
-        //$this->api->sendPhoto($message->getFrom(), $profilePhotos->getPhoto(0), "Current"); // Gets last (current) profile photo
-        foreach ($profilePhotos->getAll() as $key => $photo) {
-          $this->api->sendPhoto($message->getFrom(), $photo, $key, $message);
-        }
-      } else if ($message->getText() === "/id" || $message->getText() === "/start id") {
+      if ($message->getText() === "/id" || $message->getText() === "/start id") {
         $message->sendReply($message->getFrom()->getId());
       } else {
         $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
@@ -144,5 +120,9 @@ class TelegramBot {
     $myfile = fopen("./files/log.txt", "a");
     fwrite($myfile, "\n--------------------\n".$inlineQueryResult->getQuery()."\n--------------------\n");
     fclose($myfile);
+  }
+
+  public function sendMsg($from, $text) {
+    $this->api->sendMessage($from, $text);
   }
 }
