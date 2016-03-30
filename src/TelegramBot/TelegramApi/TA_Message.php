@@ -178,7 +178,7 @@ class TA_Message {
    * @return boolean if the message has been fordwarded
    */
   public function isForwarded() {
-    return ($this->fordward_from !== null);
+    return ($this->forward_from !== null);
   }
 
   /**
@@ -211,7 +211,7 @@ class TA_Message {
    * @return TA_User sender of the original message
    */
   public function getForwardFrom() {
-    return $this->fordward_from;
+    return $this->forward_from;
   }
 
   /**
