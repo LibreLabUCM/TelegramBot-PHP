@@ -219,7 +219,18 @@ class TA_Audio {
    * @return string the file extension
    */
   public function getFileExtension() {
-    return 'mp3';
+    if ($this->mime_type == 'audio/mpeg')
+      return 'mp3';
+    else if ($this->mime_type == 'audio/wav')
+      return 'wav';
+    else if ($this->mime_type == 'audio/mid')
+      return 'mid';
+    else if ($this->mime_type == 'audio/mp4')
+      return 'mp4';
+    else if ($this->mime_type == 'audio/ogg')
+      return 'ogg';
+    else
+      return 'mp3';
   }
 
 }
@@ -609,7 +620,12 @@ class TA_Video {
    * @return string the file extension
    */
   public function getFileExtension() {
-    return 'mp4';
+    if ($this->mime_type == 'video/mp4')
+      return 'mp4';
+    else if ($this->mime_type == 'video/ogg')
+      return 'ogg';
+    else
+      return 'mp4';
   }
 
 }
@@ -1013,7 +1029,18 @@ class TA_PhotoSize {
    * @return string the file extension
    */
   public function getFileExtension() {
-    return 'jpg';
+    if ($this->mime_type == 'image/gif')
+      return 'gif';
+    else if ($this->mime_type == 'image/jpeg')
+      return 'jpg';
+    else if ($this->mime_type == 'image/png')
+      return 'png';
+    else if ($this->mime_type == 'image/bmp')
+      return 'bpm';
+    else if ($this->mime_type == 'image/vnd.microsoft.icon')
+      return 'ico';
+    else
+      return 'jpg';
   }
 
 }
@@ -1137,7 +1164,7 @@ class TA_Photo {
    * @return string the file extension
    */
   public function getFileExtension() {
-    return 'jpg';
+    return $this->getFileByIndex()->getFileExtension();
   }
 }
 
