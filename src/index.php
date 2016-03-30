@@ -1,6 +1,7 @@
 <?php
 $bot = require_once('setup.php');
 
+// Check login
 
 echo '<a href="'.$config->getBaseUrl().'">Index</a>'."<br>\n";
 echo '<a href="'.$config->getBaseUrl().'?setwebhook">Set webhook</a>'."<br>\n";
