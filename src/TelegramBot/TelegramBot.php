@@ -49,33 +49,7 @@ class TelegramBot {
   public function processMessage(TA_Message $message) {
     $this->pluginManager->onMessageReceived($message);
     if ($message->hasText()) {
-      if ($message->getText() === "/id" || $message->getText() === "/start id") {
-        $message->sendReply($message->getFrom()->getId());
-      } else {
-        $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
-      }
-    } else if ($message->hasMedia()) {
-      $f = $message->getMedia();
-      if ($f->hasFile()) {
-        $this->api->sendMessage($message->getFrom(), "I haven't downloaded your ".$message->getMediaType()."....\nI have deactivated it ;)");
-
-        /*
-        // Download the media file and answer with the link to the file downloaded
-        $this->api->sendChatAction($message->getFrom(), "typing");
-        $finalPath = 'files/'.$message->getDate() .'-'. $message->getMediaType() .'.'. $f->getFileExtension();
-        $downloadPath = $f->downloadFile();
-        rename($downloadPath, $finalPath);
-        $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
-        */
-      } else {
-        if ($message->isLocation()) {
-          $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude());
-        } else if ($message->isContact()) {
-          $this->api->sendMessage($message->getFrom(), "Name: ".$f->getFirstName()."\nPhone: ".$f->getPhoneNumber());
-        } else {
-          $this->api->sendMessage($message->getFrom(), "I can't understand that media message!");
-        }
-      }
+      // $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
     } else if ($message->isNewChatParticipant()) {
       $this->api->sendMessage($message->getChat(), "Welcome " . $message->getNewChatParticipant()->getFirstName());
     } else if ($message->isLeftChatParticipant()) {
@@ -87,12 +61,14 @@ class TelegramBot {
       $this->api->sendMessage($message->getMigratedToChatId(), "So... this is now a supergroup!");
     } else if ($message->isGroupMigratedFromChatId()) {
       $this->api->sendMessage($message->getChat(), "So... this is no longer a group!");
-    } else {
-      $myfile = fopen("./files/log.txt", "a");
-      fwrite($myfile, "\n--------------------\n".print_r($message, true)."\n--------------------\n");
-      fclose($myfile);
-      $this->api->sendMessage($message->getFrom(), "What have you sent me???");
     }
+    /*
+    $myfile = fopen("./files/log.txt", "a");
+    fwrite($myfile, "\n--------------------\n".print_r($message, true)."\n--------------------\n");
+    fclose($myfile);
+    $this->api->sendMessage($message->getFrom(), "What have you sent me???");
+    */
+
   }
 
   public function processInlineQuery(TA_InlineQuery $inline_query) {
