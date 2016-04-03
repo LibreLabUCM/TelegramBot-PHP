@@ -11,7 +11,8 @@ class InvalidKeyException extends Exception { }
 class TelegramBot {
   private $config;
   private $api;
-  public $pluginManager;
+  private $pluginManager;
+  private $username = 'DevPGSVbot'; // Shouldn't be hardcoded
 
   public function TelegramBot(BotConfig $config) {
     if (!$config->isValid ()) {
@@ -19,7 +20,7 @@ class TelegramBot {
     }
     $this->config = $config;
     $this->api = new TelegramApi ( $config->getToken () );
-    $this->pluginManager = new PluginManager($this->api);
+    $this->pluginManager = new PluginManager($this->api, $this);
     $this->pluginManager->registerAll();
     //$username = $this->api->getMe()->getUsername();
     //echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
@@ -28,6 +29,10 @@ class TelegramBot {
   public function setWebhook() {
     $url = $this->config->getWebhookUrl() . '?key=' . $this->config->getHookKey();
     return $this->api->setWebhook($url);
+  }
+
+  public function getBotUsername() {
+    return $this->username;
   }
 
   public function processUpdate($update) {

@@ -8,6 +8,7 @@ require_once(__DIR__ . '/TelegramBot.php');
 class PluginManager {
   private $pluginList; // TB_Plugin[]
   private $api; // TelegramApi
+  private $bot;
   private $events = array(
     'textMessageReceived' => array(
       'onTextMessageReceived',
@@ -19,9 +20,10 @@ class PluginManager {
     )
   );
 
-  public function PluginManager(TelegramApi $api) {
+  public function PluginManager(TelegramApi $api, TelegramBot $bot) {
     $this->pluginList = [];
     $this->api = $api;
+    $this->bot = $bot;
   }
 
   public function registerAll() {
@@ -92,7 +94,7 @@ class PluginManager {
           if (!($param->getText() === $args1)) return false;
         }
         if ($cmd1 === 'matches') {
-          $args1 = str_replace('{#USERNME}', 'DevPGSVbot', $args1);
+          $args1 = str_replace('{#USERNME}', $this->bot->getBotUsername(), $args1);
           if (preg_match('/'.$args1.'/', $param->getText(), $mat) == false) return false;
         }
       }
