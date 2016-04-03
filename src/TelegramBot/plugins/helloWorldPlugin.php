@@ -10,7 +10,7 @@ class HelloWorldPlugin extends TB_Plugin {
   /**
    * %condition text matches ^hi$
    */
-  public function onMessageReceived($message, &$eventData, $method) {
+  public function onMessageReceived($message) {
     $message->sendReply("Hello world from HelloWorldPlugin!");
   }
 
