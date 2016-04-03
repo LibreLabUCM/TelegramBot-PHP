@@ -50,7 +50,8 @@ class TelegramApi {
     curl_setopt_array ( $curl, array (
       CURLOPT_RETURNTRANSFER => 1,
       CURLOPT_URL => $url,
-      CURLOPT_SSL_VERIFYPEER => false
+      CURLOPT_SSL_VERIFYPEER => false,
+      // CURLOPT_FOLLOWLOCATION => true
     ));
     $response = curl_exec ( $curl );
     $http_status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -58,12 +59,14 @@ class TelegramApi {
       throw new Exception('Request error: ' . curl_error($curl));
     }
     $r = json_decode ( $response, true );
-    if ($r === FALSE || $r === null || !$r['ok']) {
-      throw new TAE_ApiException($r['description']);
-    }
     if ($http_status != 200) {
       throw new Exception('Request error: status ' . $http_status);
     }
+    if ($r === FALSE || $r === null || !$r['ok']) {
+      throw new TAE_ApiException($r['description']);
+    }
+
+    echo '<pre>', json_encode($r, JSON_PRETTY_PRINT), '</pre>';
     return $r['result'];
   }
 

@@ -11,6 +11,7 @@ class InvalidKeyException extends Exception { }
 class TelegramBot {
   private $config;
   private $api;
+  public $pluginManager;
 
   public function TelegramBot(BotConfig $config) {
     if (!$config->isValid ()) {
@@ -47,9 +48,14 @@ class TelegramBot {
   }
 
   public function processMessage(TA_Message $message) {
-    $this->pluginManager->onMessageReceived($message);
+    //$message->sendReply($message->getMessageId());
+    //$message->sendReply($message->getMedia()->getFileId());
+    //return;
     if ($message->hasText()) {
+      $this->pluginManager->onEvent('textMessageReceived', $message);
       // $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
+    } else if ($message->hasMedia()) {
+      $this->pluginManager->onEvent('mediaMessageReceived', $message);
     } else if ($message->isNewChatParticipant()) {
       $this->api->sendMessage($message->getChat(), "Welcome " . $message->getNewChatParticipant()->getFirstName());
     } else if ($message->isLeftChatParticipant()) {
@@ -100,5 +106,9 @@ class TelegramBot {
 
   public function sendMsg($from, $text) {
     $this->api->sendMessage($from, $text);
+  }
+
+  public function sendPhoto($to, $photo) {
+    $this->api->sendPhoto($to, $photo);
   }
 }
