@@ -53,9 +53,6 @@ class TelegramBot {
   }
 
   public function processMessage(TA_Message $message) {
-    //$message->sendReply($message->getMessageId());
-    //$message->sendReply($message->getMedia()->getFileId());
-    //return;
     if ($message->hasText()) {
       $this->pluginManager->onEvent('textMessageReceived', $message);
       // $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
@@ -64,7 +61,7 @@ class TelegramBot {
     } else if ($message->isNewChatParticipant()) {
       $this->api->sendMessage($message->getChat(), "Welcome " . $message->getNewChatParticipant()->getFirstName());
     } else if ($message->isLeftChatParticipant()) {
-      if ($message->getLeftChatParticipant()->getUsername() !== 'DevPGSVbot')
+      if ($message->getLeftChatParticipant()->getUsername() !== $this->getBotUsername())
         $this->api->sendMessage($message->getChat(), "Bye " . $message->getLeftChatParticipant()->getFirstName());
     } else if ($message->isGroupChatCreated()) {
       $this->api->sendMessage($message->getChat(), "Howdy!");
