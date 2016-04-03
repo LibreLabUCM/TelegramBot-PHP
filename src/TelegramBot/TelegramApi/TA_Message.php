@@ -105,7 +105,7 @@ class TA_Message {
           $arr['date'],
           TA_Chat::createFromArray($api, $arr['chat']),
           isset($arr['from'])                    ? TA_User::createFromArray($api, $arr['from'])                 : null,
-          isset($arr['fordward_from'])           ? TA_User::createFromArray($api, $arr['fordward_from'])        : null,
+          isset($arr['forward_from'])           ? TA_User::createFromArray($api, $arr['forward_from'])        : null,
           isset($arr['forward_date'])            ? $arr['forward_date']								                 	     	  : null,
           isset($arr['reply_to_message'])        ? TA_Message::createFromArray($api, $arr['reply_to_message'])  : null,
           isset($arr['text'])                    ? $arr['text']                                                 : null,
@@ -178,7 +178,7 @@ class TA_Message {
    * @return boolean if the message has been fordwarded
    */
   public function isForwarded() {
-    return ($this->fordward_from !== null);
+    return ($this->forward_from !== null);
   }
 
   /**
@@ -211,7 +211,7 @@ class TA_Message {
    * @return TA_User sender of the original message
    */
   public function getForwardFrom() {
-    return $this->fordward_from;
+    return $this->forward_from;
   }
 
   /**

@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/BotConfig.php');
 require_once(__DIR__ . '/TelegramApi/TelegramApi.php');
+require_once(__DIR__ . '/PluginManager.php');
 date_default_timezone_set('Europe/Madrid');
 
 
@@ -10,6 +11,8 @@ class InvalidKeyException extends Exception { }
 class TelegramBot {
   private $config;
   private $api;
+  private $pluginManager;
+  private $username = 'DevPGSVbot'; // Shouldn't be hardcoded
 
   public function TelegramBot(BotConfig $config) {
     if (!$config->isValid ()) {
@@ -17,6 +20,8 @@ class TelegramBot {
     }
     $this->config = $config;
     $this->api = new TelegramApi ( $config->getToken () );
+    $this->pluginManager = new PluginManager($this->api, $this);
+    $this->pluginManager->registerAll();
     //$username = $this->api->getMe()->getUsername();
     //echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
   }
@@ -24,6 +29,10 @@ class TelegramBot {
   public function setWebhook() {
     $url = $this->config->getWebhookUrl() . '?key=' . $this->config->getHookKey();
     return $this->api->setWebhook($url);
+  }
+
+  public function getBotUsername() {
+    return $this->username;
   }
 
   public function processUpdate($update) {
@@ -44,62 +53,14 @@ class TelegramBot {
   }
 
   public function processMessage(TA_Message $message) {
+    //$message->sendReply($message->getMessageId());
+    //$message->sendReply($message->getMedia()->getFileId());
+    //return;
     if ($message->hasText()) {
-      if ($message->getText() === "/help" || $message->getText() === "/start") {
-        $t = $this->api->sendMessage($message->getFrom(), "Developing... If you want to /test ...");
-      } else if ($message->getText() === "/test") {
-        $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_forceReplay'],['/test_keyboard'],['/test_hideKeyboard'],['/test_profilephotos']], null, true);
-        $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_forceReplay\n/test_keyboard\n/test_hideKeyboard\n/test_profilephotos", null, null, $k);
-      } else if ($message->getText() === "/test_keyboard") {
-        $k = new TA_ReplyKeyboardMarkup([[' - - - ']]); // 0
-        $k->addRow()->addOption("/test_hideKeyboard") // 1
-          ->addRow()->addOption("A") // 2
-          ->addRow()->addOption("C")->addOption("D") // 2
-          ->addOption("B", 2); // Add "B" to row 2
-        $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
-      } else if ($message->getText() === "/test_hideKeyboard") {
-        $this->api->sendMessage($message->getFrom(), "Hide!", null, null, new TA_ReplyKeyboardHide());
-      } else if ($message->getText() === "/test_reply") {
-        // $this->api->sendMessage($message->getFrom(), "Reply to message with id: " . $message->getMessageId(), null, $message->getMessageId());
-        $message->sendReply("Reply to message with id: " . $message->getMessageId());
-      } else if ($message->getText() === "/test_typing") {
-        $this->api->sendChatAction($message->getFrom(), "typing");
-      } else if ($message->getText() === "/test_forceReplay") {
-        $this->api->sendMessage($message->getFrom(), "Reply to me!", null, null, new TA_ForceReply());
-      } else if ($message->getText() === "/test_profilephotos") {
-        $profilePhotos = $this->api->getUserProfilePhotos($message->getFrom());
-        //$this->api->sendPhoto($message->getFrom(), $profilePhotos->getPhoto($profilePhotos->getNumberOfPhotos() - 1), "First"); // Gets first profile photo
-        //$this->api->sendPhoto($message->getFrom(), $profilePhotos->getPhoto(0), "Current"); // Gets last (current) profile photo
-        foreach ($profilePhotos->getAll() as $key => $photo) {
-          $this->api->sendPhoto($message->getFrom(), $photo, $key, $message);
-        }
-      } else if ($message->getText() === "/id" || $message->getText() === "/start id") {
-        $message->sendReply($message->getFrom()->getId());
-      } else {
-        $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
-      }
+      $this->pluginManager->onEvent('textMessageReceived', $message);
+      // $this->api->sendMessage($message->getFrom(), '@'.$message->getFrom()->getUsername() . ' ('.date('m/d/y h:i:s', $message->getDate()).'):'."\n" . $message);
     } else if ($message->hasMedia()) {
-      $f = $message->getMedia();
-      if ($f->hasFile()) {
-        $this->api->sendMessage($message->getFrom(), "I haven't downloaded your ".$message->getMediaType()."....\nI have deactivated it ;)");
-
-        /*
-        // Download the media file and answer with the link to the file downloaded
-        $this->api->sendChatAction($message->getFrom(), "typing");
-        $finalPath = 'files/'.$message->getDate() .'-'. $message->getMediaType() .'.'. $f->getFileExtension();
-        $downloadPath = $f->downloadFile();
-        rename($downloadPath, $finalPath);
-        $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
-        */
-      } else {
-        if ($message->isLocation()) {
-          $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude());
-        } else if ($message->isContact()) {
-          $this->api->sendMessage($message->getFrom(), "Name: ".$f->getFirstName()."\nPhone: ".$f->getPhoneNumber());
-        } else {
-          $this->api->sendMessage($message->getFrom(), "I can't understand that media message!");
-        }
-      }
+      $this->pluginManager->onEvent('mediaMessageReceived', $message);
     } else if ($message->isNewChatParticipant()) {
       $this->api->sendMessage($message->getChat(), "Welcome " . $message->getNewChatParticipant()->getFirstName());
     } else if ($message->isLeftChatParticipant()) {
@@ -111,12 +72,14 @@ class TelegramBot {
       $this->api->sendMessage($message->getMigratedToChatId(), "So... this is now a supergroup!");
     } else if ($message->isGroupMigratedFromChatId()) {
       $this->api->sendMessage($message->getChat(), "So... this is no longer a group!");
-    } else {
-      $myfile = fopen("./files/log.txt", "a");
-      fwrite($myfile, "\n--------------------\n".print_r($message, true)."\n--------------------\n");
-      fclose($myfile);
-      $this->api->sendMessage($message->getFrom(), "What have you sent me???");
     }
+    /*
+    $myfile = fopen("./files/log.txt", "a");
+    fwrite($myfile, "\n--------------------\n".print_r($message, true)."\n--------------------\n");
+    fclose($myfile);
+    $this->api->sendMessage($message->getFrom(), "What have you sent me???");
+    */
+
   }
 
   public function processInlineQuery(TA_InlineQuery $inline_query) {
@@ -144,5 +107,13 @@ class TelegramBot {
     $myfile = fopen("./files/log.txt", "a");
     fwrite($myfile, "\n--------------------\n".$inlineQueryResult->getQuery()."\n--------------------\n");
     fclose($myfile);
+  }
+
+  public function sendMsg($from, $text) {
+    $this->api->sendMessage($from, $text);
+  }
+
+  public function sendPhoto($to, $photo) {
+    $this->api->sendPhoto($to, $photo);
   }
 }
