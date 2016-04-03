@@ -42,7 +42,6 @@ class TestPlugin extends TB_Plugin {
       $t = $message->getText();
       $c = $eventData['cancelled'] ? 'yes' : 'no';
       $message->sendReply("Priority: $p\nText: $t\nCancelled: $c");
-      //$eventData['cancelled'] = true;
     }
   }
 
