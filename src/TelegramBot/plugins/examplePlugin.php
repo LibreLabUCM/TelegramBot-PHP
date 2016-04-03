@@ -3,7 +3,7 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class ExamplePlugin extends TB_Plugin {
-  public function HelloWorldPlugin($api) {
+  public function ExamplePlugin($api) {
     parent::__construct($api);
   }
 
@@ -35,6 +35,6 @@ class ExamplePlugin extends TB_Plugin {
 }
 return array(
   'class' => 'ExamplePlugin',
-  'name' => 'Example World',
+  'name' => 'Example Plugin',
   'id' => 'ExamplePlugin'
 );
