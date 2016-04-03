@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class TestPlugin extends TB_Plugin {
-  public function TestPlugin($api) {
-    parent::__construct($api);
+  public function TestPlugin($api, $bot) {
+    parent::__construct($api, $bot);
   }
 
   /**

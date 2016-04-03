@@ -17,6 +17,9 @@ class PluginManager {
     'mediaMessageReceived' => array(
       'onMediaMessageReceived',
       'onMessageReceived'
+    ),
+    'messageReceived' => array(
+      'onMessageReceived'
     )
   );
 
@@ -34,7 +37,7 @@ class PluginManager {
 
   public function registerPlugin($plugin) {
     $this->pluginList[$plugin['id']] = array(
-      'plugin' => new $plugin['class']($this->api),
+      'plugin' => new $plugin['class']($this->api, $this->bot),
       'class' => $plugin['class'],
       'name' => $plugin['name'],
       'reflector' => new ReflectionClass($plugin['class'])
@@ -155,8 +158,10 @@ class PluginManager {
 
 abstract class TB_Plugin {
   protected $api; // TelegramBot
-  public function TB_Plugin(TelegramApi $api) {
+  protected $bot; // TelegramBot
+  public function TB_Plugin(TelegramApi $api, TelegramBot $bot) {
     $this->api = $api;
+    $this->bot = $bot;
   }
   //public function onMessageReceived($message) {}
   //public function onTextMessageReceived($message) {}

@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class HelloWorldPlugin extends TB_Plugin {
-  public function HelloWorldPlugin($api) {
-    parent::__construct($api);
+  public function HelloWorldPlugin($api, $bot) {
+    parent::__construct($api, $bot);
   }
 
   /**

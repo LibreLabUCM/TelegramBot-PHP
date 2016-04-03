@@ -59,10 +59,9 @@ class TelegramBot {
     } else if ($message->hasMedia()) {
       $this->pluginManager->onEvent('mediaMessageReceived', $message);
     } else if ($message->isNewChatParticipant()) {
-      $this->api->sendMessage($message->getChat(), "Welcome " . $message->getNewChatParticipant()->getFirstName());
+      $this->pluginManager->onEvent('messageReceived', $message);
     } else if ($message->isLeftChatParticipant()) {
-      if ($message->getLeftChatParticipant()->getUsername() !== $this->getBotUsername())
-        $this->api->sendMessage($message->getChat(), "Bye " . $message->getLeftChatParticipant()->getFirstName());
+      $this->pluginManager->onEvent('messageReceived', $message);
     } else if ($message->isGroupChatCreated()) {
       $this->api->sendMessage($message->getChat(), "Howdy!");
     } else if ($message->isGroupMigratedToChatId()) {
