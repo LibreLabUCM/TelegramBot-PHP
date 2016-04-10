@@ -8,7 +8,7 @@ class MediaLinkerPlugin extends TB_Plugin {
   }
 
   /**
-   *
+   * %condition date isNew
    */
   public function onMediaMessageReceived($message) {
     $f = $message->getMedia();

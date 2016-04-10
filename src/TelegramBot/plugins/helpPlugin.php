@@ -8,6 +8,7 @@ class HelpPlugin extends TB_Plugin {
   }
 
   /**
+   * %condition date isNew
    * %condition text matches ^\/(?:help|start)(?:@{#USERNME})?$
    */
   public function onMessageReceived($message) {

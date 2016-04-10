@@ -7,6 +7,9 @@ class WelcomePlugin extends TB_Plugin {
     parent::__construct($api, $bot);
   }
 
+  /**
+   * %condition date isNew
+   */
   public function onMessageReceived($message) {
     if ($message->isNewChatParticipant()) {
       if ($message->getNewChatParticipant()->getUsername() !== $this->bot->getBotUsername())

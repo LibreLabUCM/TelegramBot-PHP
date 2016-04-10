@@ -9,6 +9,7 @@ class PluginManager {
   private $pluginList; // TB_Plugin[]
   private $api; // TelegramApi
   private $bot;
+  private $considerOldAfter = 10;
   private $events = array(
     'textMessageReceived' => array(
       'onTextMessageReceived',
@@ -22,6 +23,7 @@ class PluginManager {
       'onMessageReceived'
     )
   );
+
 
   public function PluginManager(TelegramApi $api, TelegramBot $bot) {
     $this->pluginList = [];
@@ -80,26 +82,39 @@ class PluginManager {
   private function checkConditions($conditions, $param) {
     foreach($conditions as $condition) {
       $condition = explode(' ', $condition, 2);
-      $cmd = $condition[0];
-      if ($cmd === 'isMessage') {
-        if (!($param instanceof TA_Message)) return false;
-      }
-      if ($cmd === 'hasText') {
-        if (!($param instanceof TA_Message)) return false;
-        if (!$param->hasText()) return false;
-      }
-      if ($cmd === 'text') {
-        if (!($param instanceof TA_Message)) return false;
-        if (!$param->hasText()) return false;
-        list($cmd1, $args1) = explode(' ', $condition[1], 2);
-        if ($cmd1 === 'is') {
-          $args1 = str_replace('{#USERNME}', 'DevPGSVbot', $args1);
-          if (!($param->getText() === $args1)) return false;
-        }
-        if ($cmd1 === 'matches') {
-          $args1 = str_replace('{#USERNME}', $this->bot->getBotUsername(), $args1);
-          if (preg_match('/'.$args1.'/', $param->getText(), $mat) == false) return false;
-        }
+      if (empty($condition[0])) throw new Exception('No condition!');
+      switch($condition[0]) {
+        case 'isMessage':
+          if (!($param instanceof TA_Message)) return false;
+          break;
+        case 'hasText':
+          if (!($param instanceof TA_Message)) return false;
+          if (!$param->hasText()) return false;
+          break;
+        case 'text':
+          if (!($param instanceof TA_Message)) return false;
+          if (!$param->hasText()) return false;
+          $condition['text'] = explode(' ', $condition[1], 2);
+          if ($condition['text'][0] === 'is') {
+            $condition['text'][1] = str_replace('{#USERNME}', $this->bot->getBotUsername(), $condition['text'][1]);
+            if (!($param->getText() === $condition['text'][1])) return false;
+          }
+          if ($condition['text'][0] === 'matches') {
+            $condition['text'][1] = str_replace('{#USERNME}', $this->bot->getBotUsername(), $condition['text'][1]);
+            if (preg_match('/'.$condition['text'][1].'/', $param->getText(), $mat) == false) return false;
+          }
+          break;
+        case 'date':
+          if (!($param instanceof TA_Message)) return false;
+          $date = $param->getDate();
+          if ($condition[1] === 'isNew') {
+            if($date < time() - $this->considerOldAfter) return false;
+          } else if ($condition[1] === 'isOld') {
+            if($date > time() - $this->considerOldAfter) return false;
+          } else if ($condition[1] === 'any') {}
+          break;
+        default:
+          throw new Exception('Unknown condition: '.$condition[0]);
       }
     }
     return true;
