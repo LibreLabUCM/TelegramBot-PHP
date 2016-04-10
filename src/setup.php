@@ -12,6 +12,15 @@ if (!file_exists('./config_file.php')) {
       exit();
     }
 }
+if (!extension_loaded("mongodb")) {
+  echo 'MongoDB not found!';
+  exit();
+}
+
+require_once(__DIR__ . '/../vendor/autoload.php');
+$db = (new MongoDB\Client($_BOT_CONFIG['db']['host']))
+  ->selectDatabase($_BOT_CONFIG['db']['database']);
+
 
 require_once('./TelegramBot/TelegramBot.php');
 require_once('./TelegramBot/BotConfig.php');
@@ -28,7 +37,7 @@ $config = BotConfig::create()
 unset($_BOT_CONFIG);
 
 try {
-  $bot = new TelegramBot($config);
+  $bot = new TelegramBot($config, $db);
   return $bot;
 } catch (InvalidConfigException $e) {
   http_response_code(500);
