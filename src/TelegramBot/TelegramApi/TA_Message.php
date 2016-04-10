@@ -478,8 +478,8 @@ class TA_Message {
    *
    * @return TA_Message the result of the api request
    */
-  public function sendReply($text, $link_previews = true, $reply_markup = null) {
-    return $this->_api->sendMessage($this->getChat()->getId(), $text, $link_previews, $this->getMessageId(), $reply_markup);
+  public function sendReply($text, $link_previews = true, $reply_markup = null, $parse_mode = null) {
+    return $this->_api->sendMessage($this->getChat()->getId(), $text, $link_previews, $this->getMessageId(), $reply_markup, $parse_mode);
   }
 
 
