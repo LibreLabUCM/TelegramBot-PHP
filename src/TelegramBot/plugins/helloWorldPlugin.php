@@ -8,6 +8,7 @@ class HelloWorldPlugin extends TB_Plugin {
   }
 
   /**
+   * %condition date isNew
    * %condition text matches ^hi$
    */
   public function onMessageReceived($message) {
