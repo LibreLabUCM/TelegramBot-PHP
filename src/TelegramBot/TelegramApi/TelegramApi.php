@@ -95,14 +95,13 @@ class TelegramApi {
    *
    * @return TA_Message the result of the api request
    */
-  public function sendMessage($chat_id, $text, $link_previews = true, $reply_id = null, $reply_markup = null) {
+  public function sendMessage($chat_id, $text, $link_previews = true, $reply_id = null, $reply_markup = null, $parse_mode = null) {
     if ($chat_id instanceof TA_User) $chat_id = $chat_id->getId();
     if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
 
     $options = array ();
     $options ['chat_id'] = $chat_id;
     $options ['text'] = (string)$text;
-    //$options ['parse_mode'] = 'Markdown';
 
     if ($link_previews === true || $link_previews === null) {
       $options ['disable_web_page_preview'] = false;
@@ -117,6 +116,9 @@ class TelegramApi {
 
     if ($reply_markup !== null) {
       $options ['reply_markup'] = (string)$reply_markup;
+    }
+    if ($parse_mode !== null) {
+      $options ['parse_mode'] = (string)$parse_mode;
     }
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'sendMessage', $options ));
   }
