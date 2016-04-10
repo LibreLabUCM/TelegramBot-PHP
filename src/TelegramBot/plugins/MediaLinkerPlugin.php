@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class MediaLinkerPlugin extends TB_Plugin {
-  public function MediaLinkerPlugin($api) {
-    parent::__construct($api);
+  public function MediaLinkerPlugin($api, $bot) {
+    parent::__construct($api, $bot);
   }
 
   /**
