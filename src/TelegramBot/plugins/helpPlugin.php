@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class HelpPlugin extends TB_Plugin {
-  public function HelpPlugin($api, $bot) {
-    parent::__construct($api, $bot);
+  public function HelpPlugin($api, $bot, $db) {
+    parent::__construct($api, $bot, $db);
   }
 
   /**

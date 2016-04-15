@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class TestPlugin extends TB_Plugin {
-  public function TestPlugin($api, $bot) {
-    parent::__construct($api, $bot);
+  public function TestPlugin($api, $bot, $db) {
+    parent::__construct($api, $bot, $db);
   }
 
   /**
@@ -43,6 +43,12 @@ class TestPlugin extends TB_Plugin {
       $t = $message->getText();
       $c = $eventData['cancelled'] ? 'yes' : 'no';
       $message->sendReply("Priority: $p\nText: $t\nCancelled: $c");
+    } else if ($t === "/test_ban") {
+      $this->api->kickChatMember($message->getChat(), $message->getReplyToMessage()->getFrom());
+    } else if ($t === "/test_unban") {
+      $this->api->unbanChatMember($message->getChat(), $message->getReplyToMessage()->getFrom());
+    } else if(substr($t, 0, strlen('/test_entities')) === '/test_entities') {
+      $message->sendReply(print_r($message->getEntities(), true));
     }
   }
 

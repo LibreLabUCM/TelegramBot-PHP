@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class IdPlugin extends TB_Plugin {
-  public function IdPlugin($api, $bot) {
-    parent::__construct($api, $bot);
+  public function IdPlugin($api, $bot, $db) {
+    parent::__construct($api, $bot, $db);
   }
 
   /**

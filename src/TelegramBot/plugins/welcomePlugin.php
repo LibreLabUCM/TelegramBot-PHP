@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class WelcomePlugin extends TB_Plugin {
-  public function WelcomePlugin($api, $bot) {
-    parent::__construct($api, $bot);
+  public function WelcomePlugin($api, $bot, $db) {
+    parent::__construct($api, $bot, $db);
   }
 
   /**
