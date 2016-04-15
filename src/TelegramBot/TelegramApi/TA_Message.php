@@ -43,7 +43,7 @@ class TA_Message {
 
   private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $forward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
       $text = null, $entities = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
-      TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
+      TA_Venue $venue = null, TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
 
     $this->_api = $api;
@@ -65,6 +65,7 @@ class TA_Message {
     $this->caption = $caption;
     $this->contact = $contact; // TA_Contact
     $this->location = $location; // TA_Location
+    $this->venue = $venue; // TA_Venue
     $this->new_chat_participant = $new_chat_participant; // TA_User
     $this->left_chat_participant = $left_chat_participant; // TA_User
     $this->new_chat_title = $new_chat_title;
@@ -128,6 +129,7 @@ class TA_Message {
           isset($arr['caption'])                 ? $arr['caption']                                              : null,
           isset($arr['contact'])                 ? TA_Contact::createFromArray($api, $arr['contact'])           : null,
           isset($arr['location'])                ? TA_Location::createFromArray($api, $arr['location'])         : null,
+          isset($arr['venue'])                   ? TA_Venue::createFromArray($api, $arr['venue'])               : null,
           isset($arr['new_chat_participant'])    ? TA_User::createFromArray($api, $arr['new_chat_participant']) : null,
           isset($arr['left_chat_participant'])   ? TA_User::createFromArray($api, $arr['left_chat_participant']): null,
           isset($arr['new_chat_title'])          ? $arr['new_chat_title']                                       : null,
@@ -409,10 +411,30 @@ class TA_Message {
    *
    * Message is a shared location, information about the location
    *
-   * @return unspecified message location
+   * @return TA_Location message location
    */
   public function getLocation() {
     return $this->location;
+  }
+
+  /**
+   * Checks if the current message contains a venue
+   *
+   * @return boolean if the current message contains a venue
+   */
+  public function isVenue() {
+    return ($this->venue !== null);
+  }
+
+  /**
+   * Gets the message venue
+   *
+   * Message is a venue, information about the venue
+   *
+   * @return TA_Venue message venue
+   */
+  public function getVenue() {
+    return $this->venue;
   }
 
   /**
@@ -428,6 +450,7 @@ class TA_Message {
     if ($this->isVideo()) return $this->getVideo();
     if ($this->isVoice()) return $this->getVoice();
     if ($this->isContact()) return $this->getContact();
+    if ($this->isVenue()) return $this->getVenue();
     if ($this->isLocation()) return $this->getLocation();
     return false;
   }
@@ -445,6 +468,7 @@ class TA_Message {
     if ($this->isVideo()) return 'video';
     if ($this->isVoice()) return 'voice';
     if ($this->isContact()) return 'contact';
+    if ($this->isVenue()) return 'venue';
     if ($this->isLocation()) return 'location';
     return false;
   }
