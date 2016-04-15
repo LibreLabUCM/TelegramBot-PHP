@@ -51,7 +51,8 @@ class TelegramBot {
     } else if ($updateObj->hasChosenInlineResult()) {
       $this->processChosenInlineResult($updateObj->getChosenInlineResult());
     } else {
-      throw new Exception('This is not a message or an inline query!');
+      error_log('Unkown update: '.$update);
+      // throw new Exception('This is not a message or an inline query!');
     }
   }
 
