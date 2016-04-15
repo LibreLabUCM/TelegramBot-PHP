@@ -13,15 +13,18 @@ class TelegramBot {
   private $api;
   private $pluginManager;
   private $username = 'DevPGSVbot'; // Shouldn't be hardcoded
+  private $db;
 
-  public function TelegramBot(BotConfig $config) {
+  public function TelegramBot(BotConfig $config, $db) {
     if (!$config->isValid ()) {
       throw new InvalidConfigException('Bot is NOT configured properly!');
     }
     $this->config = $config;
+    $this->db = $db;
     $this->api = new TelegramApi ( $config->getToken () );
-    $this->pluginManager = new PluginManager($this->api, $this);
+    $this->pluginManager = new PluginManager($this->api, $this, $this->db = $db);
     $this->pluginManager->registerAll();
+
     //$username = $this->api->getMe()->getUsername();
     //echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
   }

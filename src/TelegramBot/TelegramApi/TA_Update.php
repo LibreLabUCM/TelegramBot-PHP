@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/TelegramApi.php');
+require_once(__DIR__ . '/TA_Message.php');
 
 
 /**
