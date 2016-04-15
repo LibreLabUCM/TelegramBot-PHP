@@ -5,6 +5,7 @@ require_once(__DIR__ . '/TA_InlineQuery.php');
 require_once(__DIR__ . '/TA_InlineQueryResult.php');
 require_once(__DIR__ . '/TA_Update.php');
 require_once(__DIR__ . '/TA_ReplyMarkup.php');
+require_once(__DIR__ . '/TA_CallbackQuery.php');
 
 
 class TAE_ApiException extends Exception{}
@@ -488,7 +489,7 @@ class TelegramApi {
     if ($parse_mode !== null) {
       $options ['parse_mode'] = (string)$parse_mode;
     }
-
+    
     return TA_Message::createFromArray($this, $this->sendApiRequest ( 'editMessageText', $options ));
   }
 
