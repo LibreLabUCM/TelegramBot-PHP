@@ -50,6 +50,20 @@ class TelegramBot {
       $this->processInlineQuery($updateObj->getInlineQuery());
     } else if ($updateObj->hasChosenInlineResult()) {
       $this->processChosenInlineResult($updateObj->getChosenInlineResult());
+    } else if ($updateObj->hasCallbackQuery()) {
+      $originalMsg = $updateObj->getCallbackQuery()->getMessage();
+      $k = new TA_InlineKeyboardMarkup(); // 0
+      $k->addOption(new TA_InlineKeyboardButton('+1', null, '+1')) // 1
+        ->addOption(new TA_InlineKeyboardButton('-1', null, "-1"));
+      if (is_numeric($originalMsg->getText())) {
+        if ($updateObj->getCallbackQuery()->getData() === '+1')
+          $nextText = $originalMsg->getText() + 1;
+        else
+          $nextText = $originalMsg->getText() - 1;
+      } else {
+        $nextText = 0;
+      }
+      $r = $originalMsg->editMessageText($nextText, null, null, $k);
     } else {
       error_log('Unkown update: '.$update);
       // throw new Exception('This is not a message or an inline query!');
