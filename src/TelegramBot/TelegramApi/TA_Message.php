@@ -517,7 +517,7 @@ class TA_Message {
   }
 
   public function editMessageText($text, $parse_mode = null, $link_previews = null, $reply_markup = null) {
-    return $this->_api->editMessageText($this->getChat()->getId(), $this->getMessageId(), $text, $parse_mode = null, $link_previews = null, $reply_markup = null);
+    return $this->_api->editMessageText($this->getChat()->getId(), $this->getMessageId(), $text, $parse_mode, $link_previews, $reply_markup);
   }
 
 
