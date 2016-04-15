@@ -59,11 +59,11 @@ class TelegramApi {
       throw new Exception('Request error: ' . curl_error($curl));
     }
     $r = json_decode ( $response, true );
-    if ($http_status != 200) {
-      throw new Exception('Request error: status ' . $http_status);
-    }
     if ($r === FALSE || $r === null || !$r['ok']) {
       throw new TAE_ApiException($r['description']);
+    }
+    if ($http_status != 200) {
+      throw new Exception('Request error: status ' . $http_status);
     }
 
     echo '<pre>', json_encode($r, JSON_PRETTY_PRINT), '</pre>';
