@@ -27,16 +27,10 @@ class TestPlugin extends TB_Plugin {
       $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
     } else if ($t === "/test_inline_keyboard") {
       $k = new TA_InlineKeyboardMarkup(); // 0
-      $k->addRow()
-          ->addOption(new TA_InlineKeyboardButton('"/test_hideKeyboard"', null, "/test_hideKeyboard")) // 1
-        ->addRow()
-          ->addOption(new TA_InlineKeyboardButton('A', null, "A")) // 2
+      $k->addOption(new TA_InlineKeyboardButton('A', null, "A")) // 2
         ->addRow()
           ->addOption(new TA_InlineKeyboardButton('B', null, "B"))
-          ->addOption(new TA_InlineKeyboardButton('C', null, "C")) // 3
-        ->addRow()
-          ->addOption(new TA_InlineKeyboardButton('Contact', null, "-"))
-          ->addOption(new TA_InlineKeyboardButton('Location', null, "-"));
+          ->addOption(new TA_InlineKeyboardButton('C', null, "C"));
       $this->api->sendMessage($message->getFrom(), "Keyboard! Hide with /test_hideKeyboard", null, null, $k);
     } else if ($t === "/test_hideKeyboard") {
       $this->api->sendMessage($message->getFrom(), "Hide!", null, null, new TA_ReplyKeyboardHide());
