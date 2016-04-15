@@ -15,13 +15,15 @@ class TA_Update {
   private $message; // TA_Message
   private $inline_query;
   private $chosen_inline_result;
+  private $callback_query;
 
-  private function TA_Update(TelegramApi $api, $update_id, $message = null, $inline_query = null, $chosen_inline_result = null) {
+  private function TA_Update(TelegramApi $api, $update_id, $message = null, $inline_query = null, $chosen_inline_result = null, $callback_query) {
     $this->_api = $api;
     $this->update_id = $update_id;
     $this->message = $message;
     $this->inline_query = $inline_query;
     $this->chosen_inline_result = $chosen_inline_result;
+    $this->callback_query = $callback_query;
   }
 
   /**
@@ -54,7 +56,8 @@ class TA_Update {
           $arr['update_id'],
           isset($arr['message'])               ? TA_Message::createFromArray($api, $arr['message'])                    : null,
           isset($arr['inline_query'])          ? TA_InlineQuery::createFromArray($api, $arr['inline_query'])           : null,
-          isset($arr['chosen_inline_result'])  ? TA_ChosenInlineResult::createFromArray($api, $arr['chosen_inline_result'])  : null
+          isset($arr['chosen_inline_result'])  ? TA_ChosenInlineResult::createFromArray($api, $arr['chosen_inline_result'])  : null,
+          isset($arr['callback_query'])        ? TA_CallbackQuery::createFromArray($api, $arr['callback_query'])       : null
         );
   }
 
@@ -78,6 +81,7 @@ class TA_Update {
     if ($this->message !== null) return "message";
     if ($this->inline_query !== null) return "inline_query";
     if ($this->chosen_inline_result !== null) return "chosen_inline_result";
+    if ($this->callback_query !== null) return "callback_query";
     return false;
   }
 
@@ -139,6 +143,26 @@ class TA_Update {
    */
   public function getChosenInlineResult() {
     return $this->chosen_inline_result;
+  }
+
+  /**
+   * Checks if the update contains a callback query
+   *
+   * @return boolean if the update contains a callback query
+   */
+  public function hasCallbackQuery() {
+    return ($this->callback_query !== null);
+  }
+
+  /**
+   * Gets the update callback_query
+   *
+   * This object represents an incoming callback query from a callback button in an inline keyboard. If the button that originated the query was attached to a message sent by the bot, the field message will be presented. If the button was attached to a message sent via the bot (in inline mode), the field inline_message_id will be presented.
+   *
+   * @return TA_CallbackQuery update callback_query
+   */
+  public function getCallbackQuery() {
+    return $this->callback_query;
   }
 
 }
