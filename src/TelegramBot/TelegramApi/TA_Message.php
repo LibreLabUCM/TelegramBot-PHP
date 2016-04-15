@@ -516,6 +516,10 @@ class TA_Message {
     return $this->_api->sendMessage($this->getChat()->getId(), $text, $link_previews, $this->getMessageId(), $reply_markup, $parse_mode);
   }
 
+  public function editMessageText($text, $parse_mode = null, $link_previews = null, $reply_markup = null) {
+    return $this->_api->editMessageText($this->getChat()->getId(), $this->getMessageId(), $text, $parse_mode = null, $link_previews = null, $reply_markup = null);
+  }
+
 
   /**
    * Checks if there is a new chat participant
