@@ -48,7 +48,11 @@ class TestPlugin extends TB_Plugin {
     } else if ($t === "/test_unban") {
       $this->api->unbanChatMember($message->getChat(), $message->getReplyToMessage()->getFrom());
     } else if(substr($t, 0, strlen('/test_entities')) === '/test_entities') {
-      $message->sendReply(print_r($message->getEntities(), true));
+      //$message->sendReply(print_r($message->getEntities(), true));
+      foreach($message->loopEntities() as $entity) {
+        $message->sendReply($entity->getType().': '.$message->getEntityText($entity)."\n");
+      }
+
     }
   }
 

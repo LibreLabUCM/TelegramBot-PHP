@@ -632,13 +632,20 @@ class TA_Message {
     return $this->entities[$i];
   }
 
+  public function getEntityText(TA_MessageEntity $entity) {
+    return substr($this->getText(), $entity->getOffset(), $entity->getLength());
+  }
+
   public function getEntities() {
     return $this->entities;
   }
 
-  public function loopEntities() {
+  public function loopEntities($filterByType = null) {
+    if (is_string($filterByType)) $filterByType = [$filterByType];
+    if (!is_array($filterByType)) throw Exception('$filterByType should be an array');
     foreach($this->getEntities() as $entity)
-      yield($entity);
+      if (!isset($filterByType) || in_array($entity->getType(), $filterByType))
+        yield($entity);
   }
 
   public function __toString() {
@@ -723,4 +730,57 @@ class TA_MessageEntity {
           isset($arr['url'])                    ? $arr['url']                : null
         );
   }
+
+  public function getOffset() {
+    return $this->offset;
+  }
+
+  public function getLength() {
+    return $this->length;
+  }
+
+  public function getType() { // mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs)
+    return $this->type;
+  }
+
+  public function isMention() {
+    return ($this->getType() === 'mention');
+  }
+
+  public function isHashtag() {
+    return ($this->getType() === 'hashtag');
+  }
+
+  public function isBotCommand() {
+    return ($this->getType() === 'bot_command');
+  }
+
+  public function isUrl() {
+    return ($this->getType() === 'url');
+  }
+
+  public function isEmail() {
+    return ($this->getType() === 'email');
+  }
+
+  public function isBold() {
+    return ($this->getType() === 'bold');
+  }
+
+  public function isItalic() {
+    return ($this->getType() === 'italic');
+  }
+
+  public function isCode() {
+    return ($this->getType() === 'code');
+  }
+
+  public function isPre() {
+    return ($this->getType() === 'pre');
+  }
+
+  public function isTextLink() {
+    return ($this->getType() === 'text_link');
+  }
+
 }
