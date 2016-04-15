@@ -52,7 +52,14 @@ class TestPlugin extends TB_Plugin {
       foreach($message->loopEntities() as $entity) {
         $message->sendReply($entity->getType().': '.$message->getEntityText($entity)."\n");
       }
+    } else if ($t === "/test_edit") {
 
+      $m = $this->api->sendMessage($message->getFrom(), "0");
+      // $this->api->editMessageText($m->getChat(), $m->getMessageId(), "Edit!");
+      sleep(1); $m->editMessageText("1");
+      sleep(1); $m->editMessageText("2");
+      sleep(1); $m->editMessageText("3");
+      sleep(1); $m->editMessageText("Bum!");
     }
   }
 
