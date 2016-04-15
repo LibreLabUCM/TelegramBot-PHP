@@ -670,7 +670,7 @@ class TA_Message {
 
   public function loopEntities($filterByType = null) {
     if (is_string($filterByType)) $filterByType = [$filterByType];
-    if (!is_array($filterByType)) throw Exception('$filterByType should be an array');
+    if (isset($filterByType) && !is_array($filterByType)) throw new Exception('$filterByType should be an array');
     foreach($this->getEntities() as $entity)
       if (!isset($filterByType) || in_array($entity->getType(), $filterByType))
         yield($entity);
