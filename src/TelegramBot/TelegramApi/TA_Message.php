@@ -21,6 +21,7 @@ class TA_Message {
   private $forward_date;
   private $reply_to_message; // TA_Message
   private $text;
+  private $entities; // TA_MessageEntity[]
   private $audio; // TA_Audio
   private $document; // TA_Document
   private $photo;
@@ -41,7 +42,7 @@ class TA_Message {
   private $migrate_from_chat_id;
 
   private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $forward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
-      $text = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
+      $text = null, $entities = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
       TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
 
@@ -54,6 +55,7 @@ class TA_Message {
     $this->forward_date = $forward_date;
     $this->reply_to_message = $reply_to_message; // TA_Message
     $this->text = $text;
+    $this->entities = $entities; // TA_MessageEntity[]
     $this->audio = $audio; // TA_Audio
     $this->document = $document; // TA_Document
     $this->photo = $photo; // TA_Photo
@@ -99,24 +101,32 @@ class TA_Message {
   * @return a TA_Message object
   */
   public static function createFromArray(TelegramApi $api, $arr) {
+    $entities = null;
+    if (isset($arr['entities'])) {
+      $entities = array();
+      foreach($arr['entities'] as $entity) {
+        array_push($entities, TA_MessageEntity::createFromArray($api, $entity));
+      }
+    }
     return new Self(
           $api,
           $arr['message_id'],
           $arr['date'],
           TA_Chat::createFromArray($api, $arr['chat']),
           isset($arr['from'])                    ? TA_User::createFromArray($api, $arr['from'])                 : null,
-          isset($arr['forward_from'])           ? TA_User::createFromArray($api, $arr['forward_from'])        : null,
+          isset($arr['forward_from'])           ? TA_User::createFromArray($api, $arr['forward_from'])          : null,
           isset($arr['forward_date'])            ? $arr['forward_date']								                 	     	  : null,
           isset($arr['reply_to_message'])        ? TA_Message::createFromArray($api, $arr['reply_to_message'])  : null,
           isset($arr['text'])                    ? $arr['text']                                                 : null,
+          isset($entities)                       ? $entities                                                    : null,
           isset($arr['audio'])                   ? TA_Audio::createFromArray($api, $arr['audio'])               : null,
           isset($arr['document'])                ? TA_Document::createFromArray($api, $arr['document'])         : null,
-          isset($arr['photo'])                   ? TA_Photo::createFromArray($api, $arr['photo'])             : null,
+          isset($arr['photo'])                   ? TA_Photo::createFromArray($api, $arr['photo'])               : null,
           isset($arr['sticker'])                 ? TA_Sticker::createFromArray($api, $arr['sticker'])           : null,
           isset($arr['video'])                   ? TA_Video::createFromArray($api, $arr['video'])               : null,
           isset($arr['voice'])                   ? TA_Voice::createFromArray($api, $arr['voice'])               : null,
           isset($arr['caption'])                 ? $arr['caption']                                              : null,
-          isset($arr['contact'])                 ? TA_Contact::createFromArray($api, $arr['contact'])          : null,
+          isset($arr['contact'])                 ? TA_Contact::createFromArray($api, $arr['contact'])           : null,
           isset($arr['location'])                ? TA_Location::createFromArray($api, $arr['location'])         : null,
           isset($arr['new_chat_participant'])    ? TA_User::createFromArray($api, $arr['new_chat_participant']) : null,
           isset($arr['left_chat_participant'])   ? TA_User::createFromArray($api, $arr['left_chat_participant']): null,
@@ -618,6 +628,19 @@ class TA_Message {
     return $this->migrate_from_chat_id;
   }
 
+  public function getEntity($i) {
+    return $this->entities[$i];
+  }
+
+  public function getEntities() {
+    return $this->entities;
+  }
+
+  public function loopEntities() {
+    foreach($this->getEntities() as $entity)
+      yield($entity);
+  }
+
   public function __toString() {
     if ($this->hasText())
       return $this->getText();
@@ -642,5 +665,62 @@ class TA_Message {
       return 'Group migration';
     }
     return 'Unknown message';
+  }
+}
+
+
+/**
+ * Telegram Api Message
+ *
+ * @api
+ *
+ */
+class TA_MessageEntity {
+  private $_api; // TelegramApi
+  private $type;
+  private $offset;
+  private $length;
+  private $url;
+
+  private function TA_MessageEntity(TelegramApi $api, $type, $offset, $length, $url = null) {
+    $this->_api = $api; // TelegramApi
+    $this->type = $type;
+    $this->offset = $offset;
+    $this->length = $length;
+    $this->url = $url;
+  }
+
+  /**
+  * Creates a TA_MessageEntity from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_MessageEntity
+  *
+  * @return a TA_MessageEntity object
+  */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_MessageEntity::createFromArray($api, json_decode($json, true));
+  }
+
+  /**
+  * Creates a TA_MessageEntity from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_MessageEntity
+  *
+  * @return a TA_MessageEntity object
+  */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['type'],
+          $arr['offset'],
+          $arr['length'],
+          isset($arr['url'])                    ? $arr['url']                : null
+        );
   }
 }

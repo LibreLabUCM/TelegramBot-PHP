@@ -434,6 +434,24 @@ class TelegramApi {
     return TA_File::createFromArray($this, $this->sendApiRequest ( 'getFile', $options ));
   }
 
+  public function kickChatMember($chat_id, $user_id) {
+    if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
+    if ($user_id instanceof TA_User) $user_id = $user_id->getId();
+    $options ['chat_id'] = $chat_id;
+    $options ['user_id'] = $user_id;
+
+    return (bool)$this->sendApiRequest ( 'kickChatMember', $options );
+  }
+
+  public function unbanChatMember($chat_id, $user_id) {
+    if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
+    if ($user_id instanceof TA_User) $user_id = $user_id->getId();
+    $options ['chat_id'] = $chat_id;
+    $options ['user_id'] = $user_id;
+
+    return (bool)$this->sendApiRequest ( 'unbanChatMember', $options );
+  }
+
   // Certificate not used (for now)
   /**
    * Sets the webhook url
