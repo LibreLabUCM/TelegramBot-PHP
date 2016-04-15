@@ -13,8 +13,8 @@ class TestPlugin extends TB_Plugin {
   public function onTextMessageReceived($message, &$eventData, $method) {
     $t = str_replace('@'.$this->bot->getBotUsername(), '', trim($message->getText()));
     if ($t === "/test") {
-      $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_forceReplay'],['/test_keyboard'],['/test_hideKeyboard'],['/test_profilephotos'],['/test_entities'],['/test_info'],['/test_edit']], null, true);
-      $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_forceReplay\n/test_keyboard\n/test_hideKeyboard\n/test_profilephotos\n/test_entities\n/test_info\n/test_edit", null, null, $k);
+      $k = new TA_ReplyKeyboardMarkup([['/test'],['/test_reply'],['/test_typing'],['/test_forceReplay'],['/test_keyboard'],['/test_hideKeyboard'],['/test_profilephotos'],['/test_entities mentions like @telegram or commands like /cmd'],['/test_info'],['/test_edit']], null, true);
+      $this->api->sendMessage($message->getFrom(), "/test\n/test_reply\n/test_typing\n/test_forceReplay\n/test_keyboard\n/test_hideKeyboard\n/test_profilephotos\n/test_entities mentions and commands here\n/test_info\n/test_edit", null, null, $k);
     } else if ($t === "/test_keyboard") {
       $k = new TA_ReplyKeyboardMarkup([[' - - - ']]); // 0
       $k->addRow()->addOption("/test_hideKeyboard") // 1
@@ -49,17 +49,20 @@ class TestPlugin extends TB_Plugin {
       $this->api->unbanChatMember($message->getChat(), $message->getReplyToMessage()->getFrom());
     } else if(substr($t, 0, strlen('/test_entities')) === '/test_entities') {
       //$message->sendReply(print_r($message->getEntities(), true));
+      $msg = '';
       foreach($message->loopEntities() as $entity) {
-        $message->sendReply($entity->getType().': '.$message->getEntityText($entity)."\n");
+        $msg .= $entity->getType().': '.$message->getEntityText($entity)."\n";
       }
+      $message->sendReply($msg);
     } else if ($t === "/test_edit") {
 
-      $m = $this->api->sendMessage($message->getFrom(), "0");
+      $m = $this->api->sendMessage($message->getFrom(), "0", null, null, null, 'Markdown');
       // $this->api->editMessageText($m->getChat(), $m->getMessageId(), "Edit!");
-      sleep(1); $m->editMessageText("1");
-      sleep(1); $m->editMessageText("2");
-      sleep(1); $m->editMessageText("3");
-      sleep(1); $m->editMessageText("Bum!");
+      for($i = 1; $i <= 5; $i++) {
+        usleep(10000);
+        $m->editMessageText($i);
+      }
+      usleep(400000); $m->editMessageText("Bum!");
     }
   }
 
