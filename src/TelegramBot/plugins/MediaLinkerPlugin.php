@@ -36,9 +36,39 @@ class MediaLinkerPlugin extends TB_Plugin {
     }
   }
 
+  public function getChangeLog() {
+    return [
+      '1459383180' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+      '1460314018' => [
+        'version'=>[0, 1, 0, 'alpha'],
+        'changes' => [
+          'Added condition "isNew"',
+        ],
+      ],
+      '1460726940' => [
+        'version'=>[0, 2, 0, 'alpha'],
+        'changes' => [
+          'Added venue support',
+        ],
+      ],
+      '1460810520' => [
+        'version'=>[0, 3, 0, 'alpha'],
+        'changes' => [
+          'Added "getChangeLog" function',
+        ],
+      ],
+    ];
+  }
+
 }
 return array(
   'class' => 'MediaLinkerPlugin',
   'name' => 'Media Linker',
-  'id' => 'MediaLinkerPlugin'
+  'id' => 'MediaLinkerPlugin',
+  'version' => [0, 3, 0, 'alpha'],
 );
