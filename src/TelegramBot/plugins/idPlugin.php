@@ -55,11 +55,35 @@ class IdPlugin extends TB_Plugin {
       ."`\n", null, null, 'Markdown');
       //$message->sendReply($message->getFrom()->getId());
     }
-
   }
+
+  public function getChangeLog() {
+    return [
+      '1459383180' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+      '1460732820' => [
+        'version'=>[0, 1, 0, 'alpha'],
+        'changes' => [
+          'Added message id\'s',
+        ],
+      ],
+      '1460810520' => [
+        'version'=>[0, 2, 0, 'alpha'],
+        'changes' => [
+          'Added "getChangeLog" function',
+        ],
+      ],
+    ];
+  }
+
 }
 return array(
   'class' => 'IdPlugin',
   'name' => 'Id',
-  'id' => 'IdPlugin'
+  'id' => 'IdPlugin',
+  'version' => [0, 0, 0, 'alpha'],
 );
