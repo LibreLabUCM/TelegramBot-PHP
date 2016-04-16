@@ -34,9 +34,33 @@ class ExamplePlugin extends TB_Plugin {
     $eventData['cancelled'] = true; // Cancels the event. No other plugins will process the event (except those with %callEvenIfCancelled true)
   }
 
+  public function getChangeLog() {
+    return [
+      '1459710840' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+      '1460314020' => [
+        'version'=>[0, 1, 0, 'alpha'],
+        'changes' => [
+          'Improvements',
+        ],
+      ],
+      '1460810520' => [
+        'version'=>[0, 2, 0, 'alpha'],
+        'changes' => [
+          'Added "getChangeLog" function',
+        ],
+      ],
+    ];
+  }
+
 }
 return array(
   'class' => 'ExamplePlugin',
   'name' => 'Example Plugin',
-  'id' => 'ExamplePlugin'
+  'id' => 'ExamplePlugin',
+  'version' => [0, 2, 0, 'alpha'],
 );

@@ -75,9 +75,52 @@ class TestPlugin extends TB_Plugin {
     }
   }
 
+  public function getChangeLog() {
+    return [
+      '1459382160' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+      '1459709160' => [
+        'version'=>[0, 1, 0, 'alpha'],
+        'changes' => [
+          'Added "isNew" condition',
+          'Changed plugin structure',
+        ],
+      ],
+      '1460732820' => [
+        'version'=>[0, 2, 0, 'alpha'],
+        'changes' => [
+          'Added "/test_edit" command',
+        ],
+      ],
+      '1460746020' => [
+        'version'=>[0, 3, 0, 'alpha'],
+        'changes' => [
+          'Improved keyboard tests and added inline keyboard test',
+        ],
+      ],
+      '1460804040' => [
+        'version'=>[0, 4, 0, 'alpha'],
+        'changes' => [
+          'Improved inline keyboard',
+        ],
+      ],
+      '1460810520' => [
+        'version'=>[0, 5, 0, 'alpha'],
+        'changes' => [
+          'Added "getChangeLog" function',
+        ],
+      ],
+    ];
+  }
+
 }
 return array(
   'class' => 'TestPlugin',
   'name' => 'Test',
-  'id' => 'TestPlugin'
+  'id' => 'TestPlugin',
+  'version' => [0, 5, 0, 'alpha'],
 );

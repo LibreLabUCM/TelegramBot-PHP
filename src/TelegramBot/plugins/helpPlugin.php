@@ -14,9 +14,21 @@ class HelpPlugin extends TB_Plugin {
   public function onMessageReceived($message) {
     $message->sendReply("Developing... If you want to /test ...");
   }
+
+  public function getChangeLog() {
+    return [
+      '1459382160' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+    ];
+  }
 }
 return array(
   'class' => 'HelpPlugin',
   'name' => 'Help',
-  'id' => 'HelpPlugin'
+  'id' => 'HelpPlugin',
+  'version' => [0, 0, 0, 'alpha'],
 );

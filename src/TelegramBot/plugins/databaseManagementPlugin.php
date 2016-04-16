@@ -11,7 +11,6 @@ class DatabaseManagementPlugin extends TB_Plugin {
    * %condition date any
    */
   public function onMessageReceived($message) {
-    // ---TEMP!---
     $o = array(
       'typeMap' => array(
         'root' => 'array',
@@ -35,19 +34,34 @@ class DatabaseManagementPlugin extends TB_Plugin {
       if ($message->getFrom()->getLastName() !== null) $currentUser['last_name'] = $message->getFrom()->getLastName();
       $this->db->selectCollection('users')->insertOne($currentUser);
     }
-    //var_dump($currentUser);
     if (!in_array($message->getChat()->getId(), $currentUser['chatsSeen'])) {
       array_push($currentUser['chatsSeen'], $message->getChat()->getId());
       $this->db->selectCollection('users')->updateOne(['_id' => $message->getFrom()->getId()], ['$set' => ['chatsSeen' => $currentUser['chatsSeen']]]);
     }
     $this->db->selectCollection('users')->updateOne(['_id' => $message->getFrom()->getId()], ['$inc' => ['stats.messages' => 1]]);
     //$message->sendReply('->```'.print_r($currentUser, true).'```', null, null, 'Markdown');
+  }
 
-    // -----------
+  public function getChangeLog() {
+    return [
+      '1460722260' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+      '1460810520' => [
+        'version'=>[0, 1, 0, 'alpha'],
+        'changes' => [
+          'Added "getChangeLog" function',
+        ],
+      ],
+    ];
   }
 }
 return array(
   'class' => 'DatabaseManagementPlugin',
   'name' => 'Database Management',
-  'id' => 'DatabaseManagementPlugin'
+  'id' => 'DatabaseManagementPlugin',
+  'version' => [0, 1, 0, 'alpha'],
 );
