@@ -22,9 +22,33 @@ class WelcomePlugin extends TB_Plugin {
     }
   }
 
+  public function getChangeLog() {
+    return [
+      '1459717139' => [
+        'version'=>[0, 0, 0, 'alpha'],
+        'changes' => [
+          'Welcomes new chat members when the join and bids farewell when they leave',
+        ],
+      ],
+      '1460314018' => [
+        'version'=>[0, 1, 0, 'alpha'],
+        'changes' => [
+          'Added condition "isNew"',
+        ],
+      ],
+      '1460810520' => [
+        'version'=>[0, 2, 0, 'alpha'],
+        'changes' => [
+          'Added "getChangeLog" function',
+        ],
+      ],
+    ];
+  }
+
 }
 return array(
   'class' => 'WelcomePlugin',
   'name' => 'Welcome Plugin',
-  'id' => 'WelcomePlugin'
+  'id' => 'WelcomePlugin',
+  'version' => [0, 2, 0, 'alpha'],
 );
