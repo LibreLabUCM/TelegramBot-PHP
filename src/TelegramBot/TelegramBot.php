@@ -53,8 +53,8 @@ class TelegramBot {
     } else if ($updateObj->hasCallbackQuery()) {
       $originalMsg = $updateObj->getCallbackQuery()->getMessage();
       $k = new TA_InlineKeyboardMarkup(); // 0
-      $k->addOption(new TA_InlineKeyboardButton('+1', null, '+1')) // 1
-        ->addOption(new TA_InlineKeyboardButton('-1', null, "-1"));
+      $k->addOption(new TA_InlineKeyboardButton('·  +1  ·', null, '+1')) // 1
+        ->addOption(new TA_InlineKeyboardButton('·  -1  ·', null, "-1"));
       if (is_numeric($originalMsg->getText())) {
         if ($updateObj->getCallbackQuery()->getData() === '+1')
           $nextText = $originalMsg->getText() + 1;
@@ -63,6 +63,7 @@ class TelegramBot {
       } else {
         $nextText = 0;
       }
+      $k->addRow()->addOption(new TA_InlineKeyboardButton("Share $nextText!", null, null, "Wow! A number $nextText!"));
       $r = $originalMsg->editMessageText($nextText, null, null, $k);
     } else {
       error_log('Unkown update: '.$update);
