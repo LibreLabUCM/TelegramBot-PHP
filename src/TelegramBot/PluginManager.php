@@ -33,19 +33,35 @@ class PluginManager {
     $this->db = $db;
   }
 
+  public function checkIfPluginIsActive($plugin) {
+    if (isset($plugin['id'])) $plugin = $plugin['id'];
+    if (true) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   public function registerAll() {
     foreach (glob(__DIR__ . '/plugins/*.php') as $file) {
       $this->registerPlugin(require_once($file));
     }
   }
 
-  public function registerPlugin($plugin) {
-    $this->pluginList[$plugin['id']] = array(
-      'plugin' => new $plugin['class']($this->api, $this->bot, $this->db),
-      'class' => $plugin['class'],
-      'name' => $plugin['name'],
-      'reflector' => new ReflectionClass($plugin['class'])
-    );
+  public function registerPlugin($plugin, $filterOutInactive = true) {
+    if ( (!$filterOutInactive) || $this->checkIfPluginIsActive($plugin)) {
+      $this->pluginList[$plugin['id']] = array(
+        'plugin' => new $plugin['class']($this->api, $this->bot, $this->db),
+        'class' => $plugin['class'],
+        'name' => $plugin['name'],
+        'reflector' => new ReflectionClass($plugin['class']),
+        'version' => $plugin['version']
+      );
+    }
+  }
+
+  public function getPluginList() {
+    return $this->pluginList;
   }
 
   private function getFunctionMetadata($pluginId, $function) {
@@ -72,10 +88,13 @@ class PluginManager {
   }
 
   /**
-   * [checkConditions description]
-   * @param  [type] $conditions [description]
-   * @param  [type] $param      [description]
-   * @return [type]             [description]
+   * Checks an array of conditions agains the current object
+   *
+   * @param  mixed $conditions array of conditions to be checked
+   * @param  mixed $param      object to be tested against the conditions
+   * @return bool              if $params passed successfully all condition checks
+   *
+   * Some examples of conditions:
    * %condition isMessage
    * %condition hasText
    * %condition text is hi
@@ -182,6 +201,7 @@ abstract class TB_Plugin {
     $this->bot = $bot;
     $this->db = $db;
   }
+  public function getChangeLog() { return ['0'=>['version'=>[0, 0, 0], 'changes' => []]]; }
   //public function onMessageReceived($message) {}
   //public function onTextMessageReceived($message) {}
   //public function onMediaMessageReceived($message) {}
