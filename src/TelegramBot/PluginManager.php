@@ -10,6 +10,7 @@ class PluginManager {
   private $api; // TelegramApi
   private $bot;
   private $considerOldAfter = 10;
+  private $db;
   private $events = array(
     'textMessageReceived' => array(
       'onTextMessageReceived',
@@ -25,10 +26,11 @@ class PluginManager {
   );
 
 
-  public function PluginManager(TelegramApi $api, TelegramBot $bot) {
+  public function PluginManager(TelegramApi $api, TelegramBot $bot, $db) {
     $this->pluginList = [];
     $this->api = $api;
     $this->bot = $bot;
+    $this->db = $db;
   }
 
   public function registerAll() {
@@ -39,7 +41,7 @@ class PluginManager {
 
   public function registerPlugin($plugin) {
     $this->pluginList[$plugin['id']] = array(
-      'plugin' => new $plugin['class']($this->api, $this->bot),
+      'plugin' => new $plugin['class']($this->api, $this->bot, $this->db),
       'class' => $plugin['class'],
       'name' => $plugin['name'],
       'reflector' => new ReflectionClass($plugin['class'])
@@ -174,9 +176,11 @@ class PluginManager {
 abstract class TB_Plugin {
   protected $api; // TelegramBot
   protected $bot; // TelegramBot
-  public function TB_Plugin(TelegramApi $api, TelegramBot $bot) {
+  protected $db;
+  public function TB_Plugin(TelegramApi $api, TelegramBot $bot, $db) {
     $this->api = $api;
     $this->bot = $bot;
+    $this->db = $db;
   }
   //public function onMessageReceived($message) {}
   //public function onTextMessageReceived($message) {}

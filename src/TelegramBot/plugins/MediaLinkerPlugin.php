@@ -3,8 +3,8 @@ require_once(__DIR__ . '/../PluginManager.php');
 
 
 class MediaLinkerPlugin extends TB_Plugin {
-  public function MediaLinkerPlugin($api, $bot) {
-    parent::__construct($api, $bot);
+  public function MediaLinkerPlugin($api, $bot, $db) {
+    parent::__construct($api, $bot, $db);
   }
 
   /**
@@ -24,7 +24,9 @@ class MediaLinkerPlugin extends TB_Plugin {
       $this->api->sendMessage($message->getFrom(), $message->getMediaType()."!\n" .  $this->config->getWebhookUrl().$finalPath);
       */
     } else {
-      if ($message->isLocation()) {
+      if ($message->isVenue()) {
+        $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getTitle() . "\n" . $f->getAddress());
+      } else if ($message->isLocation()) {
         $this->api->sendMessage($message->getFrom(), "So... you are at\n" . $f->getLongitude() . "\n" . $f->getLatitude());
       } else if ($message->isContact()) {
         $this->api->sendMessage($message->getFrom(), "Name: ".$f->getFirstName()."\nPhone: ".$f->getPhoneNumber());

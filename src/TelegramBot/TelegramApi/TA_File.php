@@ -820,6 +820,103 @@ class TA_Location {
 }
 
 
+class TA_Venue {
+  private $_api; // TelegramApi
+  private $location; // TA_Location
+  private $title;
+  private $address;
+  private $foursquare_id;
+
+  private function TA_Venue(TelegramApi $api, $location, $title, $address, $foursquare_id = null) {
+    $this->_api = $api;
+    $this->location = $location;
+    $this->title = $title;
+    $this->address = $address;
+    $this->foursquare_id = $foursquare_id;
+  }
+
+  /**
+   * Creates a TA_Venue from a json string
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	a json string representing a TA_Venue
+   *
+   * @return a TA_Venue object
+   */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_Venue::createFromArray($api, json_decode($json, true));
+  }
+
+  /**
+   * Creates a TA_Venue from an associative array
+   *
+   * @param string $api
+   *        	an instance to the TelegramApi wrapper
+   * @param array $json
+   *        	an associative array representing a TA_Venue
+   *
+   * @return a TA_Venue object
+   */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['location'],
+          $arr['title'],
+          $arr['address'],
+          isset($arr['foursquare_id'])   ? $arr['foursquare_id']  : null
+        );
+  }
+
+  /**
+   * Checks if this media type contains a file
+   *
+   * @return boolean if this media type contains a file
+   */
+  public function hasFile() {
+    return false;
+  }
+
+  /**
+   * Gets the location
+   *
+   * @return TA_Location location
+   */
+  public function getLocation() {
+    return $this->location;
+  }
+
+  /**
+   * Gets the title
+   *
+   * @return string title
+   */
+  public function getTitle() {
+    return $this->title;
+  }
+
+  /**
+   * Gets the address
+   *
+   * @return string address
+   */
+  public function getAddress() {
+    return $this->address;
+  }
+
+  /**
+   * Gets the foursquare identifier of the venue
+   *
+   * @return string foursquare identifier of the venue
+   */
+  public function getFoursquareId() {
+    return $this->foursquare_id;
+  }
+
+}
+
+
 class TA_Contact {
   private $_api; // TelegramApi
   private $phone_number;

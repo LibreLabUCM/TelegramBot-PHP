@@ -5,6 +5,7 @@ require_once(__DIR__ . '/TA_InlineQuery.php');
 require_once(__DIR__ . '/TA_InlineQueryResult.php');
 require_once(__DIR__ . '/TA_Update.php');
 require_once(__DIR__ . '/TA_ReplyMarkup.php');
+require_once(__DIR__ . '/TA_CallbackQuery.php');
 
 
 class TAE_ApiException extends Exception{}
@@ -59,11 +60,11 @@ class TelegramApi {
       throw new Exception('Request error: ' . curl_error($curl));
     }
     $r = json_decode ( $response, true );
-    if ($http_status != 200) {
-      throw new Exception('Request error: status ' . $http_status);
-    }
     if ($r === FALSE || $r === null || !$r['ok']) {
       throw new TAE_ApiException($r['description']);
+    }
+    if ($http_status != 200) {
+      throw new Exception('Request error: status ' . $http_status);
     }
 
     echo '<pre>', json_encode($r, JSON_PRETTY_PRINT), '</pre>';
@@ -432,6 +433,70 @@ class TelegramApi {
     $options = array ();
     $options ['file_id'] = $file_id;
     return TA_File::createFromArray($this, $this->sendApiRequest ( 'getFile', $options ));
+  }
+
+  // Untested
+  public function kickChatMember($chat_id, $user_id) {
+    if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
+    if ($user_id instanceof TA_User) $user_id = $user_id->getId();
+    $options ['chat_id'] = $chat_id;
+    $options ['user_id'] = $user_id;
+
+    return (bool)$this->sendApiRequest ( 'kickChatMember', $options );
+  }
+
+  // Untested
+  public function unbanChatMember($chat_id, $user_id) {
+    if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
+    if ($user_id instanceof TA_User) $user_id = $user_id->getId();
+    $options ['chat_id'] = $chat_id;
+    $options ['user_id'] = $user_id;
+
+    return (bool)$this->sendApiRequest ( 'unbanChatMember', $options );
+  }
+
+  // Untested
+  public function answerCallbackQuery($callback_query_id, $text = null, $show_alert = null) {
+    $options ['callback_query_id'] = $callback_query_id;
+
+    if ($text !== null) {
+      $options ['text'] = $text;
+    }
+
+    if ($show_alert !== null) {
+      $options ['show_alert'] = $show_alert;
+    }
+    return (bool)$this->sendApiRequest ( 'answerCallbackQuery', $options );
+  }
+
+  public function editMessageText($chat_id, $message_id, $text, $parse_mode = null, $link_previews = null, $reply_markup = null) {
+    if ($chat_id instanceof TA_Chat) $chat_id = $chat_id->getId();
+    if ($message_id instanceof TA_Message) $message_id = $message_id->getMessageId();
+
+    $options ['chat_id'] = $chat_id;
+    $options ['message_id'] = $message_id;
+
+    $options ['text'] = $text;
+    if ($link_previews === true || $link_previews === null) {
+      $options ['disable_web_page_preview'] = false;
+    } else if ($link_previews === false) {
+      $options ['disable_web_page_preview'] = true;
+    }
+
+    if ($reply_markup !== null) {
+      $options ['reply_markup'] = (string)$reply_markup;
+    }
+    if ($parse_mode !== null) {
+      $options ['parse_mode'] = (string)$parse_mode;
+    }
+    
+    return TA_Message::createFromArray($this, $this->sendApiRequest ( 'editMessageText', $options ));
+  }
+
+  // Untested
+  public function editMessageTextInline($inline_message_id) {
+    //if ($inline_message_id instanceof ?) $inline_message_id = $inline_message_id->getId();
+    //return TA_Message
   }
 
   // Certificate not used (for now)

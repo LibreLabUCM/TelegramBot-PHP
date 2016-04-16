@@ -21,6 +21,7 @@ class TA_Message {
   private $forward_date;
   private $reply_to_message; // TA_Message
   private $text;
+  private $entities; // TA_MessageEntity[]
   private $audio; // TA_Audio
   private $document; // TA_Document
   private $photo;
@@ -41,8 +42,8 @@ class TA_Message {
   private $migrate_from_chat_id;
 
   private function TA_Message(TelegramApi $api, $message_id, $date, TA_Chat $chat, TA_User $from = null, TA_User $forward_from = null, $forward_date = null, TA_Message $reply_to_message = null,
-      $text = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
-      TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
+      $text = null, $entities = null, TA_Audio $audio = null, TA_Document $document = null, TA_Photo $photo = null, TA_Sticker $sticker = null, TA_Video $video = null, TA_Voice $voice = null, $caption = null, TA_Contact $contact = null, TA_Location $location = null,
+      TA_Venue $venue = null, TA_User $new_chat_participant = null, TA_User $left_chat_participant = null, $new_chat_title = null, $new_chat_photo = null, $delete_chat_photo = null,
       $group_chat_created = null, $channel_chat_created = null, $migrate_to_chat_id = null, $migrate_from_chat_id = null) {
 
     $this->_api = $api;
@@ -54,6 +55,7 @@ class TA_Message {
     $this->forward_date = $forward_date;
     $this->reply_to_message = $reply_to_message; // TA_Message
     $this->text = $text;
+    $this->entities = $entities; // TA_MessageEntity[]
     $this->audio = $audio; // TA_Audio
     $this->document = $document; // TA_Document
     $this->photo = $photo; // TA_Photo
@@ -63,6 +65,7 @@ class TA_Message {
     $this->caption = $caption;
     $this->contact = $contact; // TA_Contact
     $this->location = $location; // TA_Location
+    $this->venue = $venue; // TA_Venue
     $this->new_chat_participant = $new_chat_participant; // TA_User
     $this->left_chat_participant = $left_chat_participant; // TA_User
     $this->new_chat_title = $new_chat_title;
@@ -99,25 +102,34 @@ class TA_Message {
   * @return a TA_Message object
   */
   public static function createFromArray(TelegramApi $api, $arr) {
+    $entities = null;
+    if (isset($arr['entities'])) {
+      $entities = array();
+      foreach($arr['entities'] as $entity) {
+        array_push($entities, TA_MessageEntity::createFromArray($api, $entity));
+      }
+    }
     return new Self(
           $api,
           $arr['message_id'],
           $arr['date'],
           TA_Chat::createFromArray($api, $arr['chat']),
           isset($arr['from'])                    ? TA_User::createFromArray($api, $arr['from'])                 : null,
-          isset($arr['forward_from'])           ? TA_User::createFromArray($api, $arr['forward_from'])        : null,
+          isset($arr['forward_from'])           ? TA_User::createFromArray($api, $arr['forward_from'])          : null,
           isset($arr['forward_date'])            ? $arr['forward_date']								                 	     	  : null,
           isset($arr['reply_to_message'])        ? TA_Message::createFromArray($api, $arr['reply_to_message'])  : null,
           isset($arr['text'])                    ? $arr['text']                                                 : null,
+          isset($entities)                       ? $entities                                                    : null,
           isset($arr['audio'])                   ? TA_Audio::createFromArray($api, $arr['audio'])               : null,
           isset($arr['document'])                ? TA_Document::createFromArray($api, $arr['document'])         : null,
-          isset($arr['photo'])                   ? TA_Photo::createFromArray($api, $arr['photo'])             : null,
+          isset($arr['photo'])                   ? TA_Photo::createFromArray($api, $arr['photo'])               : null,
           isset($arr['sticker'])                 ? TA_Sticker::createFromArray($api, $arr['sticker'])           : null,
           isset($arr['video'])                   ? TA_Video::createFromArray($api, $arr['video'])               : null,
           isset($arr['voice'])                   ? TA_Voice::createFromArray($api, $arr['voice'])               : null,
           isset($arr['caption'])                 ? $arr['caption']                                              : null,
-          isset($arr['contact'])                 ? TA_Contact::createFromArray($api, $arr['contact'])          : null,
+          isset($arr['contact'])                 ? TA_Contact::createFromArray($api, $arr['contact'])           : null,
           isset($arr['location'])                ? TA_Location::createFromArray($api, $arr['location'])         : null,
+          isset($arr['venue'])                   ? TA_Venue::createFromArray($api, $arr['venue'])               : null,
           isset($arr['new_chat_participant'])    ? TA_User::createFromArray($api, $arr['new_chat_participant']) : null,
           isset($arr['left_chat_participant'])   ? TA_User::createFromArray($api, $arr['left_chat_participant']): null,
           isset($arr['new_chat_title'])          ? $arr['new_chat_title']                                       : null,
@@ -399,10 +411,30 @@ class TA_Message {
    *
    * Message is a shared location, information about the location
    *
-   * @return unspecified message location
+   * @return TA_Location message location
    */
   public function getLocation() {
     return $this->location;
+  }
+
+  /**
+   * Checks if the current message contains a venue
+   *
+   * @return boolean if the current message contains a venue
+   */
+  public function isVenue() {
+    return ($this->venue !== null);
+  }
+
+  /**
+   * Gets the message venue
+   *
+   * Message is a venue, information about the venue
+   *
+   * @return TA_Venue message venue
+   */
+  public function getVenue() {
+    return $this->venue;
   }
 
   /**
@@ -418,6 +450,7 @@ class TA_Message {
     if ($this->isVideo()) return $this->getVideo();
     if ($this->isVoice()) return $this->getVoice();
     if ($this->isContact()) return $this->getContact();
+    if ($this->isVenue()) return $this->getVenue();
     if ($this->isLocation()) return $this->getLocation();
     return false;
   }
@@ -435,6 +468,7 @@ class TA_Message {
     if ($this->isVideo()) return 'video';
     if ($this->isVoice()) return 'voice';
     if ($this->isContact()) return 'contact';
+    if ($this->isVenue()) return 'venue';
     if ($this->isLocation()) return 'location';
     return false;
   }
@@ -480,6 +514,10 @@ class TA_Message {
    */
   public function sendReply($text, $link_previews = true, $reply_markup = null, $parse_mode = null) {
     return $this->_api->sendMessage($this->getChat()->getId(), $text, $link_previews, $this->getMessageId(), $reply_markup, $parse_mode);
+  }
+
+  public function editMessageText($text, $parse_mode = null, $link_previews = null, $reply_markup = null) {
+    return $this->_api->editMessageText($this->getChat()->getId(), $this->getMessageId(), $text, $parse_mode, $link_previews, $reply_markup);
   }
 
 
@@ -618,6 +656,26 @@ class TA_Message {
     return $this->migrate_from_chat_id;
   }
 
+  public function getEntity($i) {
+    return $this->entities[$i];
+  }
+
+  public function getEntityText(TA_MessageEntity $entity) {
+    return substr($this->getText(), $entity->getOffset(), $entity->getLength());
+  }
+
+  public function getEntities() {
+    return $this->entities;
+  }
+
+  public function loopEntities($filterByType = null) {
+    if (is_string($filterByType)) $filterByType = [$filterByType];
+    if (isset($filterByType) && !is_array($filterByType)) throw new Exception('$filterByType should be an array');
+    foreach($this->getEntities() as $entity)
+      if (!isset($filterByType) || in_array($entity->getType(), $filterByType))
+        yield($entity);
+  }
+
   public function __toString() {
     if ($this->hasText())
       return $this->getText();
@@ -643,4 +701,114 @@ class TA_Message {
     }
     return 'Unknown message';
   }
+}
+
+
+/**
+ * Telegram Api Message
+ *
+ * @api
+ *
+ */
+class TA_MessageEntity {
+  private $_api; // TelegramApi
+  private $type;
+  private $offset;
+  private $length;
+  private $url;
+
+  private function TA_MessageEntity(TelegramApi $api, $type, $offset, $length, $url = null) {
+    $this->_api = $api; // TelegramApi
+    $this->type = $type;
+    $this->offset = $offset;
+    $this->length = $length;
+    $this->url = $url;
+  }
+
+  /**
+  * Creates a TA_MessageEntity from a json string
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	a json string representing a TA_MessageEntity
+  *
+  * @return a TA_MessageEntity object
+  */
+  public static function createFromJson(TelegramApi $api, $json) {
+    return TA_MessageEntity::createFromArray($api, json_decode($json, true));
+  }
+
+  /**
+  * Creates a TA_MessageEntity from an associative array
+  *
+  * @param string $api
+  *        	an instance to the TelegramApi wrapper
+  * @param array $json
+  *        	an associative array representing a TA_MessageEntity
+  *
+  * @return a TA_MessageEntity object
+  */
+  public static function createFromArray(TelegramApi $api, $arr) {
+    return new Self(
+          $api,
+          $arr['type'],
+          $arr['offset'],
+          $arr['length'],
+          isset($arr['url'])                    ? $arr['url']                : null
+        );
+  }
+
+  public function getOffset() {
+    return $this->offset;
+  }
+
+  public function getLength() {
+    return $this->length;
+  }
+
+  public function getType() { // mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs)
+    return $this->type;
+  }
+
+  public function isMention() {
+    return ($this->getType() === 'mention');
+  }
+
+  public function isHashtag() {
+    return ($this->getType() === 'hashtag');
+  }
+
+  public function isBotCommand() {
+    return ($this->getType() === 'bot_command');
+  }
+
+  public function isUrl() {
+    return ($this->getType() === 'url');
+  }
+
+  public function isEmail() {
+    return ($this->getType() === 'email');
+  }
+
+  public function isBold() {
+    return ($this->getType() === 'bold');
+  }
+
+  public function isItalic() {
+    return ($this->getType() === 'italic');
+  }
+
+  public function isCode() {
+    return ($this->getType() === 'code');
+  }
+
+  public function isPre() {
+    return ($this->getType() === 'pre');
+  }
+
+  public function isTextLink() {
+    return ($this->getType() === 'text_link');
+  }
+
 }

@@ -13,15 +13,18 @@ class TelegramBot {
   private $api;
   private $pluginManager;
   private $username = 'DevPGSVbot'; // Shouldn't be hardcoded
+  private $db;
 
-  public function TelegramBot(BotConfig $config) {
+  public function TelegramBot(BotConfig $config, $db) {
     if (!$config->isValid ()) {
       throw new InvalidConfigException('Bot is NOT configured properly!');
     }
     $this->config = $config;
+    $this->db = $db;
     $this->api = new TelegramApi ( $config->getToken () );
-    $this->pluginManager = new PluginManager($this->api, $this);
+    $this->pluginManager = new PluginManager($this->api, $this, $this->db = $db);
     $this->pluginManager->registerAll();
+
     //$username = $this->api->getMe()->getUsername();
     //echo '<a href="https://telegram.me/'.$username.'" target="_blank">@'.$username."</a><br>\n";
   }
@@ -47,8 +50,24 @@ class TelegramBot {
       $this->processInlineQuery($updateObj->getInlineQuery());
     } else if ($updateObj->hasChosenInlineResult()) {
       $this->processChosenInlineResult($updateObj->getChosenInlineResult());
+    } else if ($updateObj->hasCallbackQuery()) {
+      $originalMsg = $updateObj->getCallbackQuery()->getMessage();
+      $k = new TA_InlineKeyboardMarkup(); // 0
+      $k->addOption(new TA_InlineKeyboardButton('·  +1  ·', null, '+1')) // 1
+        ->addOption(new TA_InlineKeyboardButton('·  -1  ·', null, "-1"));
+      if (is_numeric($originalMsg->getText())) {
+        if ($updateObj->getCallbackQuery()->getData() === '+1')
+          $nextText = $originalMsg->getText() + 1;
+        else
+          $nextText = $originalMsg->getText() - 1;
+      } else {
+        $nextText = 0;
+      }
+      $k->addRow()->addOption(new TA_InlineKeyboardButton("Share $nextText!", null, null, "Wow! A number $nextText!"));
+      $r = $originalMsg->editMessageText($nextText, null, null, $k);
     } else {
-      throw new Exception('This is not a message or an inline query!');
+      error_log('Unkown update: '.$update);
+      // throw new Exception('This is not a message or an inline query!');
     }
   }
 

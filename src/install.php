@@ -29,7 +29,10 @@ if (!empty($token)) {
 \$_BOT_CONFIG = array(
   'token' => '$token',
   'baseUrl' => '$baseUrl',
-  'db' => 'db', // This will be an instance to a database. Right now it is not used. Any string will work
+  'db' => array(
+    'host' => 'mongodb://localhost:27017', // Database host
+    'database' => 'TelegramBot' // Database name
+  ),
   'admins' => array(12345678, 87654321, 11111111), // Array of admin id's. Not used right now...
   'hookKey' => '$hookKey' // Something like: 6Obdqaab44b4fb2e . After changing this, you should set the webhook again!
 );
