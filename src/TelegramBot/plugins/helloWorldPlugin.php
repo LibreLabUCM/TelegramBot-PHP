@@ -15,9 +15,21 @@ class HelloWorldPlugin extends TB_Plugin {
     $message->sendReply("Hello world from HelloWorldPlugin!");
   }
 
+  public function getChangeLog() {
+    return [
+      '1459382160' => [
+        'version'=>[0, 0, 0, ''],
+        'changes' => [
+          'Created plugin',
+        ],
+      ],
+    ];
+  }
+
 }
 return array(
   'class' => 'HelloWorldPlugin',
   'name' => 'Hello World',
-  'id' => 'HelloWorldPlugin'
+  'id' => 'HelloWorldPlugin',
+  'version' => [0, 0, 0, ''],
 );
